@@ -1,0 +1,146 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Crea tu currículum con la plantilla editable de ARKAS TEMPLATES.">
+    <meta name="theme-color" content="#f5f8f6">
+    <title>Crear mi currículum | ARKAS TEMPLATES</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/curriculum-editor.js" defer></script>
+</head>
+<body>
+    <header class="navbar viewer-navbar">
+        <a href="index.html" class="logo" aria-label="ARKAS TEMPLATES, página principal">ARKAS<span>.</span></a>
+        <div class="viewer-context">
+            <span class="viewer-label">Plantilla de currículum editable</span>
+            <a href="index.html#sobre-mi" class="viewer-back">← Volver a ARKAS</a>
+        </div>
+    </header>
+
+    <main class="cv-builder">
+        <div class="cv-builder-heading">
+            <p class="section-label">TU PERFIL, TU HISTORIA</p>
+            <h1>Crea tu currículum.</h1>
+            <p>Rellena los apartados que quieras y mira cómo va quedando en la vista previa. Los campos sin completar y sus secciones se omiten en la descarga.</p>
+            <div class="cv-builder-privacy">
+                Tus datos solo se usan en esta página de tu navegador: no se envían a ningún servidor ni se guardan. Descarga el documento cuando estés listo.
+            </div>
+        </div>
+
+        <div class="cv-builder-layout">
+            <form class="cv-builder-form" id="cv-form">
+                <section class="cv-form-section">
+                    <h2>1. Datos personales</h2>
+                    <div class="cv-form-grid">
+                        <div class="cv-field cv-field-wide">
+                            <label for="cv-name">Nombre y apellidos *</label>
+                            <input id="cv-name" name="name" autocomplete="name" required maxlength="100" placeholder="Ej.: Ana García López">
+                        </div>
+                        <div class="cv-field cv-field-wide">
+                            <label for="cv-headline">Profesión o puesto que buscas *</label>
+                            <input id="cv-headline" name="headline" required maxlength="120" placeholder="Ej.: Diseñadora gráfica">
+                        </div>
+                        <div class="cv-field cv-field-wide">
+                            <label for="cv-contact">Contacto</label>
+                            <input id="cv-contact" name="contact" maxlength="180" placeholder="Correo · teléfono · ciudad · LinkedIn">
+                            <span class="cv-field-hint">Escribe solo la información de contacto que quieras compartir.</span>
+                        </div>
+                        <div class="cv-field cv-field-wide">
+                            <label for="cv-availability">Disponibilidad o situación actual</label>
+                            <input id="cv-availability" name="availability" maxlength="100" placeholder="Ej.: Disponible para nuevas oportunidades">
+                        </div>
+                    </div>
+                </section>
+
+                <section class="cv-form-section">
+                    <h2>2. Perfil y objetivo</h2>
+                    <div class="cv-form-grid">
+                        <div class="cv-field cv-field-wide">
+                            <label for="cv-profile">Resumen profesional</label>
+                            <textarea id="cv-profile" name="profile" maxlength="1200" placeholder="Resume tu perfil, trayectoria y principales fortalezas. Separa los párrafos con una línea en blanco."></textarea>
+                        </div>
+                        <div class="cv-field cv-field-wide">
+                            <label for="cv-objective">Objetivo profesional</label>
+                            <textarea id="cv-objective" name="objective" maxlength="800" placeholder="¿Qué te gustaría conseguir en tu próximo paso profesional?"></textarea>
+                        </div>
+                        <div class="cv-field cv-field-wide">
+                            <label for="cv-target">Qué oportunidad buscas</label>
+                            <textarea id="cv-target" name="target" maxlength="500" placeholder="Indica el tipo de puesto, sector o proyecto que te interesa."></textarea>
+                        </div>
+                    </div>
+                </section>
+
+                <section class="cv-form-section">
+                    <h2>3. Competencias</h2>
+                    <div class="cv-field">
+                        <label for="cv-competencies">Una competencia por línea</label>
+                        <textarea id="cv-competencies" name="competencies" placeholder="Competencia | descripción | ejemplo&#10;Trabajo en equipo | Colaboración y comunicación | Coordiné tareas en un proyecto"></textarea>
+                        <span class="cv-field-hint">Formato: competencia | descripción | ejemplo. El ejemplo es opcional.</span>
+                    </div>
+                </section>
+
+                <section class="cv-form-section">
+                    <h2>4. Experiencia y formación</h2>
+                    <div class="cv-field">
+                        <label for="cv-experiences">Una experiencia por línea</label>
+                        <textarea id="cv-experiences" name="experiences" placeholder="Periodo | puesto o formación | descripción | competencias&#10;2022–2025 | Grado en ... | Formación en ... | Análisis, comunicación"></textarea>
+                        <span class="cv-field-hint">Formato: periodo | puesto/estudios | descripción | competencias. Completa solo lo que tengas.</span>
+                    </div>
+                </section>
+
+                <section class="cv-form-section">
+                    <h2>5. Proyectos</h2>
+                    <div class="cv-field">
+                        <label for="cv-projects">Un proyecto por línea</label>
+                        <textarea id="cv-projects" name="projects" placeholder="Nombre | descripción | tecnologías&#10;Tienda online | Desarrollo de catálogo y carrito | HTML, CSS, JavaScript"></textarea>
+                        <span class="cv-field-hint">Formato: nombre | descripción | tecnologías separadas por comas.</span>
+                    </div>
+                </section>
+
+                <section class="cv-form-section">
+                    <h2>6. Habilidades</h2>
+                    <div class="cv-field">
+                        <label for="cv-skills">Una habilidad por línea</label>
+                        <textarea id="cv-skills" name="skills" placeholder="Habilidad | nivel (0–100)&#10;Excel | 80&#10;Inglés | 65"></textarea>
+                        <span class="cv-field-hint">El nivel es opcional. Si lo incluyes, escribe un número entre 0 y 100.</span>
+                    </div>
+                </section>
+
+                <section class="cv-form-section">
+                    <h2>7. Aprendizajes y aportaciones</h2>
+                    <div class="cv-form-grid">
+                        <div class="cv-field cv-field-wide">
+                            <label for="cv-learning">Aprendizajes, uno por línea</label>
+                            <textarea id="cv-learning" name="learning" placeholder="Experiencia | qué aprendiste | competencia&#10;Atención al público | Escucha y resolución de consultas | Comunicación"></textarea>
+                            <span class="cv-field-hint">Formato: experiencia | aprendizaje | competencia.</span>
+                        </div>
+                        <div class="cv-field cv-field-wide">
+                            <label for="cv-contributions">Qué puedes aportar, uno por línea</label>
+                            <textarea id="cv-contributions" name="contributions" placeholder="Aportación | descripción&#10;Iniciativa | Busco soluciones y propongo mejoras"></textarea>
+                            <span class="cv-field-hint">Formato: aportación | breve descripción.</span>
+                        </div>
+                    </div>
+                </section>
+
+                <div class="cv-builder-actions">
+                    <button class="button button-primary" id="download-cv" type="button" disabled>Descargar currículum (.doc)</button>
+                    <button class="button button-secondary" id="print-cv" type="button" disabled>Imprimir o guardar como PDF</button>
+                    <p class="cv-builder-status" id="cv-status" role="status" aria-live="polite"></p>
+                </div>
+            </form>
+
+            <section class="cv-preview-panel" aria-label="Vista previa del currículum">
+                <div class="cv-preview-header">
+                    <strong>Vista previa</strong>
+                    <span>Se actualiza mientras escribes</span>
+                </div>
+                <iframe class="cv-preview-frame" id="cv-preview" title="Vista previa de tu currículum" src="demos/curriculum_oculto/curriculum_vacio.html"></iframe>
+            </section>
+        </div>
+    </main>
+</body>
+</html>

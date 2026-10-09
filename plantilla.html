@@ -1,0 +1,36 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Explora una plantilla dentro de ARKAS TEMPLATES.">
+    <title>Vista previa | ARKAS TEMPLATES</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="css/styles.css">
+    <script src="js/plantilla.js" defer></script>
+</head>
+<body class="viewer-page">
+    <header class="navbar viewer-navbar">
+        <a href="index.html" class="logo" aria-label="ARKAS TEMPLATES, página principal">ARKAS<span>.</span></a>
+        <div class="viewer-context">
+            <span class="viewer-label">Vista dentro de ARKAS TEMPLATES</span>
+            <a href="index.html#plantillas" class="viewer-back">← Volver a plantillas</a>
+        </div>
+    </header>
+    <main class="viewer-main">
+        <div class="viewer-toolbar">
+            <h1 id="viewer-title">Cargando vista previa…</h1>
+        </div>
+        <div class="viewer-frame-wrap" id="viewer-frame-wrap">
+            <iframe class="viewer-frame" id="template-frame" title="Vista previa de plantilla"></iframe>
+        </div>
+        <section class="viewer-error" id="viewer-error" hidden>
+            <h1>No encontramos esta vista previa</h1>
+            <p>Vuelve a la colección para elegir otra plantilla.</p>
+            <a class="button button-primary" href="index.html#plantillas">Ver plantillas</a>
+        </section>
+    </main>
+</body>
+</html>

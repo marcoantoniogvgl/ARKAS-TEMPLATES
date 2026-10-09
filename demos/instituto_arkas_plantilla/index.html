@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Instituto Arkas - Educación de Excelencia</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="assets/css/styles.css">
+</head>
+
+<body>
+
+    <header>
+        <div class="container header-container">
+
+            <button class="mobile-menu-toggle" type="button" aria-label="Abrir menú" aria-expanded="false">
+                <span></span>
+                <span></span>
+                <span></span>
+            </button>
+
+            <div class="logo-nav-container">
+                <nav class="main-nav">
+                    <ul class="menu">
+                        <li><a href="index.html">INICIO</a></li>
+                        <li class="dropdown">
+                            <a href="assets/html/centro.html#centro">NUESTRO CENTRO <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="assets/html/centro.html#aulas">Aulas</a></li>
+                                <li><a href="assets/html/centro.html#instalaciones">Instalaciones</a></li>
+                                <li><a href="assets/html/centro.html#historia">Historia</a></li>
+                                <li><a href="assets/html/centro.html#ubicacion">Ubicación</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="assets/html/oferta-educativa.html">OFERTA EDUCATIVA <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="assets/html/oferta-educativa.html#eso">ESO</a></li>
+                                <li><a href="assets/html/oferta-educativa.html#bachillerato">Bachillerato</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Logo en el centro -->
+                        <li class="logo-item">
+                            <a href="index.html">
+                            <div class="logo-circle">
+                                <img src="assets/img/logocolorsinletras.png" alt="Instituto arkas" class="logo">
+                            </div>
+                            </a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="assets/html/administracion.html">ADMINISTRACIÓN <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="assets/html/administracion.html#matriculas">Matrículas</a></li>
+                                <li><a href="assets/html/administracion.html#becas">Becas</a></li>
+                                <li><a href="assets/html/administracion.html#titulos">Títulos</a></li>
+                                <li><a href="assets/html/administracion.html#documentacion">Documentación</a></li>
+                                <li><a href="assets/html/administracion.html#personal">Personal</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="assets/html/orientacion.html">ORIENTACIÓN <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="assets/html/orientacion.html#departamentos">Departamentos</a></li>
+                                <li><a href="assets/html/orientacion.html#continuar-estudiando">Continuar estudiando</a></li>
+                                <li><a href="assets/html/orientacion.html#salidas-profesionales">Salidas profesionales</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="index.html#contacto">CONTACTO</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+    </header>
+    <div class="aula-virtual-bar">
+        <div class="container aula-virtual-header">
+            <button class="aula-virtual-btn" id="openLoginModal">
+                <i class="fas fa-graduation-cap"></i>
+                AULA VIRTUAL
+            </button>
+        </div>
+    </div>
+    <!-- Modal de Login -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeLoginModal">&times;</button>
+            <div class="login-container">
+                <h2 class="section-title">Acceso a la Plataforma</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="username">Usuario</label>
+                        <input type="text" id="username" class="form-control" required placeholder="Tu usuario">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" class="form-control" required placeholder="Tu contraseña">
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Iniciar Sesión</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección Inicio ACTUALIZADA -->
+    <section id="inicio" class="hero">
+        <div class="hero-content">
+            <h1>INSTITUTO ARKAS</h1>
+            <p>"Nunca consideres el estudio como una obligación, sino como una oportunidad para penetrar en el bello y maravilloso mundo del saber".<br>- Albert Einstein</p>
+            <a href="assets/html/oferta-educativa.html" class="btn">DESCUBRE NUESTRA OFERTA EDUCATIVA</a>
+        </div>
+    </section>
+
+    <!-- Sección El Centro -->
+    <section id="centro" class="contenido-centro">
+        <div class="container">
+            <h2 class="section-title">EL CENTRO</h2>
+            <div class="grid">
+                <div class="card-inicio">
+                    <div class="card-img">
+                        <img src="assets/img/aula.png"
+                            alt="Aulas">
+                    </div>
+                    <div class="card-content">
+                        <h3>Aulas</h3>
+                        <p>Nuevas aulas equipadas con la última tecnología.</p>
+                        <a href="assets/html/centro.html#aulas" class="btn">Ver más</a>
+                    </div>
+                </div>
+                <div class="card-inicio">
+                    <div class="card-img">
+                        <img src="assets/img/piscina_instituto.jpg"
+                            alt="Instalaciones">
+                    </div>
+                    <div class="card-content">
+                        <h3>Instalaciones</h3>
+                        <p>Instalaciones deportivas y zonas verdes para el desarrollo integral.</p>
+                        <a href="assets/html/centro.html#instalaciones" class="btn">Ver más</a>
+                    </div>
+                </div>
+                <div class="card-inicio">
+                    <div class="card-img">
+                        <img src="assets/img/antiguo_instituto_estudiantes.jpg"
+                            alt="Historia">
+                    </div>
+                    <div class="card-content">
+                        <h3>Historia</h3>
+                        <p>Conoce nuestro instituto desde su comienzo hasta la actualidad.</p>
+                        <a href="assets/html/centro.html#historia" class="btn">Ver más</a>
+                    </div>
+                </div>
+                <div class="card-inicio">
+                    <div class="card-img">
+                        <img src="assets/img/ubicacion_instituto.png"
+                            alt="Ubicación">
+                    </div>
+                    <div class="card-content">
+                        <h3>Ubicación</h3>
+                        <p>Encuentra nuestra ubicación y a nuestras instalaciones.</p>
+                        <a href="assets/html/centro.html#ubicacion" class="btn">Ver más</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Oferta Educativa ACTUALIZADA -->
+    <section id="oferta" style="background-color: var(--neutral-light); z-index: 1;">
+        <div class="container">
+            <h2 class="section-title">OFERTA EDUCATIVA</h2>
+            <div class="grid-centered">
+                <div class="card-inicio">
+                    <div class="card-img">
+                        <img src="assets/img/ESO.gif"
+                            alt="ESO">
+                    </div>
+                    <div class="card-content">
+                        <h3>ESO</h3>
+                        <p>Educación Secundaria Obligatoria para estudiantes de 12 a 16 años.</p>
+                        <a href="assets/html/oferta-educativa.html#eso" class="btn">Ver más</a>
+                    </div>
+                </div>
+                <div class="card-inicio">
+                    <div class="card-img">
+                        <img src="assets/img/bachillerato.png"
+                            alt="Bachillerato">
+                    </div>
+                    <div class="card-content">
+                        <h3>Bachillerato</h3>
+                        <p>Formación especializada en diferentes modalidades para estudios superiores.</p>
+                        <a href="assets/html/oferta-educativa.html#bachillerato" class="btn">Ver más</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- NUEVA SECCIÓN: Administración y Orientación -->
+    <section id="administracion-orientacion" class="admin-orientacion-section">
+        <div class="container">
+            <h2 class="section-title">ADMINISTRACIÓN Y ORIENTACIÓN</h2>
+            <div class="admin-orientacion-grid">
+                <div class="admin-orientacion-card">
+                    <div class="admin-orientacion-img">
+                        <img src="assets/img/administracion.jpg"
+                            alt="Administración">
+                    </div>
+                    <div class="admin-orientacion-content">
+                        <h3>Administración</h3>
+                        <p>Gestión de matrículas, becas, documentación académica y todo lo necesario para tu proceso educativo.</p>
+                        <a href="assets/html/administracion.html" class="btn">Acceder a Administración</a>
+                    </div>
+                </div>
+                <div class="admin-orientacion-card">
+                    <div class="admin-orientacion-img">
+                        <img src="assets/img/orientacion.jpg"
+                            alt="Orientación">
+                    </div>
+                    <div class="admin-orientacion-content">
+                        <h3>Orientación</h3>
+                        <p>Asesoramiento académico, departamentos especializados y guía para tu futuro profesional y educativo.</p>
+                        <a href="assets/html/orientacion.html" class="btn">Acceder a Orientación</a>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Contacto -->
+<div style="background-image: url('assets/img/textura1.jpg'); z-index: 1;">
+    <section id="contacto" style="background-color: #f8f4e9b2;">
+        <div class="container">
+            <h2 class="section-title">CONTACTO</h2>
+
+            <div class="contact-info">
+                <div>
+                    <h3>Información de contacto</h3>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-map-marker-alt"></i></div>
+                        <div>
+                            <h4>Dirección</h4>
+                            <p>Calle Educación, 123<br>28080 Madrid, España</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-phone"></i></div>
+                        <div>
+                            <h4>Teléfonos</h4>
+                            <p>Secretaría: 91 123 45 67<br>Dirección: 91 123 45 68<br>Administración: 91 123 45 69</p>
+                        </div>
+                    </div>
+                    <div class="contact-item">
+                        <div class="contact-icon"><i class="fas fa-envelope"></i></div>
+                        <div>
+                            <h4>Correos Electrónicos</h4>
+                            <p>info@itarkas.com<br>secretaria@itarkas.com<br>direccion@itarkas.com</p>
+                        </div>
+                    </div>
+                </div>
+
+                <div class="contact-form">
+                    <h3>Formulario de contacto</h3>
+                    <form id="contact-form">
+                        <div class="form-group">
+                            <label for="name">Nombre completo</label>
+                            <input type="text" id="name" class="form-control" required placeholder="Tu nombre completo">
+                        </div>
+                        <div class="form-group">
+                            <label for="email">Correo electrónico</label>
+                            <input type="email" id="email" class="form-control" required placeholder="Tu correo electrónico">
+                        </div>
+                        <div class="form-group">
+                            <label for="subject">Asunto</label>
+                            <input type="text" id="subject" class="form-control" required placeholder="El asunto de tu mensaje">
+                        </div>
+                        <div class="form-group">
+                            <label for="message">Mensaje</label>
+                            <textarea id="message" class="form-control" required placeholder="Escribe tu mensaje aquí"></textarea>
+                        </div>
+                        <button type="submit" class="btn">Enviar mensaje</button>
+                    </form>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Instituto arkas</h3>
+                    <p>Formando a las mentes del futuro con excelencia académica y valores humanos.</p>
+                    <div class="social-links">
+                        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Enlaces rápidos</h3>
+                    <ul>
+                        <li><a href="index.html">Inicio</a></li>
+                        <li><a href="assets/html/centro.html">El Centro</a></li>
+                        <li><a href="assets/html/oferta-educativa.html">Oferta Educativa</a></li>
+                        <li><a href="assets/html/administracion.html">Administración y Orientación</a></li>
+                        <li><a href="index.html#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> C. Santisteban Márquez, 4, Bajo, Ronda, 18003 Granada</li>
+                        <li><i class="fas fa-phone"></i> +34 012 345 678</li>
+                        <li><i class="fas fa-envelope"></i> info@itarkas.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Instituto arkas. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="assets/js/script.js"></script>
+</body>
+
+</html> 

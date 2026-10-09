@@ -1,0 +1,656 @@
+<!DOCTYPE html>
+<html lang="es"><head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Plantilla de currículum editable</title>
+    <style>
+        :root {
+            --azul: #173f5f;
+            --azul-claro: #20639b;
+            --azul-suave: #eaf4fb;
+            --amarillo: #f3c048;
+            --naranja: #f66116;
+            --texto: #263238;
+            --gris: #60717d;
+            --gris-claro: #f4f7f9;
+            --blanco: #ffffff;
+            --sombra: 0 15px 40px rgba(23, 63, 95, 0.12);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background:
+                radial-gradient(circle at top left,
+                rgba(32, 99, 155, 0.12),
+                transparent 30%),
+                linear-gradient(135deg,
+                #eaf1f5,
+                #f8fafb);
+            color: var(--texto);
+            line-height: 1.6;
+        }
+        .cv {
+            width: 92%;
+            max-width: 1100px;
+            margin: 40px auto;
+            background: var(--blanco);
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: var(--sombra);
+        }
+        header {
+            position: relative;
+            padding: 70px 50px;
+            color: white;
+            background:
+                radial-gradient(circle at 85% 20%,
+                rgba(243, 192, 72, .25),
+                transparent 20%),
+                linear-gradient(135deg,
+                var(--azul),
+                var(--azul-claro));
+            overflow: hidden;
+        }
+        header::before {
+            content: "";
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            border: 35px solid rgba(255,255,255,.05);
+            right: -80px;
+            top: -80px;
+        }
+        header::after {
+            content: "";
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 20px solid rgba(243,192,72,.08);
+            left: -50px;
+            bottom: -70px;
+        }
+        .header-contenido {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+        }
+        .titulo h1 {
+            font-size: clamp(38px, 6vw, 70px);
+            line-height: .95;
+            letter-spacing: -2px;
+            margin-bottom: 18px;
+        }
+        .titulo h1 span {
+            color: var(--amarillo);
+        }
+        .titulo .profesion {
+            font-size: 21px;
+            color: #dcecf7;
+            margin-bottom: 20px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 50px;
+            background: rgba(255,255,255,.12);
+            border: 1px solid rgba(255,255,255,.2);
+            font-size: 14px;
+        }
+        .perfil-circulo {
+            min-width: 150px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--amarillo);
+            color: var(--azul);
+            font-size: 48px;
+            font-weight: 800;
+            border: 8px solid rgba(255,255,255,.15);
+            box-shadow:
+                0 0 0 5px rgba(243,192,72,.25),
+                0 15px 30px rgba(0,0,0,.2);
+        }
+        nav {
+            background: #102f48;
+            padding: 14px 30px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        nav a {
+            color: #dcecf7;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            transition: .3s;
+        }
+        nav a:hover {
+            background: var(--amarillo);
+            color: var(--azul);
+            transform: translateY(-2px);
+        }
+        main {
+            padding: 55px;
+        }
+        section {
+            margin-bottom: 65px;
+            scroll-margin-top: 30px;
+        }
+        .titulo-seccion {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+        .numero {
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: var(--azul);
+            color: white;
+            font-weight: bold;
+        }
+        h2 {
+            font-size: 27px;
+            color: var(--azul);
+        }
+        .linea {
+            height: 3px;
+            width: 60px;
+            background: linear-gradient(
+                to right,
+                var(--amarillo),
+                var(--naranja)
+            );
+            margin-top: 5px;
+        }
+        .intro {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 25px;
+        }
+        .intro-texto {
+            padding: 30px;
+            border-radius: 18px;
+            background: var(--gris-claro);
+            border-left: 5px solid var(--amarillo);
+        }
+        .intro-texto p {
+            margin-bottom: 12px;
+        }
+        .objetivo {
+            padding: 30px;
+            border-radius: 18px;
+            background: linear-gradient(
+                135deg,
+                var(--azul),
+                var(--azul-claro)
+            );
+            color: white;
+        }
+        .objetivo h3 {
+            color: var(--amarillo);
+            margin-bottom: 12px;
+        }
+        .competencias {
+            display: grid;
+            grid-template-columns:
+                repeat(3, 1fr);
+            gap: 18px;
+        }
+        .competencia {
+            position: relative;
+            padding: 25px;
+            border-radius: 18px;
+            background: white;
+            border: 1px solid #e2e9ed;
+            box-shadow: 0 5px 20px rgba(0,0,0,.05);
+            transition: .3s;
+            overflow: hidden;
+        }
+        .competencia::before {
+            content: "";
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--azul-suave);
+            right: -30px;
+            top: -30px;
+        }
+        .competencia:hover {
+            transform: translateY(-7px);
+            box-shadow:
+                0 15px 30px rgba(23,63,95,.12);
+        }
+        .icono {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: var(--azul);
+            color: white;
+            font-size: 20px;
+            margin-bottom: 18px;
+            position: relative;
+        }
+        .competencia h3 {
+            color: var(--azul);
+            margin-bottom: 10px;
+        }
+        .competencia p {
+            color: var(--gris);
+            font-size: 14px;
+        }
+        .ejemplo {
+            margin-top: 15px;
+            padding: 12px 15px;
+            background: #fff9e8;
+            border-radius: 10px;
+            border-left: 3px solid var(--amarillo);
+            font-size: 13px;
+            color: #67521c;
+        }
+        .ejemplo strong {
+            color: var(--naranja);
+        }
+        .timeline {
+            position: relative;
+            padding-left: 35px;
+        }
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background:
+                linear-gradient(
+                    var(--azul),
+                    var(--amarillo)
+                );
+        }
+        .evento {
+            position: relative;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: var(--gris-claro);
+            border-radius: 16px;
+        }
+        .evento::before {
+            content: "";
+            position: absolute;
+            left: -35px;
+            top: 27px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--amarillo);
+            border: 4px solid white;
+            box-shadow: 0 0 0 2px var(--azul);
+        }
+        .fecha {
+            color: var(--azul-claro);
+            font-weight: bold;
+            font-size: 13px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        .evento h3 {
+            color: var(--azul);
+            margin-bottom: 8px;
+        }
+        .proyectos {
+            display: grid;
+            grid-template-columns:
+                repeat(2, 1fr);
+            gap: 20px;
+        }
+        .proyecto {
+            padding: 28px;
+            border-radius: 18px;
+            color: white;
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--azul),
+                    var(--azul-claro)
+                );
+            position: relative;
+            overflow: hidden;
+        }
+        .proyecto::after {
+            content: "</>";
+            position: absolute;
+            right: 20px;
+            bottom: -10px;
+            font-size: 80px;
+            font-weight: bold;
+            opacity: .08;
+        }
+        .proyecto h3 {
+            color: var(--amarillo);
+            margin-bottom: 10px;
+        }
+        .tecnologias {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-top: 15px;
+        }
+        .tecnologias span {
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: rgba(255,255,255,.12);
+            font-size: 12px;
+        }
+        .tabla-contenedor {
+            overflow-x: auto;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+        th {
+            background: var(--azul);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e1e7ea;
+        }
+        tr:nth-child(even) {
+            background: var(--gris-claro);
+        }
+        .habilidades {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .habilidad {
+            margin-bottom: 15px;
+        }
+        .habilidad-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .barra {
+            height: 9px;
+            background: #e5ebee;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .progreso {
+            height: 100%;
+            background:
+                linear-gradient(
+                    to right,
+                    var(--azul),
+                    var(--azul-claro)
+                );
+            border-radius: 20px;
+        }
+        .aportaciones {
+            display: grid;
+            grid-template-columns:
+                repeat(3, 1fr);
+            gap: 15px;
+        }
+        .aporte {
+            padding: 22px;
+            border-radius: 15px;
+            background: var(--azul-suave);
+            border: 1px solid #d9eaf5;
+        }
+        .aporte strong {
+            color: var(--azul);
+        }
+        .conclusion {
+            padding: 35px;
+            border-radius: 20px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff8df,
+                    #fff3d1
+                );
+            border: 1px solid #f5df9c;
+            position: relative;
+        }
+        .conclusion::before {
+            content: "“";
+            position: absolute;
+            right: 25px;
+            top: -25px;
+            font-size: 100px;
+            color: var(--amarillo);
+            opacity: .5;
+        }
+        footer {
+            padding: 30px;
+            text-align: center;
+            background: #102f48;
+            color: #bcd0dd;
+            font-size: 13px;
+        }
+        footer strong {
+            color: var(--amarillo);
+        }
+        @media (max-width: 850px) {
+            .header-contenido {
+                flex-direction: column;
+                text-align: center;
+            }
+            .intro {
+                grid-template-columns: 1fr;
+            }
+            .competencias {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+            .aportaciones {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 600px) {
+            .cv {
+                width: 100%;
+                margin: 0;
+                border-radius: 0;
+            }
+            header {
+                padding: 45px 25px;
+            }
+            main {
+                padding: 30px 20px;
+            }
+            .competencias,
+            .proyectos,
+            .habilidades,
+            .aportaciones {
+                grid-template-columns: 1fr;
+            }
+            nav {
+                justify-content: flex-start;
+                overflow-x: auto;
+                flex-wrap: nowrap;
+            }
+        }
+        @page {
+            size: A4;
+            margin: 14mm;
+        }
+        @media print {
+            body {
+                background: white;
+            }
+            .cv {
+                width: 100%;
+                max-width: none;
+                margin: 0;
+                border-radius: 0;
+                box-shadow: none;
+            }
+            nav {
+                display: none;
+            }
+            section,
+            .competencia,
+            .evento,
+            .proyecto,
+            .aporte {
+                break-inside: avoid;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="cv">
+    <header>
+        <div class="header-contenido">
+            <div class="titulo">
+                <h1>CURRÍCULUM <span>PROFESIONAL</span></h1>
+                <p class="profesion" data-cv="name">Lucía Pérez Demo</p>
+                <p data-cv="headline">Product Designer</p>
+                <p data-cv="contact">lucia@example.test · +34 600 000 000 · Madrid</p>
+                <span class="badge" data-cv="availability">Disponible desde septiembre</span>
+            </div>
+            <div class="perfil-circulo" data-cv="initials">LP</div>
+        </div>
+    </header>
+    <nav>
+        <a href="#objetivo">Objetivo</a>
+        <a href="#competencias">Competencias</a>
+        <a href="#experiencias">Experiencias</a>
+        <a href="#proyectos">Proyectos</a>
+        <a href="#habilidades">Habilidades</a>
+        <a href="#aportacion">Aportación</a>
+    </nav>
+    <main>
+        <section id="objetivo">
+            <div class="titulo-seccion">
+                <div class="numero">01</div>
+                <div>
+                    <h2>Mi objetivo profesional</h2>
+                    <div class="linea"></div>
+                </div>
+            </div>
+            <div class="intro">
+                <div class="intro-texto" data-cv-list="profile"><p>Diseñadora con experiencia en interfaces y prototipado.</p><p>Me enfoco en soluciones accesibles.</p></div>
+                <div class="objetivo">
+                    <h3>¿Qué busco?</h3>
+                    <p data-cv="objective">Crear productos digitales útiles.</p>
+                    <br>
+                    <p data-cv="target">Busco un equipo de producto.</p>
+                </div>
+            </div>
+        </section>
+        <section id="competencias">
+            <div class="titulo-seccion">
+                <div class="numero">02</div>
+                <div>
+                    <h2>Mis competencias</h2>
+                    <div class="linea"></div>
+                </div>
+            </div>
+            <div class="competencias" data-cv-list="competencies"><article class="competencia"><div class="icono">01</div><h3>Comunicación</h3><p>Explico ideas con claridad</p><div class="ejemplo"><strong>Ejemplo: </strong>Presenté propuestas al equipo</div></article><article class="competencia"><div class="icono">02</div><h3>Organización</h3><p>Planifico tareas</p></article></div>
+        </section>
+        <section id="experiencias">
+            <div class="titulo-seccion">
+                <div class="numero">03</div>
+                <div>
+                    <h2>Experiencias que me han formado</h2>
+                    <div class="linea"></div>
+                </div>
+            </div>
+            <div class="timeline" data-cv-list="experiences"><article class="evento"><div class="fecha">2023–2025</div><h3>Diseñadora UX</h3><p>Investigación y prototipos</p><div class="ejemplo"><strong>Competencias: </strong>Comunicación, análisis</div></article></div>
+        </section>
+        <section id="proyectos">
+            <div class="titulo-seccion">
+                <div class="numero">04</div>
+                <div>
+                    <h2>Proyectos y ejemplos</h2>
+                    <div class="linea"></div>
+                </div>
+            </div>
+            <div class="proyectos" data-cv-list="projects"><article class="proyecto"><h3>App accesible</h3><p>Rediseño de una aplicación móvil</p><div class="tecnologias"><span>Figma</span><span>HTML</span></div></article></div>
+        </section>
+        <section id="habilidades">
+            <div class="titulo-seccion">
+                <div class="numero">05</div>
+                <div>
+                    <h2>Mis habilidades</h2>
+                    <div class="linea"></div>
+                </div>
+            </div>
+            <div class="habilidades" data-cv-list="skills"><div><div class="habilidad"><div class="habilidad-info"><span>Figma</span><span>85%</span></div><div class="barra"><div class="progreso" style="width: 85%;"></div></div></div><div class="habilidad"><div class="habilidad-info"><span>Escritura</span></div></div></div><div><div class="habilidad"><div class="habilidad-info"><span>Accesibilidad</span><span>75%</span></div><div class="barra"><div class="progreso" style="width: 75%;"></div></div></div></div></div>
+        </section>
+        <section>
+            <div class="titulo-seccion">
+                <div class="numero">06</div>
+                <div>
+                    <h2>Experiencia → Competencia</h2>
+                    <div class="linea"></div>
+                </div>
+            </div>
+            <div class="tabla-contenedor" data-cv-section="learning">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Experiencia</th>
+                            <th>Qué aprendí</th>
+                            <th>Competencia</th>
+                        </tr>
+                    </thead>
+                    <tbody data-cv-list="learning"><tr><td>Prácticas</td><td>Colaborar en producto</td><td>Trabajo en equipo</td></tr></tbody>
+                </table>
+            </div>
+        </section>
+        <section id="aportacion">
+            <div class="titulo-seccion">
+                <div class="numero">07</div>
+                <div>
+                    <h2>¿Qué puedo aportar?</h2>
+                    <div class="linea"></div>
+                </div>
+            </div>
+            <div class="aportaciones" data-cv-list="contributions"><div class="aporte"><strong>Iniciativa</strong><p>Propongo mejoras basadas en investigación</p></div></div>
+        </section>
+    </main>
+    <footer data-cv-footer="">
+        <p><strong data-cv="footer-name">Lucía Pérez Demo</strong> · <span data-cv="footer-headline">Product Designer</span></p>
+    </footer>
+</div>
+
+</body></html>

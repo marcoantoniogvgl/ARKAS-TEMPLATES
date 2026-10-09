@@ -1,0 +1,830 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>El Centro - Instituto arkas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <!-- Logo centrado en la navegación -->
+            <div class="logo-nav-container">
+                <nav class="main-nav">
+                    <ul class="menu">
+                        <li><a href="../../index.html">INICIO</a></li>
+                        <li class="dropdown">
+                            <a href="centro.html">NUESTRO CENTRO <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="centro.html#aulas">Aulas</a></li>
+                                <li><a href="centro.html#instalaciones">Instalaciones</a></li>
+                                <li><a href="centro.html#historia">Historia</a></li>
+                                <li><a href="centro.html#ubicacion">Ubicación</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="../html/oferta-educativa.html">OFERTA EDUCATIVA <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="../html/oferta-educativa.html#eso">ESO</a></li>
+                                <li><a href="../html/oferta-educativa.html#bachillerato">Bachillerato</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Logo en el centro -->
+                        <li class="logo-item">
+                            <a href="../../index.html">
+                            <div class="logo-circle">
+                                <img src="../img/logocolorsinletras.png" alt="Instituto arkas" class="logo">
+                            </div>
+                            </a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="../html/administracion.html">ADMINISTRACIÓN <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="../html/administracion.html#matriculas">Matrículas</a></li>
+                                <li><a href="../html/administracion.html#becas">Becas</a></li>
+                                <li><a href="../html/administracion.html#titulos">Títulos</a></li>
+                                <li><a href="../html/administracion.html#documentacion">Documentación</a></li>
+                                <li><a href="../html/administracion.html#personal">Personal</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="../html/orientacion.html">ORIENTACIÓN <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="../html/orientacion.html#departamentos">Departamentos</a></li>
+                                <li><a href="../html/orientacion.html#continuar-estudiando">Continuar estudiando</a></li>
+                                <li><a href="../html/orientacion.html#salidas-profesionales">Salidas profesionales</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="../../index.html#contacto">CONTACTO</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+    </header>
+    <div class="aula-virtual-bar">
+        <div class="container aula-virtual-header">
+            <button class="aula-virtual-btn" id="openLoginModal">
+                <i class="fas fa-graduation-cap"></i>
+                AULA VIRTUAL
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal de Login -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeLoginModal">&times;</button>
+            <div class="login-container">
+                <h2 class="section-title">Acceso a la Plataforma</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="username">Usuario</label>
+                        <input type="text" id="username" class="form-control" required placeholder="Tu usuario">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" class="form-control" required placeholder="Tu contraseña">
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Iniciar Sesión</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección Aulas -->
+    <section id="aulas">
+        <div class="container">
+            <br>
+            <h2 class="section-title">AULAS ESPECIALIZADAS</h2>
+            <div class="aulas-intro">
+                <h3>Espacios de Aprendizaje Modernos y Equipados</h3>
+                <p>Nuestro centro cuenta con aulas especializadas diseñadas para potenciar el aprendizaje en cada área del conocimiento, equipadas con la última tecnología y recursos educativos.</p>
+            </div>
+            
+            <div class="grid">
+                <!-- Salón de Actos -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="../img/Salon-de-Actos.jpg"
+                            alt="Salón de Actos">
+                    </div>
+                    <div class="card-content">
+                        <h3>Salón de Actos</h3>
+                        <p>Espacio multiusos con capacidad para 200 personas, equipado con sistema de sonido profesional, proyector 4K y escenario para representaciones teatrales, conferencias y actos académicos.</p>
+                        <div class="aula-details">
+                            <div class="detail-item">
+                                <i class="fas fa-users"></i>
+                                <span>Capacidad: 200 personas</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-video"></i>
+                                <span>Equipdo audiovisual completo</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- SUM (Salón de Usos Múltiples) -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="../img/SUM.jpg"
+                            alt="SUM">
+                    </div>
+                    <div class="card-content">
+                        <h3>SUM - Salón de Usos Múltiples</h3>
+                        <p>Espacio para actividades deportivas, reuniones y eventos. Equipado con material polideportivo y sistema de iluminación adaptable para diferentes tipos de actividades.</p>
+                        <div class="aula-details">
+                            <div class="detail-item">
+                                <i class="fas fa-basketball-ball"></i>
+                                <span>Actividades deportivas</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-expand"></i>
+                                <span>Espacio multifuncional</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aula de Música -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="../img/aula-musica.jpg"
+                            alt="Aula de Música">
+                    </div>
+                    <div class="card-content">
+                        <h3>Aula de Música</h3>
+                        <p>Equipada con instrumentos musicales variados, estudio de grabación básico, equipo de sonido profesional y espacio para ensayos de la coral y agrupaciones musicales del centro.</p>
+                        <div class="aula-details">
+                            <div class="detail-item">
+                                <i class="fas fa-guitar"></i>
+                                <span>Instrumentos variados</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-headphones"></i>
+                                <span>Estudio de grabación</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aula de Tecnología -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="../img/aula-tecnologia.jpg"
+                            alt="Aula de Tecnología">
+                    </div>
+                    <div class="card-content">
+                        <h3>Aula de Tecnología</h3>
+                        <p>Taller equipado con herramientas para proyectos de robótica, impresión 3D, electrónica y diseño. Incluye zona de prototipado y materiales para prácticas de tecnología.</p>
+                        <div class="aula-details">
+                            <div class="detail-item">
+                                <i class="fas fa-robot"></i>
+                                <span>Robótica y electrónica</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-print"></i>
+                                <span>Impresión 3D</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Laboratorio -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="../img/laboratorio.jpg"
+                            alt="Laboratorio">
+                    </div>
+                    <div class="card-content">
+                        <h3>Laboratorio Cientifico</h3>
+                        <p>Completamente equipado para prácticas de física, química y biología. Incluye campanas de extracción, microscopios digitales, material de vidriería y equipos de medición.</p>
+                        <div class="aula-details">
+                            <div class="detail-item">
+                                <i class="fas fa-microscope"></i>
+                                <span>Microscopios digitales</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-vial"></i>
+                                <span>Equipo completo</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aula de Informática -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="../img/Aula_informatica.jpg"
+                            alt="Aula de Informática">
+                    </div>
+                    <div class="card-content">
+                        <h3>Aula de Informática</h3>
+                        <p>Equipada con 30 ordenadores de última generación, software especializado para programación, diseño gráfico y ofimática. Conexión de alta velocidad y proyector interactivo.</p>
+                        <div class="aula-details">
+                            <div class="detail-item">
+                                <i class="fas fa-desktop"></i>
+                                <span>30 ordenadores</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-code"></i>
+                                <span>Software especializado</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aula de Dibujo -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="../img/dibujo.jpg"
+                            alt="Aula de Dibujo">
+                    </div>
+                    <div class="card-content">
+                        <h3>Aula de Dibujo</h3>
+                        <p>Estudio de arte con mesas de dibujo regulables, caballetes, material de bellas artes y zona de exposición. Iluminación natural optimizada para trabajos artísticos y equipo completo.</p>
+                        <div class="aula-details">
+                            <div class="detail-item">
+                                <i class="fas fa-palette"></i>
+                                <span>Material artístico</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-lightbulb"></i>
+                                <span>Iluminación natural</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Aulas Generales -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="../img/aulas-generales.jpg"
+                            alt="Aulas Generales">
+                    </div>
+                    <div class="card-content">
+                        <h3>Aulas Generales</h3>
+                        <p>25 aulas estándar equipadas con pizarras digitales interactivas, proyector, sistema de sonido y mobiliario ergonómico. Espacios luminosos y climatizados para el confort del alumnado.</p>
+                        <div class="aula-details">
+                            <div class="detail-item">
+                                <i class="fas fa-chalkboard"></i>
+                                <span>Pizarras digitales</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-snowflake"></i>
+                                <span>Climatización</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Instalaciones -->
+    <section id="instalaciones" style="background-color: var(--neutral-light);">
+        <div class="container">
+            <h2 class="section-title">INSTALACIONES DEPORTIVAS Y RECREATIVAS</h2>
+            <div class="instalaciones-intro">
+                <h3>Espacios para el Desarrollo Integral</h3>
+                <p>Nuestras instalaciones deportivas y recreativas están diseñadas para fomentar la actividad física, el contacto con la naturaleza y el desarrollo de hábitos saludables entre nuestro alumnado.</p>
+            </div>
+            
+            <div class="grid">
+                <!-- Pistas Polideportivas -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="../img/polideportivo.png"
+                            alt="Pistas Polideportivas">
+                    </div>
+                    <div class="card-content">
+                        <h3>Pistas Polideportivas</h3>
+                        <p>Contamos con 3 pistas exteriores para baloncesto, fútbol sala y voleibol. Superficie de caucho reciclado, iluminación LED para uso nocturno en pistas en y gradas para competiciones.</p>
+                        <div class="instalacion-details">
+                            <div class="detail-item">
+                                <i class="fas fa-basketball-ball"></i>
+                                <span>Baloncesto · Voleibol</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-futbol"></i>
+                                <span>Fútbol sala</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Piscina -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="../img/piscina.png"
+                            alt="Piscina">
+                    </div>
+                    <div class="card-content">
+                        <h3>Piscina Climatizada</h3>
+                        <p>Piscina semiolímpica de 25 metros climatizada, disponible en todas las estaciones del el año para clases de natación, waterpolo y actividades acuáticas. Incluye duchas y vestuarios anexos.</p>
+                        <div class="instalacion-details">
+                            <div class="detail-item">
+                                <i class="fas fa-swimmer"></i>
+                                <span>25 metros</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-temperature-high"></i>
+                                <span>Climatizada</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Vestuarios -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="../img/vestuario.jpg"
+                            alt="Vestuarios">
+                    </div>
+                    <div class="card-content">
+                        <h3>Vestuarios Completo</h3>
+                        <p>Vestuarios modernos con taquillas individuales, duchas con agua caliente, secadores de pelo y zona de preparación. Separados por género y adaptados para personas con movilidad reducida.</p>
+                        <div class="instalacion-details">
+                            <div class="detail-item">
+                                <i class="fas fa-shower"></i>
+                                <span>Duchas individuales</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-lock"></i>
+                                <span>Taquillas</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Pabellón de Usos Múltiples -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="../img/Pabellon.png"
+                            alt="Pabellón">
+                    </div>
+                    <div class="card-content">
+                        <h3>Pabellón Polideportivo</h3>
+                        <p>Pabellón cubierto con superficie de parquet, equipado para baloncesto, balonmano, bádminton y gimnasia. Gradas retráctiles para 300 espectadores y sistema de megafonía.</p>
+                        <div class="instalacion-details">
+                            <div class="detail-item">
+                                <i class="fas fa-home"></i>
+                                <span>Cubierto</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-volume-up"></i>
+                                <span>Sistema de sonido</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Zonas Verdes -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="../img/verde.jpg"
+                            alt="Zonas Verdes">
+                    </div>
+                    <div class="card-content">
+                        <h3>Zonas Verdes y Jardines</h3>
+                        <p>Amplias zonas ajardinadas con árboles autóctonos, bancos para el descanso y áreas de sombra. Perfectas para el recreo, estudio al aire libre y actividades medioambientales.</p>
+                        <div class="instalacion-details">
+                            <div class="detail-item">
+                                <i class="fas fa-tree"></i>
+                                <span>Árboles autóctonos</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fa-sharp fa-solid fa-couch"></i>
+                                <span>Zonas de descanso</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <!-- Huerto -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="../img/huerto.jpg"
+                            alt="Huerto">
+                    </div>
+                    <div class="card-content">
+                        <h3>Huerto Ecológico</h3>
+                        <p>Huerto escolar de 200m² donde los estudiantes aprenden agricultura ecológica, sostenibilidad y respeto por el medio ambiente. Incluye invernadero y sistema de compostaje.</p>
+                        <div class="instalacion-details">
+                            <div class="detail-item">
+                                <i class="fas fa-seedling"></i>
+                                <span>200m² cultivables</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-recycle"></i>
+                                <span>Agricultura ecológica</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NUEVA INSTALACIÓN 1: Gimnasio -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="../img/gym.png"
+                            alt="Gimnasio">
+                    </div>
+                    <div class="card-content">
+                        <h3>Gimnasio Equipado</h3>
+                        <p>Gimnasio moderno con equipos de cardio, pesas libres, máquinas de musculación y zona de entrenamiento funcional. Supervisado por profesionales del deporte.</p>
+                        <div class="instalacion-details">
+                            <div class="detail-item">
+                                <i class="fas fa-dumbbell"></i>
+                                <span>Equipos profesionales</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-heartbeat"></i>
+                                <span>Zona cardio y fuerza</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- NUEVA INSTALACIÓN 2: Sala de Estudio -->
+                <div class="card">
+                    <div class="card-img">
+                        <img src="../img/sala-estudio.jpg"
+                            alt="Sala de Estudio">
+                    </div>
+                    <div class="card-content">
+                        <h3>Sala de Estudio</h3>
+                        <p>Espacio climatizado y aislado acústicamente con 50 puestos individuales, conexión eléctrica, WiFi de alta velocidad y horario ampliado para estudio individual y en grupo.</p>
+                        <div class="instalacion-details">
+                            <div class="detail-item">
+                                <i class="fas fa-book"></i>
+                                <span>50 puestos individuales</span>
+                            </div>
+                            <div class="detail-item">
+                                <i class="fas fa-wifi"></i>
+                                <span>WiFi de alta velocidad</span>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+    
+<!-- Sección Historia -->
+<section id="historia">
+    <div class="container">
+        <h2 class="section-title">HISTORIA DEL INSTITUTO</h2>
+        
+        <div class="history-content">
+            <div class="history-text">
+                <div class="history-intro">
+                    <h3>De la Tradición a la Innovación Educativa</h3>
+                    <p class="intro-text">Desde su fundación en 1970, el Instituto arkas ha evolucionado manteniendo su compromiso con la excelencia educativa, adaptándose a los tiempos sin perder sus valores fundamentales.</p>
+                </div>
+                
+                <!-- Línea de tiempo -->
+                <div class="timeline-wrapper">
+                    <div class="timeline">
+                        <!-- 1970 -->
+                        <div class="timeline-item" data-year="1970">
+                            <div class="timeline-year">1970</div>
+                            <div class="timeline-content clickable" data-modal="modal-1970">
+                                <div class="timeline-card">
+                                    <div class="timeline-img">
+                                        <img src="../img/historia1.jpg" alt="Fundación 1970">
+                                        <div class="img-overlay">
+                                            <i class="fas fa-expand"></i>
+                                            <span>Ampliar imagen</span>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-text">
+                                        <h4>Fundación del Instituto</h4>
+                                        <p>Nace el Instituto arkas con 5 aulas y 150 estudiantes, iniciando una trayectoria de excelencia educativa.</p>
+                                        <div class="timeline-hover-info">
+                                            <p><i class="fas fa-building"></i> Primer edificio en C/ Educación, 15</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 1985 -->
+                        <div class="timeline-item" data-year="1985">
+                            <div class="timeline-year">1985</div>
+                            <div class="timeline-content clickable" data-modal="modal-1985">
+                                <div class="timeline-card">
+                                    <div class="timeline-img">
+                                        <img src="../img/historia2.jpg" alt="Ampliación 1985">
+                                        <div class="img-overlay">
+                                            <i class="fas fa-expand"></i>
+                                            <span>Ampliar imagen</span>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-text">
+                                        <h4>Primera Gran Ampliación</h4>
+                                        <p>Construcción del primer laboratorio de ciencias y biblioteca, ampliando las instalaciones para 400 estudiantes.</p>
+                                        <div class="timeline-hover-info">
+                                            <p><i class="fas fa-flask"></i> Primer laboratorio de ciencias equipado</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 1995 -->
+                        <div class="timeline-item" data-year="1995">
+                            <div class="timeline-year">1995</div>
+                            <div class="timeline-content clickable" data-modal="modal-1995">
+                                <div class="timeline-card">
+                                    <div class="timeline-img">
+                                        <img src="../img/historia3.png" alt="Informática 1995">
+                                        <div class="img-overlay">
+                                            <i class="fas fa-expand"></i>
+                                            <span>Ampliar imagen</span>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-text">
+                                        <h4>Llegada de la Informática</h4>
+                                        <p>Implementación del primer aula de informática con 15 ordenadores, marcando el inicio de la digitalización.</p>
+                                        <div class="timeline-hover-info">
+                                            <p><i class="fas fa-desktop"></i> Equipos con Windows 3.1 y procesadores 486</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2005 -->
+                        <div class="timeline-item" data-year="2005">
+                            <div class="timeline-year">2005</div>
+                            <div class="timeline-content clickable" data-modal="modal-2005">
+                                <div class="timeline-card">
+                                    <div class="timeline-img">
+                                        <img src="../img/historia4.png" alt="Pabellón 2005">
+                                        <div class="img-overlay">
+                                            <i class="fas fa-expand"></i>
+                                            <span>Ampliar imagen</span>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-text">
+                                        <h4>Ampliación Deportiva</h4>
+                                        <p>Construcción del pabellón polideportivo y piscina climatizada para el desarrollo integral del alumnado.</p>
+                                        <div class="timeline-hover-info">
+                                            <p><i class="fas fa-swimmer"></i> Piscina semiolímpica de 25 metros</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2015 -->
+                        <div class="timeline-item" data-year="2015">
+                            <div class="timeline-year">2015</div>
+                            <div class="timeline-content clickable" data-modal="modal-2015">
+                                <div class="timeline-card">
+                                    <div class="timeline-img">
+                                        <img src="../img/historia6.jpg" alt="Reconocimiento 2015">
+                                        <div class="img-overlay">
+                                            <i class="fas fa-expand"></i>
+                                            <span>Ampliar imagen</span>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-text">
+                                        <h4>Reconocimiento Nacional</h4>
+                                        <p>Galardonado como "Centro Educativo Innovador" por su implementación de metodologías pedagógicas avanzadas.</p>
+                                        <div class="timeline-hover-info">
+                                            <p><i class="fas fa-award"></i> Premio a la Innovación Educativa del Ministerio</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2020 -->
+                        <div class="timeline-item" data-year="2020">
+                            <div class="timeline-year">2020</div>
+                            <div class="timeline-content clickable" data-modal="modal-2020">
+                                <div class="timeline-card">
+                                    <div class="timeline-img">
+                                        <img src="../img/historia7.jpg" alt="Digitalización 2020">
+                                        <div class="img-overlay">
+                                            <i class="fas fa-expand"></i>
+                                            <span>Ampliar imagen</span>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-text">
+                                        <h4>Digitalización Completa</h4>
+                                        <p>Implementación del Aula Virtual y transformación digital de todos los procesos educativos.</p>
+                                        <div class="timeline-hover-info">
+                                            <p><i class="fas fa-laptop-code"></i> Plataforma propia con más de 500 cursos online</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+
+                        <!-- 2023 -->
+                        <div class="timeline-item" data-year="2023">
+                            <div class="timeline-year">2023</div>
+                            <div class="timeline-content clickable" data-modal="modal-2023">
+                                <div class="timeline-card">
+                                    <div class="timeline-img">
+                                        <img src="../img/historia5.png" alt="Actualidad 2023">
+                                        <div class="img-overlay">
+                                            <i class="fas fa-expand"></i>
+                                            <span>Ampliar imagen</span>
+                                        </div>
+                                    </div>
+                                    <div class="timeline-text">
+                                        <h4>Centro de Referencia</h4>
+                                        <p>Más de 1,200 estudiantes y 85 profesores especializados consolidan nuestro liderazgo educativo.</p>
+                                        <div class="timeline-hover-info">
+                                            <p><i class="fas fa-chart-line"></i> 98% de éxito en pruebas de acceso a la universidad</p>
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Sidebar -->
+            <div class="history-sidebar">
+                <div class="sidebar-card timeline-sidebar">
+                    <h4 class="sidebar-title"><i class="fas fa-history"></i> Línea del Tiempo</h4>
+                    <ul class="timeline-summary">
+                        <li data-year="1970">
+                            <span class="year">1970</span>
+                            <span class="event">Fundación</span>
+                        </li>
+                        <li data-year="1985">
+                            <span class="year">1985</span>
+                            <span class="event">Ampliación</span>
+                        </li>
+                        <li data-year="1995">
+                            <span class="year">1995</span>
+                            <span class="event">Informática</span>
+                        </li>
+                        <li data-year="2005">
+                            <span class="year">2005</span>
+                            <span class="event">Deporte</span>
+                        </li>
+                        <li data-year="2015">
+                            <span class="year">2015</span>
+                            <span class="event">Reconocimiento</span>
+                        </li>
+                        <li data-year="2020">
+                            <span class="year">2020</span>
+                            <span class="event">Digitalización</span>
+                        </li>
+                        <li data-year="2023">
+                            <span class="year">2023</span>
+                            <span class="event">Referencia</span>
+                        </li>
+                    </ul>
+                </div>
+                
+                <div class="sidebar-card stats-card">
+                    <h4 class="section-title"><i class="fas fa-chart-line"></i> ACTUALMENTE</h4>
+                    <div class="stats-grid">
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-calendar-alt"></i>
+                            </div>
+                            <div class="stat-number">50+</div>
+                            <div class="stat-label">Años de historia</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-user-graduate"></i>
+                            </div>
+                            <div class="stat-number">1,200+</div>
+                            <div class="stat-label">Estudiantes</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-chalkboard-teacher"></i>
+                            </div>
+                            <div class="stat-number">85</div>
+                            <div class="stat-label">Profesores</div>
+                        </div>
+                        <div class="stat-item">
+                            <div class="stat-icon">
+                                <i class="fas fa-school"></i>
+                            </div>
+                            <div class="stat-number">30+</div>
+                            <div class="stat-label">Aulas especializadas</div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+
+</section>
+
+
+    <!-- Sección Ubicación -->
+<div style="background-image: url('../img/textura2.jpg'); z-index: 1;">
+    <section id="ubicacion" style="background-color: #f8f4e9b2;">
+        <div class="container">
+            <h2 class="section-title">UBICACIÓN Y ACCESO</h2>
+            <div class="location-content">
+                <div class="location-info">
+                    <div class="contact-item">
+                        <div>
+                            <h4 class="section-title">Dirección</h4>
+                            <h4 class="text-tittle"><i class="fas fa-map-marker-alt" style="color: var(--secondary-color);"></i>Instituto arkas</h4><br><p> C. Santisteban Márquez, 4, Bajo, Ronda, 18003 Granada</p>
+                                <a href="https://maps.app.goo.gl/YYeKZzscH79Vvsp87">    
+                                    <button class="btn map-btn">Ver en Google Maps</button>
+                                </a>                        
+                        </div>
+                    </div>
+
+                    <div class="horario-centro">
+                        <h4>Horario del Centro</h4>
+                        <ul>
+                            <li><strong>Secretaría:</strong> Lunes a Viernes 8:00 - 15:00</li>
+                            <li><strong>Biblioteca:</strong> Lunes a Viernes 8:00 - 20:00</li>
+                            <li><strong>Instalaciones Deportivas:</strong> Lunes a Sábado 8:00 - 22:00</li>
+                        </ul>
+                    </div>
+                    
+                    <div class="transport-options">
+                        <h4>Cómo Llegar</h4>
+                        <ul>
+                            <li><i class="fas fa-subway"></i> <strong>Metro:</strong> Ambas direcciones - Mendez Nuñez (a 50m)</li>
+                            <li><i class="fas fa-bus"></i> <strong>Autobús:</strong> Líneas 5, 8, 9, 11</li>
+                            <li><i class="fas fa-car"></i> <strong>Aparcamiento:</strong> Disponible en el centro (...mentira)</li>
+                            <li><i class="fas fa-bicycle"></i> <strong>Bicicleta:</strong> Aparcabicis y carril bici en la puerta</li>
+                        </ul>
+                    </div>
+                </div>
+                <div class="location-maps">
+                    
+                    <div class="map-container">
+                        <h1 class="section-title">Plano Aéreo del Instituto</h1>
+                        <div class="map-vista">
+                                <img src="../img/vista.png" alt="Vista aérea del Instituto" class="imagen-vista">
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Instituto arkas</h3>
+                    <p>Formando a las mentes del futuro con excelencia académica y valores humanos.</p>
+                    <div class="social-links">
+                        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Enlaces rápidos</h3>
+                    <ul>
+                        <li><a href="../../index.html">Inicio</a></li>
+                        <li><a href="../html/centro.html">El Centro</a></li>
+                        <li><a href="../html/oferta-educativa.html">Oferta Educativa</a></li>
+                        <li><a href="../html/administracion.html">Administración</a></li>
+                        <li><a href="../../index.html#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> C. Santisteban Márquez, 4, Bajo, Ronda, 18003 Granada</li>
+                        <li><i class="fas fa-phone"></i> +34 012 345 678</li>
+                        <li><i class="fas fa-envelope"></i> info@itarkas.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Instituto arkas. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</body>
+
+</html>

@@ -1,0 +1,133 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="description" content="Descubre los panes, empanadas y dulces artesanales de Panadería de Marco.">
+    <meta name="theme-color" content="#fbf8f1">
+    <title>Catálogo | Panadería de Marco</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:wght@500;600;700&family=DM+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+    <link rel="stylesheet" href="../css/style.css">
+    <script src="../js/script.js" defer></script>
+</head>
+<body>
+    <header class="header">
+        <div class="header-inner">
+            <a href="../../index.html" class="logo" aria-label="Panadería de Marco, inicio">
+                <img src="../img/logo.png" alt="">
+                <span class="logo-copy"><strong>Panadería de Marco</strong><small>Tradición artesanal</small></span>
+            </a>
+            <button class="nav-toggle" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="main-nav"><span></span><span></span></button>
+            <nav class="nav" id="main-nav" aria-label="Navegación principal">
+                <a href="../../index.html">Inicio</a>
+                <a href="catalogo.html" class="active" aria-current="page">Catálogo</a>
+                <a href="contacto.html">Contacto</a>
+                <a href="galeria.html">Galería</a>
+                <a href="carrito.html" class="cart-link">Cesta <span id="cart-count">0</span></a>
+            </nav>
+        </div>
+    </header>
+
+    <main>
+        <section class="page-header">
+            <span>Del obrador a tu mesa</span>
+            <h1>Nuestro catálogo</h1>
+            <p>Recetas para compartir, preparadas con el cuidado y el sabor de la tradición.</p>
+        </section>
+
+        <nav class="catalogue-nav" aria-label="Categorías del catálogo">
+            <div class="catalogue-nav-inner">
+                <a href="#empanadas">Empanadas</a>
+                <a href="#panaderia">Panadería</a>
+                <a href="#pasteleria">Pastelería</a>
+                <a href="carrito.html">Ver mi cesta <span aria-hidden="true">→</span></a>
+            </div>
+        </nav>
+
+        <section class="products-section" id="empanadas">
+            <div class="section-title left">
+                <span>Horneadas cada día</span>
+                <h2>Empanadas</h2>
+                <p>Un bocado casero, sabroso y listo para compartir.</p>
+            </div>
+            <div class="products-grid">
+                <article class="product-card" data-id="empanada-carne" data-name="Empanada de carne" data-price="2.50">
+                    <img src="../img/empanada1.jpg" alt="Empanada de carne artesanal" loading="lazy">
+                    <div class="product-info"><h3>Empanada de carne</h3><p>Empanada artesanal rellena de carne.</p><strong class="product-price">2,50 €</strong><div class="product-actions"><span class="quantity-buttons"><button class="icon-button minus" type="button" aria-label="Quitar empanada de carne">−</button><span class="quantity-display">0</span><button class="icon-button plus" type="button" aria-label="Añadir empanada de carne">+</button></span><a class="text-button" href="carrito.html">Añadir a la cesta</a></div></div>
+                </article>
+                <article class="product-card" data-id="empanada-pollo" data-name="Empanada de pollo" data-price="2.00">
+                    <img src="../img/empanada2.jpg" alt="Empanada de pollo" loading="lazy">
+                    <div class="product-info"><h3>Empanada de pollo</h3><p>Pollo y especias envueltos en una masa crujiente.</p><strong class="product-price">2,00 €</strong><div class="product-actions"><span class="quantity-buttons"><button class="icon-button minus" type="button" aria-label="Quitar empanada de pollo">−</button><span class="quantity-display">0</span><button class="icon-button plus" type="button" aria-label="Añadir empanada de pollo">+</button></span><a class="text-button" href="carrito.html">Añadir a la cesta</a></div></div>
+                </article>
+                <article class="product-card" data-id="empanada-verdura" data-name="Empanada de verdura" data-price="2.00">
+                    <img src="../img/empanada3.jpg" alt="Empanada de verduras" loading="lazy">
+                    <div class="product-info"><h3>Empanada de verdura</h3><p>Una opción ligera con verduras seleccionadas.</p><strong class="product-price">2,00 €</strong><div class="product-actions"><span class="quantity-buttons"><button class="icon-button minus" type="button" aria-label="Quitar empanada de verdura">−</button><span class="quantity-display">0</span><button class="icon-button plus" type="button" aria-label="Añadir empanada de verdura">+</button></span><a class="text-button" href="carrito.html">Añadir a la cesta</a></div></div>
+                </article>
+            </div>
+        </section>
+
+        <section class="products-section" id="panaderia">
+            <div class="section-title left">
+                <span>Tradición artesanal</span>
+                <h2>Panadería</h2>
+                <p>El aroma de un buen pan, recién salido del horno.</p>
+            </div>
+            <div class="products-grid">
+                <article class="product-card" data-id="baguette" data-name="Baguette" data-price="1.20">
+                    <img src="../img/pan1.jpg" alt="Baguette de corteza dorada" loading="lazy">
+                    <div class="product-info"><h3>Baguette</h3><p>Pan crujiente y ligero.</p><strong class="product-price">1,20 €</strong><div class="product-actions"><span class="quantity-buttons"><button class="icon-button minus" type="button" aria-label="Quitar baguette">−</button><span class="quantity-display">0</span><button class="icon-button plus" type="button" aria-label="Añadir baguette">+</button></span><a class="text-button" href="carrito.html">Añadir a la cesta</a></div></div>
+                </article>
+                <article class="product-card" data-id="pan-bretzel" data-name="Pan bretzel" data-price="1.50">
+                    <img src="../img/pan2.jpg" alt="Pan bretzel" loading="lazy">
+                    <div class="product-info"><h3>Pan bretzel</h3><p>Pan tradicional con una textura especial.</p><strong class="product-price">1,50 €</strong><div class="product-actions"><span class="quantity-buttons"><button class="icon-button minus" type="button" aria-label="Quitar pan bretzel">−</button><span class="quantity-display">0</span><button class="icon-button plus" type="button" aria-label="Añadir pan bretzel">+</button></span><a class="text-button" href="carrito.html">Añadir a la cesta</a></div></div>
+                </article>
+                <article class="product-card" data-id="pan-queso" data-name="Baguette con queso" data-price="1.40">
+                    <img src="../img/pan3.jpg" alt="Baguette horneada con queso" loading="lazy">
+                    <div class="product-info"><h3>Baguette con queso</h3><p>Pan horneado con queso.</p><strong class="product-price">1,40 €</strong><div class="product-actions"><span class="quantity-buttons"><button class="icon-button minus" type="button" aria-label="Quitar baguette con queso">−</button><span class="quantity-display">0</span><button class="icon-button plus" type="button" aria-label="Añadir baguette con queso">+</button></span><a class="text-button" href="carrito.html">Añadir a la cesta</a></div></div>
+                </article>
+                <article class="product-card" data-id="pan-campesino" data-name="Pan campesino" data-price="1.80">
+                    <img src="../img/pan4.jpg" alt="Pan campesino artesanal" loading="lazy">
+                    <div class="product-info"><h3>Pan campesino</h3><p>Pan tradicional de elaboración artesanal.</p><strong class="product-price">1,80 €</strong><div class="product-actions"><span class="quantity-buttons"><button class="icon-button minus" type="button" aria-label="Quitar pan campesino">−</button><span class="quantity-display">0</span><button class="icon-button plus" type="button" aria-label="Añadir pan campesino">+</button></span><a class="text-button" href="carrito.html">Añadir a la cesta</a></div></div>
+                </article>
+            </div>
+        </section>
+
+        <section class="products-section" id="pasteleria">
+            <div class="section-title left">
+                <span>Un capricho para cualquier día</span>
+                <h2>Pastelería</h2>
+                <p>Dulces preparados para convertir cualquier momento en una ocasión especial.</p>
+            </div>
+            <div class="products-grid">
+                <article class="product-card" data-id="tarta-frambuesa" data-name="Tarta de frambuesa" data-price="3.00">
+                    <img src="../img/tarta1.jpg" alt="Tarta de frambuesa" loading="lazy">
+                    <div class="product-info"><h3>Tarta de frambuesa</h3><p>Suave tarta con frambuesa.</p><strong class="product-price">3,00 €</strong><div class="product-actions"><span class="quantity-buttons"><button class="icon-button minus" type="button" aria-label="Quitar tarta de frambuesa">−</button><span class="quantity-display">0</span><button class="icon-button plus" type="button" aria-label="Añadir tarta de frambuesa">+</button></span><a class="text-button" href="carrito.html">Añadir a la cesta</a></div></div>
+                </article>
+                <article class="product-card" data-id="tarta-fresa" data-name="Tarta de fresa" data-price="1.20">
+                    <img src="../img/tarta2.jpg" alt="Tarta de fresa" loading="lazy">
+                    <div class="product-info"><h3>Tarta de fresa</h3><p>Tarta dulce con fresas.</p><strong class="product-price">1,20 €</strong><div class="product-actions"><span class="quantity-buttons"><button class="icon-button minus" type="button" aria-label="Quitar tarta de fresa">−</button><span class="quantity-display">0</span><button class="icon-button plus" type="button" aria-label="Añadir tarta de fresa">+</button></span><a class="text-button" href="carrito.html">Añadir a la cesta</a></div></div>
+                </article>
+                <article class="product-card" data-id="bizcocho-limon" data-name="Bizcocho de limón" data-price="3.50">
+                    <img src="../img/tarta3.jpg" alt="Bizcocho casero de limón" loading="lazy">
+                    <div class="product-info"><h3>Bizcocho de limón</h3><p>Bizcocho casero con sabor a limón.</p><strong class="product-price">3,50 €</strong><div class="product-actions"><span class="quantity-buttons"><button class="icon-button minus" type="button" aria-label="Quitar bizcocho de limón">−</button><span class="quantity-display">0</span><button class="icon-button plus" type="button" aria-label="Añadir bizcocho de limón">+</button></span><a class="text-button" href="carrito.html">Añadir a la cesta</a></div></div>
+                </article>
+                <article class="product-card" data-id="tarta-chocolate" data-name="Tarta de chocolate" data-price="1.50">
+                    <img src="../img/tarta4.jpg" alt="Tarta de chocolate" loading="lazy">
+                    <div class="product-info"><h3>Tarta de chocolate</h3><p>Chocolate para los más golosos.</p><strong class="product-price">1,50 €</strong><div class="product-actions"><span class="quantity-buttons"><button class="icon-button minus" type="button" aria-label="Quitar tarta de chocolate">−</button><span class="quantity-display">0</span><button class="icon-button plus" type="button" aria-label="Añadir tarta de chocolate">+</button></span><a class="text-button" href="carrito.html">Añadir a la cesta</a></div></div>
+                </article>
+            </div>
+        </section>
+    </main>
+
+    <footer class="footer">
+        <div class="footer-inner">
+            <div><p class="footer-brand">Panadería de Marco</p><p>Tradición, calidad y sabor desde 1894.</p></div>
+            <div class="footer-links"><h2>Explora</h2><a href="../../index.html">Inicio</a><a href="catalogo.html">Catálogo</a><a href="galeria.html">Galería</a></div>
+            <div><h2>Visítanos</h2><p>C/ Santisteban Márquez</p><p><a href="tel:+34607987654">607 98 76 54</a></p><p><a href="mailto:panaderiademarco@gmail.com">panaderiademarco@gmail.com</a></p></div>
+        </div>
+        <div class="footer-bottom">© 2026 Panadería de Marco. Hecho con tradición.</div>
+    </footer>
+</body>
+</html>

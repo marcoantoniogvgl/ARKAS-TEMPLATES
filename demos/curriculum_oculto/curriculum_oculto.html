@@ -1,0 +1,843 @@
+```html
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Currículum | Marco Antonio</title>
+    <style>
+        :root {
+            --azul: #173f5f;
+            --azul-claro: #20639b;
+            --azul-suave: #eaf4fb;
+            --amarillo: #f3c048;
+            --naranja: #f66116;
+            --texto: #263238;
+            --gris: #60717d;
+            --gris-claro: #f4f7f9;
+            --blanco: #ffffff;
+            --sombra: 0 15px 40px rgba(23, 63, 95, 0.12);
+        }
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        html {
+            scroll-behavior: smooth;
+        }
+        body {
+            font-family: "Segoe UI", Arial, sans-serif;
+            background:
+                radial-gradient(circle at top left,
+                rgba(32, 99, 155, 0.12),
+                transparent 30%),
+                linear-gradient(135deg,
+                #eaf1f5,
+                #f8fafb);
+            color: var(--texto);
+            line-height: 1.6;
+        }
+        .cv {
+            width: 92%;
+            max-width: 1100px;
+            margin: 40px auto;
+            background: var(--blanco);
+            border-radius: 22px;
+            overflow: hidden;
+            box-shadow: var(--sombra);
+        }
+        header {
+            position: relative;
+            padding: 70px 50px;
+            color: white;
+            background:
+                radial-gradient(circle at 85% 20%,
+                rgba(243, 192, 72, .25),
+                transparent 20%),
+                linear-gradient(135deg,
+                var(--azul),
+                var(--azul-claro));
+            overflow: hidden;
+        }
+        header::before {
+            content: "";
+            position: absolute;
+            width: 250px;
+            height: 250px;
+            border-radius: 50%;
+            border: 35px solid rgba(255,255,255,.05);
+            right: -80px;
+            top: -80px;
+        }
+        header::after {
+            content: "";
+            position: absolute;
+            width: 150px;
+            height: 150px;
+            border-radius: 50%;
+            border: 20px solid rgba(243,192,72,.08);
+            left: -50px;
+            bottom: -70px;
+        }
+        .header-contenido {
+            position: relative;
+            z-index: 2;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            gap: 40px;
+        }
+        .titulo h1 {
+            font-size: clamp(38px, 6vw, 70px);
+            line-height: .95;
+            letter-spacing: -2px;
+            margin-bottom: 18px;
+        }
+        .titulo h1 span {
+            color: var(--amarillo);
+        }
+        .titulo .profesion {
+            font-size: 21px;
+            color: #dcecf7;
+            margin-bottom: 20px;
+        }
+        .badge {
+            display: inline-block;
+            padding: 8px 15px;
+            border-radius: 50px;
+            background: rgba(255,255,255,.12);
+            border: 1px solid rgba(255,255,255,.2);
+            font-size: 14px;
+        }
+        .perfil-circulo {
+            min-width: 150px;
+            height: 150px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 50%;
+            background: var(--amarillo);
+            color: var(--azul);
+            font-size: 48px;
+            font-weight: 800;
+            border: 8px solid rgba(255,255,255,.15);
+            box-shadow:
+                0 0 0 5px rgba(243,192,72,.25),
+                0 15px 30px rgba(0,0,0,.2);
+        }
+        nav {
+            background: #102f48;
+            padding: 14px 30px;
+            display: flex;
+            justify-content: center;
+            flex-wrap: wrap;
+            gap: 8px;
+        }
+        nav a {
+            color: #dcecf7;
+            text-decoration: none;
+            padding: 8px 15px;
+            border-radius: 20px;
+            font-size: 14px;
+            transition: .3s;
+        }
+        nav a:hover {
+            background: var(--amarillo);
+            color: var(--azul);
+            transform: translateY(-2px);
+        }
+        main {
+            padding: 55px;
+        }
+        section {
+            margin-bottom: 65px;
+            scroll-margin-top: 30px;
+        }
+        .titulo-seccion {
+            display: flex;
+            align-items: center;
+            gap: 12px;
+            margin-bottom: 28px;
+        }
+        .numero {
+            width: 38px;
+            height: 38px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: var(--azul);
+            color: white;
+            font-weight: bold;
+        }
+        h2 {
+            font-size: 27px;
+            color: var(--azul);
+        }
+        .linea {
+            height: 3px;
+            width: 60px;
+            background: linear-gradient(
+                to right,
+                var(--amarillo),
+                var(--naranja)
+            );
+            margin-top: 5px;
+        }
+        .intro {
+            display: grid;
+            grid-template-columns: 1.5fr 1fr;
+            gap: 25px;
+        }
+        .intro-texto {
+            padding: 30px;
+            border-radius: 18px;
+            background: var(--gris-claro);
+            border-left: 5px solid var(--amarillo);
+        }
+        .intro-texto p {
+            margin-bottom: 12px;
+        }
+        .objetivo {
+            padding: 30px;
+            border-radius: 18px;
+            background: linear-gradient(
+                135deg,
+                var(--azul),
+                var(--azul-claro)
+            );
+            color: white;
+        }
+        .objetivo h3 {
+            color: var(--amarillo);
+            margin-bottom: 12px;
+        }
+        .competencias {
+            display: grid;
+            grid-template-columns:
+                repeat(3, 1fr);
+            gap: 18px;
+        }
+        .competencia {
+            position: relative;
+            padding: 25px;
+            border-radius: 18px;
+            background: white;
+            border: 1px solid #e2e9ed;
+            box-shadow: 0 5px 20px rgba(0,0,0,.05);
+            transition: .3s;
+            overflow: hidden;
+        }
+        .competencia::before {
+            content: "";
+            position: absolute;
+            width: 80px;
+            height: 80px;
+            border-radius: 50%;
+            background: var(--azul-suave);
+            right: -30px;
+            top: -30px;
+        }
+        .competencia:hover {
+            transform: translateY(-7px);
+            box-shadow:
+                0 15px 30px rgba(23,63,95,.12);
+        }
+        .icono {
+            width: 45px;
+            height: 45px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            border-radius: 12px;
+            background: var(--azul);
+            color: white;
+            font-size: 20px;
+            margin-bottom: 18px;
+            position: relative;
+        }
+        .competencia h3 {
+            color: var(--azul);
+            margin-bottom: 10px;
+        }
+        .competencia p {
+            color: var(--gris);
+            font-size: 14px;
+        }
+        .ejemplo {
+            margin-top: 15px;
+            padding: 12px 15px;
+            background: #fff9e8;
+            border-radius: 10px;
+            border-left: 3px solid var(--amarillo);
+            font-size: 13px;
+            color: #67521c;
+        }
+        .ejemplo strong {
+            color: var(--naranja);
+        }
+        .timeline {
+            position: relative;
+            padding-left: 35px;
+        }
+        .timeline::before {
+            content: "";
+            position: absolute;
+            left: 8px;
+            top: 0;
+            bottom: 0;
+            width: 3px;
+            background:
+                linear-gradient(
+                    var(--azul),
+                    var(--amarillo)
+                );
+        }
+        .evento {
+            position: relative;
+            margin-bottom: 30px;
+            padding: 25px;
+            background: var(--gris-claro);
+            border-radius: 16px;
+        }
+        .evento::before {
+            content: "";
+            position: absolute;
+            left: -35px;
+            top: 27px;
+            width: 15px;
+            height: 15px;
+            border-radius: 50%;
+            background: var(--amarillo);
+            border: 4px solid white;
+            box-shadow: 0 0 0 2px var(--azul);
+        }
+        .fecha {
+            color: var(--azul-claro);
+            font-weight: bold;
+            font-size: 13px;
+            text-transform: uppercase;
+            margin-bottom: 5px;
+        }
+        .evento h3 {
+            color: var(--azul);
+            margin-bottom: 8px;
+        }
+        .proyectos {
+            display: grid;
+            grid-template-columns:
+                repeat(2, 1fr);
+            gap: 20px;
+        }
+        .proyecto {
+            padding: 28px;
+            border-radius: 18px;
+            color: white;
+            background:
+                linear-gradient(
+                    135deg,
+                    var(--azul),
+                    var(--azul-claro)
+                );
+            position: relative;
+            overflow: hidden;
+        }
+        .proyecto::after {
+            content: "</>";
+            position: absolute;
+            right: 20px;
+            bottom: -10px;
+            font-size: 80px;
+            font-weight: bold;
+            opacity: .08;
+        }
+        .proyecto h3 {
+            color: var(--amarillo);
+            margin-bottom: 10px;
+        }
+        .tecnologias {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-top: 15px;
+        }
+        .tecnologias span {
+            padding: 5px 10px;
+            border-radius: 20px;
+            background: rgba(255,255,255,.12);
+            font-size: 12px;
+        }
+        .tabla-contenedor {
+            overflow-x: auto;
+            border-radius: 15px;
+            box-shadow: 0 5px 20px rgba(0,0,0,.06);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            min-width: 600px;
+        }
+        th {
+            background: var(--azul);
+            color: white;
+            padding: 15px;
+            text-align: left;
+        }
+        td {
+            padding: 15px;
+            border-bottom: 1px solid #e1e7ea;
+        }
+        tr:nth-child(even) {
+            background: var(--gris-claro);
+        }
+        .habilidades {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+        }
+        .habilidad {
+            margin-bottom: 15px;
+        }
+        .habilidad-info {
+            display: flex;
+            justify-content: space-between;
+            margin-bottom: 6px;
+            font-size: 14px;
+            font-weight: bold;
+        }
+        .barra {
+            height: 9px;
+            background: #e5ebee;
+            border-radius: 20px;
+            overflow: hidden;
+        }
+        .progreso {
+            height: 100%;
+            background:
+                linear-gradient(
+                    to right,
+                    var(--azul),
+                    var(--azul-claro)
+                );
+            border-radius: 20px;
+        }
+        .aportaciones {
+            display: grid;
+            grid-template-columns:
+                repeat(3, 1fr);
+            gap: 15px;
+        }
+        .aporte {
+            padding: 22px;
+            border-radius: 15px;
+            background: var(--azul-suave);
+            border: 1px solid #d9eaf5;
+        }
+        .aporte strong {
+            color: var(--azul);
+        }
+        .conclusion {
+            padding: 35px;
+            border-radius: 20px;
+            background:
+                linear-gradient(
+                    135deg,
+                    #fff8df,
+                    #fff3d1
+                );
+            border: 1px solid #f5df9c;
+            position: relative;
+        }
+        .conclusion::before {
+            content: "“";
+            position: absolute;
+            right: 25px;
+            top: -25px;
+            font-size: 100px;
+            color: var(--amarillo);
+            opacity: .5;
+        }
+        footer {
+            padding: 30px;
+            text-align: center;
+            background: #102f48;
+            color: #bcd0dd;
+            font-size: 13px;
+        }
+        footer strong {
+            color: var(--amarillo);
+        }
+        @media (max-width: 850px) {
+            .header-contenido {
+                flex-direction: column;
+                text-align: center;
+            }
+            .intro {
+                grid-template-columns: 1fr;
+            }
+            .competencias {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+            .aportaciones {
+                grid-template-columns:
+                    repeat(2, 1fr);
+            }
+        }
+        @media (max-width: 600px) {
+            .cv {
+                width: 100%;
+                margin: 0;
+                border-radius: 0;
+            }
+            header {
+                padding: 45px 25px;
+            }
+            main {
+                padding: 30px 20px;
+            }
+            .competencias,
+            .proyectos,
+            .habilidades,
+            .aportaciones {
+                grid-template-columns: 1fr;
+            }
+            nav {
+                justify-content: flex-start;
+                overflow-x: auto;
+                flex-wrap: nowrap;
+            }
+        }
+    </style>
+</head>
+<body>
+<div class="cv">
+    <header>
+        <div class="header-contenido">
+            <div class="titulo">
+                <h1>CURRÍCULUM <span>PROFESIONAL</span></h1>
+                <p class="profesion">Marco Antonio González-Venegas Guerra-Librero</p>
+                <p>Estudiante de Desarrollo de Aplicaciones Web</p>
+                <br>
+                <span class="badge">
+                    Buscando prácticas FCT
+                </span>
+            </div>
+            <div class="perfil-circulo">MG
+            </div>
+        </div>
+    </header>
+    <nav>
+        <a href="#objetivo">Objetivo</a>
+        <a href="#competencias">Competencias</a>
+        <a href="#experiencias">Experiencias</a>
+        <a href="#proyectos">Proyectos</a>
+        <a href="#habilidades">Habilidades</a>
+        <a href="#aportacion">Aportación</a>
+    </nav>
+    <main>
+        <section id="objetivo">
+            <div class="titulo-seccion">
+                <div class="numero">01</div>
+                <div>
+                    <h2>Mi objetivo profesional</h2>
+                    <div class="linea"></div>
+                </div>
+            </div>
+            <div class="intro">
+                <div class="intro-texto">
+                    <p>Mi objetivo profesional es comenzar a desarrollar experiencia en el sector de las aplicaciones web, especialmente en el área de desarrollo frontend, aunque también tengo interés en el backend.</p>
+                    <p>Actualmente estoy estudiando Desarrollo de Aplicaciones Web y quiero transformar los conocimientos adquiridos durante el ciclo en experiencia profesional.</p>
+                    <p>Me interesa especialmente aprender cómo se trabaja en un proyecto real, colaborar con otros desarrolladores y continuar mejorando mis conocimientos.</p>
+                </div>
+                <div class="objetivo">
+                    <h3>¿Qué busco?</h3>
+                    <p>Una oportunidad de prácticas donde pueda aprender, participar en proyectos reales y aportar mis conocimientos.</p>
+                    <br>
+                    <p>Mi principal objetivo no es solamente utilizar tecnologías, sino aprender a utilizarlas para resolver problemas reales.</p>
+                </div>
+            </div>
+        </section>
+        <section id="competencias">
+            <div class="titulo-seccion">
+                <div class="numero">02</div>
+                <div>
+                    <h2>Mis competencias</h2>
+                    <div class="linea"></div>
+                </div>
+            </div>
+            <div class="competencias">
+                <article class="competencia">
+                    <div class="icono">01</div>
+                    <h3>Aprendizaje autónomo</h3>
+                    <p>Soy capaz de buscar información y aprender nuevos lenguajes de programación o métodos.</p>
+                    <div class="ejemplo"><strong>Ejemplo:</strong> investigar por mi cuenta cómo implementar una función de JavaScript que todavía no conozco.</div></article>
+                <article class="competencia">
+                    <div class="icono">02</div>
+                    <h3>Resolución de problemas</h3>
+                    <p>Cuando aparece un error intento localizar su origen antes de buscar una solución o codificar previniendo posibles fallos.</p>
+                    <div class="ejemplo"><strong>Ejemplo:</strong> detectar por qué un formulario no envía los datos correctamente y revisar HTML, JavaScript o PHP.</div></article>
+                <article class="competencia">
+                    <div class="icono">03</div>
+                    <h3>Trabajo en equipo</h3>
+                    <p>Los proyectos académicos me han enseñado a repartir tareas y mantener una comunicación adecuada.</p>
+                    <div class="ejemplo"><strong>Ejemplo:</strong> dividir un proyecto web entre diseño, frontend y backend para trabajar de forma coordinada.</div></article>
+                <article class="competencia">
+                    <div class="icono">04</div>
+                    <h3>Organización</h3>
+                    <p>Considero importante mantener una estructura clara en los proyectos y en el código.</p>
+                    <div class="ejemplo"><strong>Ejemplo:</strong> separar HTML, CSS, JavaScript, imágenes y archivos PHP en carpetas diferentes.</div></article>
+                <article class="competencia">
+                    <div class="icono">05</div>
+                    <h3>Creatividad</h3>
+                    <p>El desarrollo web también necesita pensar cómo presentar la información de una manera clara y atractiva.</p>
+                    <div class="ejemplo"><strong>Ejemplo:</strong> diseñar una interfaz diferente para presentar un portfolio personal.</div></article>
+                <article class="competencia">
+                    <div class="icono">06</div>
+                    <h3>Adaptación</h3>
+                    <p>He tenido contacto con diferentes tecnologías y herramientas durante mi formación.</p>
+                    <div class="ejemplo"><strong>Ejemplo:</strong> pasar de trabajar solamente con HTML y CSS a utilizar JavaScript y PHP.</div></article>
+            </div>
+        </section>
+        <section id="experiencias">
+            <div class="titulo-seccion">
+                <div class="numero">03</div>
+                <div>
+                    <h2>Experiencias que me han formado</h2>
+                    <div class="linea"></div>
+                </div>
+            </div>
+            <div class="timeline"><article class="evento"><div class="fecha">2026 - Actualidad</div>
+                    <h3>Formación en Desarrollo de Aplicaciones Web</h3>
+                    <p>Formación en programación, desarrollo frontend, backend, bases de datos, diseño de interfaces y herramientas de desarrollo.</p>
+                    <div class="ejemplo"><strong>Competencias:</strong>aprendizaje autónomo, organización, pensamiento lógico y adaptación tecnológica.</div></article>
+                <article class="evento"><div class="fecha">Proyectos académicos</div>
+                    <h3>Desarrollo de aplicaciones web</h3>
+                    <p>Creación de aplicaciones propias durante el aprendizaje para poner en práctica lo aprendido.</p>
+                    <div class="ejemplo"><strong>Competencias:</strong> resolución de problemas, programación, atención al detalle y creatividad.</div></article>
+                <article class="evento"><div class="fecha">Trabajo en equipo</div>
+                    <h3>Proyectos colaborativos</h3>
+                    <p>Participación en actividades en las que es necesario organizar tareas y colaborar con otros compañeros.</p>
+                    <div class="ejemplo"><strong>Competencias:</strong> comunicación, responsabilidad y colaboración.</div></article>
+                <article class="evento"><div class="fecha">Ejemplo orientativo</div>
+                    <h3>Proyecto personal de una página web</h3>
+                    <p>Diseño y desarrollo de una pequeña página web para practicar estructura, estilos y programación.</p>
+                    <div class="ejemplo"><strong>Competencias:</strong> planificación, creatividad, autonomía y resolución de problemas.</div></article>
+            </div>
+        </section>
+        <section id="proyectos">
+            <div class="titulo-seccion">
+                <div class="numero">04</div>
+                <div>
+                    <h2>Proyectos y ejemplos</h2>
+                    <div class="linea"></div>
+                </div>
+            </div>
+            <div class="proyectos">
+                <article class="proyecto">
+                    <h3>Portfolio personal</h3>
+                    <p>Diseño de una página web personal para mostrar proyectos, conocimientos y formación.</p>
+                    <div class="tecnologias">
+                        <span>HTML</span>
+                        <span>CSS</span>
+                        <span>JavaScript</span>
+                        <span>Figma</span>
+                    </div></article>
+                <article class="proyecto">
+                    <h3>Aplicación de gestión</h3>
+                    <p>Ejemplo de una aplicación para gestionar usuarios, productos o información mediante formularios y una base de datos.</p>
+                    <div class="tecnologias">
+                        <span>PHP</span>
+                        <span>SQL</span>
+                        <span>MySQL</span>
+                        <span>HTML</span>
+                    </div></article>
+                <article class="proyecto">
+                    <h3>Diseño de interfaz</h3>
+                    <p>Diseño previo de una aplicación utilizando Figma, pensando en la distribución de los elementos y la experiencia del usuario.</p>
+                    <div class="tecnologias">
+                        <span>Figma</span>
+                        <span>UI</span>
+                        <span>UX</span>
+                    </div></article>
+                <article class="proyecto">
+                    <h3>Proyecto académico</h3>
+                    <p>Desarrollo de una aplicación para poner en práctica programación, bases de datos y organización del código.</p>
+                    <div class="tecnologias">
+                        <span>Java</span>
+                        <span>SQL</span>
+                        <span>Git</span>
+                    </div></article>
+            </div>
+        </section>
+        <section id="habilidades">
+            <div class="titulo-seccion">
+                <div class="numero">05</div>
+                <div>
+                    <h2>Mis habilidades</h2>
+                    <div class="linea"></div>
+                </div>
+            </div>
+            <div class="habilidades">
+                <div>
+                    <div class="habilidad">
+                        <div class="habilidad-info">
+                            <span>HTML / CSS</span>
+                            <span>80%</span>
+                        </div>
+                        <div class="barra">
+                            <div class="progreso"
+                                 style="width:80%">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="habilidad">
+                        <div class="habilidad-info">
+                            <span>JavaScript</span>
+                            <span>65%</span>
+                        </div>
+                        <div class="barra">
+                            <div class="progreso"
+                                 style="width:65%">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="habilidad">
+                        <div class="habilidad-info">
+                            <span>PHP</span>
+                            <span>60%</span>
+                        </div>
+                        <div class="barra">
+                            <div class="progreso"
+                                 style="width:60%">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                <div>
+                    <div class="habilidad">
+                        <div class="habilidad-info">
+                            <span>SQL / Bases de datos</span>
+                            <span>65%</span>
+                        </div>
+                        <div class="barra">
+                            <div class="progreso"
+                                 style="width:65%">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="habilidad">
+                        <div class="habilidad-info">
+                            <span>Git / GitHub</span>
+                            <span>60%</span>
+                        </div>
+                        <div class="barra">
+                            <div class="progreso"
+                                 style="width:60%">
+                            </div>
+                        </div>
+                    </div>
+                    <div class="habilidad">
+                        <div class="habilidad-info">
+                            <span>Figma / Diseño</span>
+                            <span>65%</span>
+                        </div>
+                        <div class="barra">
+                            <div class="progreso"
+                                 style="width:65%">
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </section>
+        <section>
+            <div class="titulo-seccion">
+                <div class="numero">06</div>
+                <div>
+                    <h2>Experiencia → Competencia</h2>
+                    <div class="linea"></div>
+                </div>
+            </div>
+            <div class="tabla-contenedor">
+                <table>
+                    <thead>
+                        <tr>
+                            <th>Experiencia</th>
+                            <th>Qué aprendí</th>
+                            <th>Competencia</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        <tr>
+                            <td>Estudiar DAW</td>
+                            <td>Aprender diferentes tecnologías</td>
+                            <td>Aprendizaje autónomo</td>
+                        </tr>
+                        <tr>
+                            <td>Programar aplicaciones</td>
+                            <td>Analizar y solucionar errores</td>
+                            <td>Resolución de problemas</td>
+                        </tr>
+                        <tr>
+                            <td>Trabajos en grupo</td>
+                            <td>Repartir tareas y colaborar</td>
+                            <td>Trabajo en equipo</td>
+                        </tr>
+                        <tr>
+                            <td>Diseñar interfaces</td>
+                            <td>Pensar en el usuario y la presentación</td>
+                            <td>Creatividad</td>
+                        </tr>
+                        <tr>
+                            <td>Usar Git y GitHub</td>
+                            <td>Organizar y controlar cambios</td>
+                            <td>Organización</td>
+                        </tr>
+                    </tbody>
+                </table>
+            </div>
+        </section>
+        <section id="aportacion">
+            <div class="titulo-seccion">
+                <div class="numero">07</div>
+                <div>
+                    <h2>¿Qué puedo aportar?</h2>
+                    <div class="linea"></div>
+                </div>
+            </div>
+            <div class="aportaciones">
+                <div class="aporte">
+                    <strong>Aprendizaje</strong>
+                    <p>Ganas de aprender nuevas tecnologías y métodos de trabajo.</p>
+                </div>
+                <div class="aporte">
+                    <strong>Iniciativa</strong>
+                    <p>Interés por buscar soluciones y no depender siempre de instrucciones.</p>
+                </div>
+                <div class="aporte">
+                    <strong>Creatividad</strong>
+                    <p>Interés por crear interfaces diferentes y fáciles de utilizar.</p>
+                </div>
+                <div class="aporte">
+                    <strong>Organización</strong>
+                    <p>Cuidado de la estructura del código y de los proyectos.</p>
+                </div>
+                <div class="aporte">
+                    <strong>Trabajo en equipo</strong>
+                    <p>Capacidad para colaborar y repartir tareas dentro de un proyecto.</p>
+                </div>
+                <div class="aporte">
+                    <strong>Adaptación</strong>
+                    <p>Capacidad para aprender herramientas nuevas cuando el proyecto lo necesita.</p>
+                </div>
+            </div>
+        </section>
+    </main>
+    <footer>
+        <p><strong>Marco Antonio</strong> · Desarrollo de Aplicaciones Web</p><p>Currículum profesional · 2026</p>
+    </footer>
+</div>
+</body>
+</html>

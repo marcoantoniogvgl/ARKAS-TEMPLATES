@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Oferta Educativa - Instituto arkas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <!-- Logo centrado en la navegación -->
+            <div class="logo-nav-container">
+                <nav class="main-nav">
+                    <ul class="menu">
+                        <li><a href="../../index.html">INICIO</a></li>
+                        <li class="dropdown">
+                            <a href="../html/centro.html">NUESTRO CENTRO <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="../html/centro.html#aulas">Aulas</a></li>
+                                <li><a href="../html/centro.html#instalaciones">Instalaciones</a></li>
+                                <li><a href="../html/centro.html#historia">Historia</a></li>
+                                <li><a href="../html/centro.html#ubicacion">Ubicación</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="oferta-educativa.html">OFERTA EDUCATIVA <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="oferta-educativa.html#oferta#eso">ESO</a></li>
+                                <li><a href="oferta-educativa.html#oferta#bachillerato">Bachillerato</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Logo en el centro -->
+                        <li class="logo-item">
+                            <a href="../../index.html">
+                            <div class="logo-circle">
+                                <img src="../img/logocolorsinletras.png" alt="Instituto arkas" class="logo">
+                            </div>
+                            </a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="../html/administracion.html">ADMINISTRACIÓN <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="../html/administracion.html#matriculas">Matrículas</a></li>
+                                <li><a href="../html/administracion.html#becas">Becas</a></li>
+                                <li><a href="../html/administracion.html#titulos">Títulos</a></li>
+                                <li><a href="../html/administracion.html#documentacion">Documentación</a></li>
+                                <li><a href="../html/administracion.html#personal">Personal</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="../html/orientacion.html">ORIENTACIÓN <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="../html/orientacion.html#departamentos">Departamentos</a></li>
+                                <li><a href="../html/orientacion.html#continuar-estudiando">Continuar estudiando</a></li>
+                                <li><a href="../html/orientacion.html#salidas-profesionales">Salidas profesionales</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="../../index.html#contacto">CONTACTO</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+    </header>
+    <div class="aula-virtual-bar">
+        <div class="container aula-virtual-header">
+            <button class="aula-virtual-btn" id="openLoginModal">
+                <i class="fas fa-graduation-cap"></i>
+                AULA VIRTUAL
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal de Login -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeLoginModal">&times;</button>
+            <div class="login-container">
+                <h2 class="section-title">Acceso a la Plataforma</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="username">Usuario</label>
+                        <input type="text" id="username" class="form-control" required>
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" class="form-control" required>
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Iniciar Sesión</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección ESO -->
+    <section id="eso">
+        <div class="container">
+            <br>
+            <h2 class="section-title">EDUCACIÓN SECUNDARIA OBLIGATORIA (ESO)</h2>
+            <div class="educational-content">
+                <div class="educational-info">
+                    <h3 style="text-align:center">Formación Integral para Estudiantes de 12 a 16 años</h3>
+                    <p style="text-align:center">Nuestro programa de ESO está diseñado para proporcionar una formación completa que combine el desarrollo académico con el crecimiento personal de nuestros estudiantes. Ofrecemos un entorno de aprendizaje estimulante que prepara a los jóvenes para los desafíos del futuro.</p>
+                    
+                    <div class="educational-features">
+                        <div class="feature">
+                            <i class="fas fa-users" style="font-size: 4rem;"></i>
+                            <h4>Tutorías Personalizadas</h4>
+                            <p>Seguimiento individualizado de cada estudiante con atención personalizada</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-laptop-code" style="font-size: 4rem;"></i>
+                            <h4>Tecnología Educativa</h4>
+                            <p>Aulas equipadas con las últimas tecnologías y recursos digitales</p>
+                        </div>
+                        <div class="feature">
+                            <i class="fas fa-book-open" style="font-size: 4rem;"></i>
+                            <h4>Programa Académico</h4>
+                            <p>Currículo completo adaptado a las necesidades educativas actuales</p>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="educational-structure">
+                    <h4>Estructura por Cursos</h4>
+                    <div class="courses-grid">
+                        <div class="course-card">
+                            <h5>1º ESO</h5>
+                            <ul>
+                                <li>Lengua Castellana</li>
+                                <li>Matemáticas</li>
+                                <li>Inglés</li>
+                                <li>Ciencias Naturales</li>
+                                <li>Ciencias Sociales</li>
+                                <li>Educación Física</li>
+                                <li>Música</li>
+                            </ul>
+                        </div>
+                        <div class="course-card">
+                            <h5>2º ESO</h5>
+                            <ul>
+                                <li>Lengua Castellana</li>
+                                <li>Matemáticas</li>
+                                <li>Inglés</li>
+                                <li>Física y Química</li>
+                                <li>Biología y Geología</li>
+                                <li>Educación Plástica</li>
+                                <li>Tecnología</li>
+                            </ul>
+                        </div>
+                        <div class="course-card">
+                            <h5>3º ESO</h5>
+                            <ul>
+                                <li>Lengua Castellana</li>
+                                <li>Matemáticas</li>
+                                <li>Inglés</li>
+                                <li>Francés</li>
+                                <li>Tecnología</li>
+                                <li>Biología</li>
+                                <li>Física y Química</li>
+                            </ul>
+                        </div>
+                        <div class="course-card">
+                            <h5>4º ESO</h5>
+                            <ul>
+                                <li>Troncales Generales</li>
+                                <li>Matemáticas A/B</li>
+                                <li>Biología y Geología</li>
+                                <li>Economía</li>
+                                <li>Latín</li>
+                                <li>Tecnología</li>
+                                <li>Artes Escénicas</li>
+                            </ul>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Bachillerato -->
+    <section id="bachillerato" style="background-color: var(--neutral-light);">
+        <div class="container">
+            <h2 class="section-title">BACHILLERATO</h2>
+            <div class="educational-content">
+                <div class="educational-info">
+                    <h3 style="text-align: center;">Preparación para Estudios Superiores</h3>
+                    <p style="text-align: center;">Nuestro programa de Bachillerato ofrece una formación especializada que prepara a los estudiantes para acceder a la universidad y otros estudios superiores. <br>Contamos con cuatro modalidades diseñadas para adaptarse a los intereses y capacidades de cada estudiante.</p>
+                    
+                    <div class="bachillerato-modalidades">
+                        <h2 class="section-title">Modalidades Disponibles</h2>
+                        <div class="modalidad-cards">
+                            <!-- Ciencias y Tecnología -->
+                            <div class="modalidad-card">
+                                <div class="modalidad-header">
+                                    <i class="fas fa-flask"></i>
+                                    <h4 style="color: var(--blue-color);">Ciencias y Tecnología</h4>
+                                </div>
+                                <p>Enfocado en carreras de ciencias, ingenierías y salud. Formación sólida en materias científicas y tecnológicas.</p>
+                                <div class="asignaturas">
+                                    <h6>Asignaturas Troncales:</h6>
+                                    <ul>
+                                        <li>Matemáticas II</li>
+                                        <li>Física</li>
+                                        <li>Química</li>
+                                        <li>Biología</li>
+                                        <li>Dibujo Técnico</li>
+                                    </ul>
+                                    <h6>Asignaturas Específicas:</h6>
+                                    <ul>
+                                        <li>Tecnología Industrial</li>
+                                        <li>Geología</li>
+                                        <li> Ciencias de la Tierra</li>
+                                    </ul>
+                                </div>
+                                <div class="salidas">
+                                    <strong>Salidas profesionales:</strong> Medicina, Ingenierías, Investigación, Farmacia, Biotecnología
+                                </div>
+                            </div>
+
+                            <!-- Humanidades y Ciencias Sociales -->
+                            <div class="modalidad-card">
+                                <div class="modalidad-header">
+                                    <i class="fas fa-landmark"></i>
+                                    <h4 style="color: var(--blue-color);">Humanidades y Ciencias Sociales</h4>
+                                </div>
+                                <p>Orientado a carreras de humanidades, derecho, empresariales y ciencias sociales. Formación en análisis y pensamiento crítico.</p>
+                                <div class="asignaturas">
+                                    <h6>Asignaturas Troncales:</h6>
+                                    <ul>
+                                        <li>Matemáticas Aplicadas</li>
+                                        <li>Historia del Arte</li>
+                                        <li>Latín</li>
+                                        <li>Economía</li>
+                                        <li>Geografía</li>
+                                    </ul>
+                                    <h6>Asignaturas Específicas:</h6>
+                                    <ul>
+                                        <li>Griego</li>
+                                        <li>Historia de la Filosofía</li>
+                                        <li>Literatura Universal</li>
+                                    </ul>
+                                </div>
+                                <div class="salidas">
+                                    <strong>Salidas profesionales:</strong> Derecho, Economía, Periodismo, Turismo, Educación, Administración
+                                </div>
+                            </div>
+
+                            <!-- Artes -->
+                            <div class="modalidad-card">
+                                <div class="modalidad-header">
+                                    <i class="fas fa-palette"></i>
+                                    <h4 style="color: var(--blue-color);">Artes</h4>
+                                </div>
+                                <p>Especializado en expresión artística y creatividad. Preparación para carreras relacionadas con las artes plásticas, diseño y medios audiovisuales.</p>
+                                <div class="asignaturas">
+                                    <h6>Asignaturas Troncales:</h6>
+                                    <ul>
+                                        <li>Fundamentos del Arte</li>
+                                        <li>Dibujo Artístico</li>
+                                        <li>Volumen</li>
+                                        <li>Cultura Audiovisual</li>
+                                        <li>Diseño</li>
+                                    </ul>
+                                    <h6>Asignaturas Específicas:</h6>
+                                    <ul>
+                                        <li>Técnicas de Expresión Gráfica</li>
+                                        <li>Historia del Arte</li>
+                                        <li>Proyectos Artísticos</li>
+                                    </ul>
+                                </div>
+                                <div class="salidas">
+                                    <strong>Salidas profesionales:</strong> Bellas Artes, Diseño, Arquitectura, Restauración, Ilustración, Animación
+                                </div>
+                            </div>
+
+                            <!-- General -->
+                            <div class="modalidad-card">
+                                <div class="modalidad-header">
+                                    <i class="fas fa-graduation-cap"></i>
+                                    <h4 style="color: var(--blue-color);">General</h4>
+                                </div>
+                                <p>Modalidad flexible que combina materias de diferentes ámbitos. Ideal para estudiantes que buscan una formación multidisciplinar.</p>
+                                <div class="asignaturas">
+                                    <h6>Asignaturas Troncales:</h6>
+                                    <ul>
+                                        <li>Matemáticas Generales</li>
+                                        <li>Ciencias Generales</li>
+                                        <li>Economía</li>
+                                        <li>Literatura Universal</li>
+                                        <li>Historia Contemporánea</li>
+                                    </ul>
+                                    <h6>Asignaturas Específicas:</h6>
+                                    <ul>
+                                        <li>Psicología</li>
+                                        <li>Tecnología de la Información</li>
+                                        <li>Emprendimiento</li>
+                                    </ul>
+                                </div>
+                                <div class="salidas">
+                                    <strong>Salidas profesionales:</strong> Administración, Turismo, Comercio, Educación, Gestión Cultural
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="bachillerato-features">
+                    <h4>Ventajas de Nuestro Bachillerato</h4>
+                    <div class="features-list">
+                        <div class="feature-item">
+                            <i class="fas fa-graduation-cap"></i>
+                            <div>
+                                <h5>Preparación Universitaria</h5>
+                                <p>Alta tasa de acceso a estudios superiores con excelentes resultados en pruebas de acceso</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-chalkboard-teacher"></i>
+                            <div>
+                                <h5>Profesorado Especializado</h5>
+                                <p>Docentes con amplia experiencia en preparación para selectividad y estudios superiores</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-book"></i>
+                            <div>
+                                <h5>Recursos Educativos</h5>
+                                <p>Material actualizado, biblioteca especializada y laboratorios completamente equipados</p>
+                            </div>
+                        </div>
+                        <div class="feature-item">
+                            <i class="fas fa-hand-holding-heart"></i>
+                            <div>
+                                <h5>Orientación Académica</h5>
+                                <p>Asesoramiento personalizado para la elección de carrera y futuro profesional</p>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Proceso de Admisión -->
+    <section id="admision">
+        <div class="container">
+            <h2 class="section-title">PROCESO DE ADMISIÓN</h2>
+            <div class="admission-process">
+                <div class="process-steps">
+                    <div class="step">
+                        <div class="step-number">1</div>
+                        <div class="step-content">
+                            <h4>Solicitud de Información</h4>
+                            <p>Contacta con nosotros para recibir información detallada sobre nuestros programas y requisitos</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">2</div>
+                        <div class="step-content">
+                            <h4>Entrevista Personal</h4>
+                            <p>Reunión con el equipo directivo y orientación para evaluar el perfil del estudiante</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">3</div>
+                        <div class="step-content">
+                            <h4>Documentación</h4>
+                            <p>Presentación de documentación requerida y validación de expediente académico</p>
+                        </div>
+                    </div>
+                    <div class="step">
+                        <div class="step-number">4</div>
+                        <div class="step-content">
+                            <h4>Matriculación</h4>
+                            <p>Formalización de la matrícula y bienvenida a nuestra comunidad educativa</p>
+                        </div>
+                    </div>
+                </div>
+                <div class="admission-cta">
+                    <h3>¿Interesado en Nuestra Oferta Educativa?</h3>
+                    <p>Contacta con nuestro departamento de admisiones para más información sobre plazos, requisitos y programas disponibles</p>
+                    <a href="../../index.html#contacto" class="btn">Solicitar Información</a>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Instituto arkas</h3>
+                    <p>Formando a las mentes del futuro con excelencia académica y valores humanos.</p>
+                    <div class="social-links">
+                        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Enlaces rápidos</h3>
+                    <ul>
+                        <li><a href="../../index.html">Inicio</a></li>
+                        <li><a href="../html/centro.html">El Centro</a></li>
+                        <li><a href="../html/oferta-educativa.html">Oferta Educativa</a></li>
+                        <li><a href="../html/administracion.html">Administración</a></li>
+                        <li><a href="../../index.html#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> C. Santisteban Márquez, 4, Bajo, Ronda, 18003 Granada</li>
+                        <li><i class="fas fa-phone"></i> +34 012 345 678</li>
+                        <li><i class="fas fa-envelope"></i> info@itarkas.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Instituto arkas. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</body>
+
+</html>

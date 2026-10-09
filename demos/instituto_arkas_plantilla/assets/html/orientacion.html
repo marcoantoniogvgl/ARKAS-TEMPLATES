@@ -1,0 +1,736 @@
+<!DOCTYPE html>
+<html lang="es">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Orientación - Instituto arkas</title>
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css">
+    <link
+        href="https://fonts.googleapis.com/css2?family=Cinzel:wght@400;600;700&family=Cormorant+Garamond:wght@300;400;500&display=swap"
+        rel="stylesheet">
+    <link rel="stylesheet" href="../css/styles.css">
+</head>
+
+<body>
+    <!-- Header -->
+    <header>
+        <div class="container header-container">
+            <!-- Logo centrado en la navegación -->
+            <div class="logo-nav-container">
+                <nav class="main-nav">
+                    <ul class="menu">
+                        <li><a href="../../index.html">INICIO</a></li>
+                        <li class="dropdown">
+                            <a href="../html/centro.html">NUESTRO CENTRO <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="../html/centro.html#aulas">Aulas</a></li>
+                                <li><a href="../html/centro.html#instalaciones">Instalaciones</a></li>
+                                <li><a href="../html/centro.html#historia">Historia</a></li>
+                                <li><a href="../html/centro.html#ubicacion">Ubicación</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="../html/oferta-educativa.html">OFERTA EDUCATIVA <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="../html/oferta-educativa.html#eso">ESO</a></li>
+                                <li><a href="../html/oferta-educativa.html#bachillerato">Bachillerato</a></li>
+                            </ul>
+                        </li>
+
+                        <!-- Logo en el centro -->
+                        <li class="logo-item">
+                            <a href="../../index.html">
+                            <div class="logo-circle">
+                                <img src="../img/logocolorsinletras.png" alt="Instituto arkas" class="logo">
+                            </div>
+                            </a>
+                        </li>
+
+                        <li class="dropdown">
+                            <a href="../html/administracion.html">ADMINISTRACIÓN <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="../html/administracion.html#matriculas">Matrículas</a></li>
+                                <li><a href="../html/administracion.html#becas">Becas</a></li>
+                                <li><a href="../html/administracion.html#titulos">Títulos</a></li>
+                                <li><a href="../html/administracion.html#documentacion">Documentación</a></li>
+                                <li><a href="../html/administracion.html#personal">Personal</a></li>
+                            </ul>
+                        </li>
+                        <li class="dropdown">
+                            <a href="orientacion.html">ORIENTACIÓN <i class="fas fa-chevron-down"></i></a>
+                            <ul class="dropdown-menu">
+                                <li><a href="orientacion.html#departamentos">Departamentos</a></li>
+                                <li><a href="orientacion.html#continuar-estudiando">Continuar estudiando</a></li>
+                                <li><a href="orientacion.html#salidas-profesionales">Salidas profesionales</a></li>
+                            </ul>
+                        </li>
+                        <li><a href="../../index.html#contacto">CONTACTO</a></li>
+                    </ul>
+                </nav>
+            </div>
+
+        </div>
+    </header>
+    <div class="aula-virtual-bar">
+        <div class="container aula-virtual-header">
+            <button class="aula-virtual-btn" id="openLoginModal">
+                <i class="fas fa-graduation-cap"></i>
+                AULA VIRTUAL
+            </button>
+        </div>
+    </div>
+
+    <!-- Modal de Login -->
+    <div class="modal" id="loginModal">
+        <div class="modal-content">
+            <button class="close-btn" id="closeLoginModal">&times;</button>
+            <div class="login-container">
+                <h2 class="section-title">Acceso a la Plataforma</h2>
+                <form id="login-form">
+                    <div class="form-group">
+                        <label for="username">Usuario</label>
+                        <input type="text" id="username" class="form-control" required placeholder="Tu usuario">
+                    </div>
+                    <div class="form-group">
+                        <label for="password">Contraseña</label>
+                        <input type="password" id="password" class="form-control" required placeholder="Tu contraseña">
+                    </div>
+                    <button type="submit" class="btn" style="width: 100%;">Iniciar Sesión</button>
+                </form>
+            </div>
+        </div>
+    </div>
+
+    <!-- Sección Departamentos -->
+    <section id="departamentos">
+        <div class="container">
+            <br>
+            <h2 class="section-title">DEPARTAMENTOS DIDÁCTICOS</h2>
+            <div class="orientacion-content">
+                <div class="orientacion-info">
+                    <h3>Nuestros Departamentos Especializados</h3>
+                    <p>Contamos con un equipo de profesores altamente cualificados en cada área del conocimiento, comprometidos con la excelencia educativa y el desarrollo integral de nuestros estudiantes.</p>
+                    
+                    <div class="departamentos-grid">
+                        <!-- Ciencias -->
+                        <div class="departamento-card">
+                            <div class="departamento-icon">
+                                <i class="fas fa-atom"></i>
+                            </div>
+                            <h4>Ciencias</h4>
+                            <p class="departamento-desc">Coordinación de las áreas científicas y desarrollo de proyectos interdisciplinares</p>
+                            <div class="responsable">
+                                <strong>Coordinador:</strong> Dr. Javier Martínez
+                            </div>
+                            <div class="contacto-departamento">
+                                <i class="fas fa-envelope"></i> ciencias@itarkas.com
+                            </div>
+                        </div>
+
+                        <!-- Biología y Geología -->
+                        <div class="departamento-card">
+                            <div class="departamento-icon">
+                                <i class="fas fa-dna"></i>
+                            </div>
+                            <h4>Biología y Geología</h4>
+                            <p class="departamento-desc">Estudio de la vida y la Tierra, laboratorios y salidas de campo</p>
+                            <div class="responsable">
+                                <strong>Responsable:</strong> Dra. Elena Rodríguez
+                            </div>
+                            <div class="contacto-departamento">
+                                <i class="fas fa-envelope"></i> biologia@itarkas.com
+                            </div>
+                        </div>
+
+                        <!-- Física y Química -->
+                        <div class="departamento-card">
+                            <div class="departamento-icon">
+                                <i class="fas fa-flask"></i>
+                            </div>
+                            <h4>Física y Química</h4>
+                            <p class="departamento-desc">Experimentación y comprensión de los fenómenos naturales</p>
+                            <div class="responsable">
+                                <strong>Responsable:</strong> Dr. Carlos López
+                            </div>
+                            <div class="contacto-departamento">
+                                <i class="fas fa-envelope"></i> fisicaquimica@itarkas.com
+                            </div>
+                        </div>
+
+                        <!-- Matemáticas -->
+                        <div class="departamento-card">
+                            <div class="departamento-icon">
+                                <i class="fas fa-square-root-alt"></i>
+                            </div>
+                            <h4>Matemáticas</h4>
+                            <p class="departamento-desc">Desarrollo del pensamiento lógico y resolución de problemas</p>
+                            <div class="responsable">
+                                <strong>Responsable:</strong> Dr. Miguel Ángel Santos
+                            </div>
+                            <div class="contacto-departamento">
+                                <i class="fas fa-envelope"></i> matematicas@itarkas.com
+                            </div>
+                        </div>
+
+                        <!-- Tecnología -->
+                        <div class="departamento-card">
+                            <div class="departamento-icon">
+                                <i class="fas fa-microchip"></i>
+                            </div>
+                            <h4>Tecnología</h4>
+                            <p class="departamento-desc">Innovación, robótica y desarrollo de proyectos tecnológicos</p>
+                            <div class="responsable">
+                                <strong>Responsable:</strong> Ing. Ana García
+                            </div>
+                            <div class="contacto-departamento">
+                                <i class="fas fa-envelope"></i> tecnologia@itarkas.com
+                            </div>
+                        </div>
+
+                        <!-- Sociales -->
+                        <div class="departamento-card">
+                            <div class="departamento-icon">
+                                <i class="fas fa-globe-europe"></i>
+                            </div>
+                            <h4>Ciencias Sociales</h4>
+                            <p class="departamento-desc">Coordinación de historia, geografía y economía</p>
+                            <div class="responsable">
+                                <strong>Coordinador:</strong> Dr. Roberto Jiménez
+                            </div>
+                            <div class="contacto-departamento">
+                                <i class="fas fa-envelope"></i> sociales@itarkas.com
+                            </div>
+                        </div>
+
+                        <!-- Lengua y Literatura -->
+                        <div class="departamento-card">
+                            <div class="departamento-icon">
+                                <i class="fas fa-book"></i>
+                            </div>
+                            <h4>Lengua y Literatura</h4>
+                            <p class="departamento-desc">Desarrollo de la competencia comunicativa y literaria</p>
+                            <div class="responsable">
+                                <strong>Responsable:</strong> Dra. Carmen Fernández
+                            </div>
+                            <div class="contacto-departamento">
+                                <i class="fas fa-envelope"></i> lengua@itarkas.com
+                            </div>
+                        </div>
+
+                        <!-- Filosofía -->
+                        <div class="departamento-card">
+                            <div class="departamento-icon">
+                                <i class="fas fa-brain"></i>
+                            </div>
+                            <h4>Filosofía</h4>
+                            <p class="departamento-desc">Pensamiento crítico y reflexión sobre el conocimiento</p>
+                            <div class="responsable">
+                                <strong>Responsable:</strong> Dr. Pedro Ortega
+                            </div>
+                            <div class="contacto-departamento">
+                                <i class="fas fa-envelope"></i> filosofia@itarkas.com
+                            </div>
+                        </div>
+
+                        <!-- Geografía e Historia -->
+                        <div class="departamento-card">
+                            <div class="departamento-icon">
+                                <i class="fas fa-monument"></i>
+                            </div>
+                            <h4>Geografía e Historia</h4>
+                            <p class="departamento-desc">Comprensión del espacio y el tiempo histórico</p>
+                            <div class="responsable">
+                                <strong>Responsable:</strong> Dra. Isabel Martínez
+                            </div>
+                            <div class="contacto-departamento">
+                                <i class="fas fa-envelope"></i> geohistoria@itarkas.com
+                            </div>
+                        </div>
+
+                        <!-- Idiomas -->
+                        <div class="departamento-card">
+                            <div class="departamento-icon">
+                                <i class="fas fa-language"></i>
+                            </div>
+                            <h4>Idiomas</h4>
+                            <p class="departamento-desc">Coordinación de inglés, francés y otros idiomas</p>
+                            <div class="responsable">
+                                <strong>Coordinador:</strong> Sarah Johnson
+                            </div>
+                            <div class="contacto-departamento">
+                                <i class="fas fa-envelope"></i> idiomas@itarkas.com
+                            </div>
+                        </div>
+
+                        <!-- Inglés -->
+                        <div class="departamento-card">
+                            <div class="departamento-icon">
+                                <i class="fas fa-flag-usa"></i>
+                            </div>
+                            <h4>Inglés</h4>
+                            <p class="departamento-desc">Competencia comunicativa en lengua inglesa</p>
+                            <div class="responsable">
+                                <strong>Responsable:</strong> Michael Brown
+                            </div>
+                            <div class="contacto-departamento">
+                                <i class="fas fa-envelope"></i> ingles@itarkas.com
+                            </div>
+                        </div>
+
+                        <!-- Francés -->
+                        <div class="departamento-card">
+                            <div class="departamento-icon">
+                                <i class="fas fa-flag"></i>
+                            </div>
+                            <h4>Francés</h4>
+                            <p class="departamento-desc">Aprendizaje de la lengua y cultura francesa</p>
+                            <div class="responsable">
+                                <strong>Responsable:</strong> Marie Dubois
+                            </div>
+                            <div class="contacto-departamento">
+                                <i class="fas fa-envelope"></i> frances@itarkas.com
+                            </div>
+                        </div>
+
+                        <!-- Educación Física -->
+                        <div class="departamento-card">
+                            <div class="departamento-icon">
+                                <i class="fas fa-running"></i>
+                            </div>
+                            <h4>Educación Física</h4>
+                            <p class="departamento-desc">Desarrollo físico, deporte y hábitos saludables</p>
+                            <div class="responsable">
+                                <strong>Responsable:</strong> Prof. David González
+                            </div>
+                            <div class="contacto-departamento">
+                                <i class="fas fa-envelope"></i> educacionfisica@itarkas.com
+                            </div>
+                        </div>
+
+                        <!-- Clásicas -->
+                        <div class="departamento-card">
+                            <div class="departamento-icon">
+                                <i class="fas fa-history"></i>
+                            </div>
+                            <h4>Clásicas</h4>
+                            <p class="departamento-desc">Estudio de las lenguas y cultura clásica</p>
+                            <div class="responsable">
+                                <strong>Responsable:</strong> Dra. Laura Méndez
+                            </div>
+                            <div class="contacto-departamento">
+                                <i class="fas fa-envelope"></i> clasicas@itarkas.com
+                            </div>
+                        </div>
+
+                        <!-- Dibujo -->
+                        <div class="departamento-card">
+                            <div class="departamento-icon">
+                                <i class="fas fa-pencil-alt"></i>
+                            </div>
+                            <h4>Dibujo</h4>
+                            <p class="departamento-desc">Expresión artística y educación plástica</p>
+                            <div class="responsable">
+                                <strong>Responsable:</strong> Prof. Antonio Ruiz
+                            </div>
+                            <div class="contacto-departamento">
+                                <i class="fas fa-envelope"></i> dibujo@itarkas.com
+                            </div>
+                        </div>
+
+                        <!-- Música -->
+                        <div class="departamento-card">
+                            <div class="departamento-icon">
+                                <i class="fas fa-music"></i>
+                            </div>
+                            <h4>Música</h4>
+                            <p class="departamento-desc">Educación musical y actividades corales</p>
+                            <div class="responsable">
+                                <strong>Responsable:</strong> Prof. Elena Castro
+                            </div>
+                            <div class="contacto-departamento">
+                                <i class="fas fa-envelope"></i> musica@itarkas.com
+                            </div>
+                        </div>
+
+                        <!-- Orientación -->
+                        <div class="departamento-card">
+                            <div class="departamento-icon">
+                                <i class="fas fa-hands-helping"></i>
+                            </div>
+                            <h4>Orientación</h4>
+                            <p class="departamento-desc">Apoyo psicopedagógico y orientación académica</p>
+                            <div class="responsable">
+                                <strong>Responsable:</strong> Dra. Marta Sánchez
+                            </div>
+                            <div class="contacto-departamento">
+                                <i class="fas fa-envelope"></i> orientacion@itarkas.com
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Continuar Estudiando -->
+    <section id="continuar-estudiando" style="background-color: var(--neutral-light);">
+        <div class="container">
+            <h2 class="section-title">CONTINUAR ESTUDIANDO</h2>
+            <div class="orientacion-content">
+                <div class="orientacion-info">
+                    <h3>Opciones de Formación Superior</h3>
+                    <p>Te ayudamos a planificar tu futuro académico con información actualizada sobre todas las opciones disponibles después de completar tus estudios en nuestro centro.</p>
+                    
+                    <div class="opciones-grid">
+                        <div class="opcion-card">
+                            <h4>Estudios Universitarios</h4>
+                            <div class="opcion-content">
+                                <h5>Grados Universitarios</h5>
+                                <ul>
+                                    <li><strong>Ciencias de la Salud:</strong> Medicina, Enfermería, Farmacia</li>
+                                    <li><strong>Ingenierías y Arquitectura:</strong> Todas las especialidades</li>
+                                    <li><strong>Ciencias Sociales y Jurídicas:</strong> Derecho, Economía, ADE</li>
+                                    <li><strong>Artes y Humanidades:</strong> Bellas Artes, Filologías, Historia</li>
+                                </ul>
+                                <div class="opcion-info">
+                                    <p><strong>Acceso:</strong> Selectividad/EBAU</p>
+                                    <p><strong>Duración:</strong> 4 años (240 ECTS)</p>
+                                    <p><strong>Requisitos:</strong> Título de Bachillerato</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="opcion-card">
+                            <h4>Formación Profesional</h4>
+                            <div class="opcion-content">
+                                <h5>Ciclos Formativos</h5>
+                                <ul>
+                                    <li><strong>FP Grado Superior:</strong> Técnico Superior especializado</li>
+                                    <li><strong>FP Grado Medio:</strong> Técnico en diversas áreas</li>
+                                    <li><strong>Formación Dual:</strong> Combinación de estudios y trabajo simultáneo</li>
+                                    <li><strong>Cursos Especializados:</strong> Certificados actuales de profesionalidad</li>
+                                </ul>
+                                <div class="opcion-info">
+                                    <p><strong>Acceso:</strong> Titulación ESO/Bachillerato</p>
+                                    <p><strong>Duración:</strong> 1-2 años</p>
+                                    <p><strong>Ventajas:</strong> Enfoque práctico y laboral</p>
+                                </div>
+                            </div>
+                        </div>
+                        <div class="opcion-card">
+                            <h4>Estudios en el Extranjero</h4>
+                            <div class="opcion-content">
+                                <h5>Programas Internacionales</h5>
+                                <ul>
+                                    <li><strong>Erasmus+:</strong> Intercambios europeos</li>
+                                    <li><strong>Bachillerato Internacional:</strong> Programa internacional</li>
+                                    <li><strong>Programas de Intercambio:</strong> Años académicos en el extranjero</li>
+                                    <li><strong>Universidades Extranjeras:</strong> Acceso directo a universidades internacionales</li>
+                                </ul>
+                                <div class="opcion-info">
+                                    <p><strong>Requisitos:</strong> Idiomas y expediente académico</p>
+                                    <p><strong>Plazos:</strong> Consultar convocatorias anuales</p>
+                                    <p><strong>Idiomas:</strong> Nivel B2 mínimo requerido</p>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Salidas Profesionales -->
+    <section id="salidas-profesionales">
+        <div class="container">
+            <h2 class="section-title">SALIDAS PROFESIONALES</h2>
+            <div class="orientacion-content">
+                <div class="orientacion-info">
+                    <h3>Futuro Laboral y Profesional</h3>
+                    <p>Conoce las principales salidas profesionales asociadas a cada área de estudio y las perspectivas laborales actuales del mercado.</p>
+                    
+                    <div class="salidas-tabs">
+                        <div class="tab-buttons">
+                            <button class="tab-button active" data-tab="ciencias">Ciencias</button>
+                            <button class="tab-button" data-tab="tecnologia">Tecnología</button>
+                            <button class="tab-button" data-tab="humanidades">Humanidades</button>
+                            <button class="tab-button" data-tab="sociales">Ciencias Sociales</button>
+                            <button class="tab-button" data-tab="artes">Artes</button>
+                        </div>
+                        
+                        <div class="tab-content">
+                            <div class="tab-pane active" id="ciencias">
+                                <h4>Salidas Profesionales en Ciencias</h4>
+                                <div class="salidas-grid">
+                                    <div class="salida-item">
+                                        <h5>Medicina y Salud</h5>
+                                        <ul>
+                                            <li>Médico especialista</li>
+                                            <li>Enfermero/a</li>
+                                            <li>Farmacéutico/a</li>
+                                            <li>Investigador biomédico</li>
+                                            <li>Nutricionista</li>
+                                            <li>Veterinario</li>
+                                        </ul>
+                                    </div>
+                                    <div class="salida-item">
+                                        <h5>Investigación Científica</h5>
+                                        <ul>
+                                            <li>Biotecnólogo</li>
+                                            <li>Químico industrial</li>
+                                            <li>Geólogo</li>
+                                            <li>Oceanógrafo</li>
+                                            <li>Físico investigador</li>
+                                            <li>Bioquímico</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-pane" id="tecnologia">
+                                <h4>Salidas Profesionales en Tecnología</h4>
+                                <div class="salidas-grid">
+                                    <div class="salida-item">
+                                        <h5>Ingenierías</h5>
+                                        <ul>
+                                            <li>Ingeniero de Software</li>
+                                            <li>Ingeniero Industrial</li>
+                                            <li>Arquitecto</li>
+                                            <li>Ingeniero de Telecomunicaciones</li>
+                                            <li>Ingeniero Civil</li>
+                                            <li>Ingeniero Mecánico</li>
+                                        </ul>
+                                    </div>
+                                    <div class="salida-item">
+                                        <h5>Tecnologías de la Información</h5>
+                                        <ul>
+                                            <li>Desarrollador Web</li>
+                                            <li>Analista de Datos</li>
+                                            <li>Especialista en Ciberseguridad</li>
+                                            <li>Administrador de Sistemas</li>
+                                            <li>Diseñador UX/UI</li>
+                                            <li>Consultor Tecnológico</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-pane" id="humanidades">
+                                <h4>Salidas Profesionales en Humanidades</h4>
+                                <div class="salidas-grid">
+                                    <div class="salida-item">
+                                        <h5>Educación y Cultura</h5>
+                                        <ul>
+                                            <li>Profesor de Secundaria</li>
+                                            <li>Investigador en Humanidades</li>
+                                            <li>Gestor Cultural</li>
+                                            <li>Archivero/Bibliotecario</li>
+                                            <li>Editor</li>
+                                            <li>Crítico Literario</li>
+                                        </ul>
+                                    </div>
+                                    <div class="salida-item">
+                                        <h5>Comunicación y Arte</h5>
+                                        <ul>
+                                            <li>Periodista</li>
+                                            <li>Guionista</li>
+                                            <li>Traductor/Intérprete</li>
+                                            <li>Escritor</li>
+                                            <li>Filólogo</li>
+                                            <li>Historiador del Arte</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                            
+                            <div class="tab-pane" id="sociales">
+                                <h4>Salidas Profesionales en Ciencias Sociales</h4>
+                                <div class="salidas-grid">
+                                    <div class="salida-item">
+                                        <h5>Empresa y Economía</h5>
+                                        <ul>
+                                            <li>Economista</li>
+                                            <li>Administrador de Empresas</li>
+                                            <li>Consultor Financiero</li>
+                                            <li>Analista de Mercados</li>
+                                            <li>Emprendedor</li>
+                                            <li>Directivo</li>
+                                        </ul>
+                                    </div>
+                                    <div class="salida-item">
+                                        <h5>Derecho y Sociología</h5>
+                                        <ul>
+                                            <li>Abogado</li>
+                                            <li>Juez/Magistrado</li>
+                                            <li>Sociólogo</li>
+                                            <li>Trabajador Social</li>
+                                            <li>Politólogo</li>
+                                            <li>Antropólogo</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+
+                            <div class="tab-pane" id="artes">
+                                <h4>Salidas Profesionales en Artes</h4>
+                                <div class="salidas-grid">
+                                    <div class="salida-item">
+                                        <h5>Artes Plásticas y Visuales</h5>
+                                        <ul>
+                                            <li>Artista Plástico</li>
+                                            <li>Ilustrador</li>
+                                            <li>Diseñador Gráfico</li>
+                                            <li>Escultor</li>
+                                            <li>Restaurador</li>
+                                            <li>Comisario de Exposiciones</li>
+                                        </ul>
+                                    </div>
+                                    <div class="salida-item">
+                                        <h5>Medios Audiovisuales</h5>
+                                        <ul>
+                                            <li>Director de Cine</li>
+                                            <li>Animador 2D/3D</li>
+                                            <li>Diseñador de Videojuegos</li>
+                                            <li>Fotógrafo</li>
+                                            <li>Productor Audiovisual</li>
+                                            <li>Especialista en Efectos Visuales</li>
+                                        </ul>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Sección Contacto Orientación -->
+<div style="background-image: url('../img/textura1.jpg'); z-index: 1;">
+    <section id="contacto-orientacion" style="background-color: #f8f4e9b2;">
+        <div class="container">
+            <h2 class="section-title">CONTACTA CON ORIENTACIÓN</h2>
+            <div class="orientacion-content">
+                <div class="contacto-orientacion">
+                    <div class="orientacion-team">
+                        <h3 class="section-title">Nuestro Equipo de Orientación</h3>
+                        <div class="team-grid">
+                            <div class="team-member">
+                            <div class="personal-img">
+                                <img src="../img/profe5.jpg" alt="Ana Martínez">
+                            </div>
+                                <h4>Elena Morales</h4>
+                                <p class="especialidad">Psicóloga Educativa - Máster en Orientación</p>
+                                <p class="horario">Lunes a Viernes:
+                                <p class="especialidad">9:00 - 14:00</p>
+                                <p class="contacto">emorales@itarkas.com</p>
+                            </div>
+                            <div class="team-member">
+                            <div class="personal-img">
+                                <img src="../img/profe7.png" alt="Ana Martínez">
+                            </div>
+                                <h4>Carlos Jiménez</h4>
+                                <p class="especialidad">Especialista en Orientación Universitaria</p>
+                                <p class="horario">Lunes a Jueves:
+                                <p class="especialidad">10:00 - 13:00</p>
+                                <p class="contacto">cjimenez@itarkas.com</p>
+                            </div>
+                            <div class="team-member">
+                            <div class="personal-img">
+                                <img src="../img/profe6.jpg" alt="Ana Martínez">
+                            </div>
+                                <h4>María López</h4>
+                                <p class="especialidad">Especialista en Mercado Laboral</p>
+                                <p class="horario">Martes y Jueves:
+                                <p class="especialidad">9:00 - 12:00</p>
+                                <p class="contacto">mlopez@itarkas.com</p>
+                            </div>
+                        </div>
+                    </div>
+                    
+                    <div class="cita-orientacion">
+                        <h3>Solicita una Cita de Orientación</h3>
+                        <form id="cita-orientacion-form">
+                            <div class="form-group">
+                                <label for="nombre">Nombre completo</label>
+                                <input type="text" id="nombre" class="form-control" required placeholder="Tu nombre completo">
+                            </div>
+                            <div class="form-group">
+                                <label for="curso">Curso actual</label>
+                                <select id="curso" class="form-control" required>
+                                    <option value="">Selecciona tu curso</option>
+                                    <option value="1eso">1º ESO</option>
+                                    <option value="2eso">2º ESO</option>
+                                    <option value="3eso">3º ESO</option>
+                                    <option value="4eso">4º ESO</option>
+                                    <option value="1bach">1º Bachillerato</option>
+                                    <option value="2bach">2º Bachillerato</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="motivo">Motivo de la consulta</label>
+                                <select id="motivo" class="form-control" required>
+                                    <option value="">Selecciona el motivo</option>
+                                    <option value="academico">Orientación Académica</option>
+                                    <option value="universitario">Orientación Universitaria</option>
+                                    <option value="personal">Orientación Personal</option>
+                                    <option value="profesional">Orientación Profesional</option>
+                                    <option value="departamento">Consulta con Departamento</option>
+                                    <option value="otro">Otro</option>
+                                </select>
+                            </div>
+                            <div class="form-group">
+                                <label for="mensaje">Mensaje adicional</label>
+                                <textarea id="mensaje" class="form-control" rows="4" placeholder="Describe brevemente tu consulta..."></textarea>
+                            </div>
+                            <button type="submit" class="btn">Solicitar Cita</button>
+                        </form>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </section>
+</div>
+    <!-- Footer -->
+    <footer>
+        <div class="container">
+            <div class="footer-content">
+                <div class="footer-section">
+                    <h3>Instituto arkas</h3>
+                    <p>Formando a las mentes del futuro con excelencia académica y valores humanos.</p>
+                    <div class="social-links">
+                        <a href="#" title="Facebook"><i class="fab fa-facebook-f"></i></a>
+                        <a href="#" title="Twitter"><i class="fab fa-twitter"></i></a>
+                        <a href="#" title="Instagram"><i class="fab fa-instagram"></i></a>
+                        <a href="#" title="YouTube"><i class="fab fa-youtube"></i></a>
+                    </div>
+                </div>
+                <div class="footer-section">
+                    <h3>Enlaces rápidos</h3>
+                    <ul>
+                        <li><a href="../../index.html">Inicio</a></li>
+                        <li><a href="../html/centro.html">El Centro</a></li>
+                        <li><a href="../html/oferta-educativa.html">Oferta Educativa</a></li>
+                        <li><a href="../html/administracion.html">Administración</a></li>
+                        <li><a href="../../index.html#contacto">Contacto</a></li>
+                    </ul>
+                </div>
+                <div class="footer-section">
+                    <h3>Contacto</h3>
+                    <ul>
+                        <li><i class="fas fa-map-marker-alt"></i> C. Santisteban Márquez, 4, Bajo, Ronda, 18003 Granada</li>
+                        <li><i class="fas fa-phone"></i> +34 012 345 678</li>
+                        <li><i class="fas fa-envelope"></i> info@itarkas.com</li>
+                    </ul>
+                </div>
+            </div>
+            <div class="footer-bottom">
+                <p>&copy; 2025 Instituto arkas. Todos los derechos reservados.</p>
+            </div>
+        </div>
+    </footer>
+
+    <script src="../js/script.js"></script>
+</body>
+
+</html>
