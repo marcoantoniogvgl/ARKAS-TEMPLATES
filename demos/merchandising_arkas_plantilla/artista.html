@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="Panel de artistas de TOMA: crea tu merch y anuncia tus conciertos.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+<title>Panel del artista | TOMA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="seed.js" defer></script><script src="avatar.js" defer></script><script src="script.js" defer></script><script src="artista.js" defer></script><script src="stats.js" defer></script>
+</head>
+<body>
+<header class="top"><div class="wrap bar">
+<a class="brand" href="index.html"><span class="logo" aria-hidden="true"><i></i><i></i><i></i></span>TOMA</a>
+<nav aria-label="Principal"><a href="index.html">Volver a la tienda</a></nav><button class="icon-btn" id="theme" type="button" aria-label="Cambiar entre tema claro y oscuro">◐</button></div></header>
+<main class="wrap sec">
+<h1>Panel del artista</h1>
+<p class="mu lead">Crea tu merch y anuncia tus conciertos. Se publican al instante en la tienda.</p>
+<div role="tablist" aria-label="Secciones" class="tabs">
+<button class="chip" role="tab" aria-selected="true" data-tab="t-prod" type="button">Crear producto</button>
+<button class="chip" role="tab" aria-selected="false" data-tab="t-ev" type="button">Anunciar concierto</button>
+<button class="chip" role="tab" aria-selected="false" data-tab="t-perfil" type="button">Mi perfil</button>
+<button class="chip" role="tab" aria-selected="false" data-tab="t-stats" type="button">Estadísticas</button>
+<button class="chip" role="tab" aria-selected="false" data-tab="t-mine" type="button">Mi catálogo</button></div>
+
+<section class="panel" id="t-prod" role="tabpanel"><div class="studio">
+<form class="f" id="pf" novalidate>
+<ol class="steps" aria-label="Pasos"><li aria-current="step">Producto</li><li>Diseño</li><li>Precio y publicación</li></ol>
+<div class="stepbox f">
+<fieldset class="f"><legend>¿Qué quieres vender?</legend><div id="types"></div></fieldset>
+<fieldset class="f"><legend>Colores disponibles</legend><div class="swrow" id="swatches"></div></fieldset>
+<div class="two"><label>Artista o banda<input name="artist" required maxlength="40"></label><label>Género<select name="genre" id="p-genre"></select></label></div>
+<label>Nombre del producto<input name="name" required maxlength="50" placeholder="Camiseta Gira 2027"></label></div>
+<div class="stepbox f" hidden>
+<label>Tu diseño (PNG con fondo transparente queda mejor)<input type="file" name="file" accept="image/png,image/jpeg"></label>
+<button class="del" type="button" id="rm-design">Quitar imagen</button>
+<div class="two"><label>Texto (si no subes imagen)<input name="text" maxlength="16" value="TOMA"></label><label>Color del texto<input name="textColor" type="color" value="#171A3A"></label></div>
+<div class="two"><label>Tamaño<input name="scale" type="range" min="30" max="100" value="80"></label><label>Posición vertical<input name="dy" type="range" min="-30" max="30" value="0"></label></div>
+<label class="chk"><input type="checkbox" name="motif" checked> Añadir el motivo gráfico de mi género</label>
+<p class="mu hint">La línea punteada de la vista previa marca la zona donde se imprime.</p></div>
+<div class="stepbox f" hidden>
+<div class="two"><label>Proveedor<select name="supplier" id="p-sup"></select></label><label>Precio de venta (€)<input name="price" type="number" min="1" step="0.5" value="25" required></label></div>
+<button class="btn btn-s" type="button" id="suggest">Usar precio competitivo</button></div>
+<div class="nav"><button class="btn" type="button" id="back" hidden>Atrás</button><button class="btn btn-p" type="button" id="next">Siguiente</button><button class="btn btn-p" type="submit" id="publish" hidden>Publicar producto</button></div>
+</form>
+<aside class="preview"><div id="prev"></div><div class="sws" id="prev-sw"></div><dl class="econ" id="econ"></dl><p class="hint" id="save"></p><p class="mu hint">Vista aproximada. Pide una muestra al proveedor antes de vender.</p></aside></div></section>
+
+<section class="panel" id="t-ev" role="tabpanel" hidden>
+<form class="f narrow" id="ef">
+<div class="two"><label>Artista o banda<input name="artist" required maxlength="40"></label><label>Género<select name="genre" id="e-genre"></select></label></div>
+<div class="two"><label>Ciudad<input name="city" required></label><label>Sala o recinto<input name="venue" required></label></div>
+<div class="two"><label>Fecha<input name="date" type="date" required></label><label>Precio de la entrada (€)<input name="price" type="number" min="0" step="0.5" value="20" required></label></div>
+<label>Entradas disponibles<input name="stock" type="number" min="1" value="100" required></label>
+<button class="btn btn-p" type="submit">Publicar concierto</button></form></section>
+
+<section class="panel" id="t-perfil" role="tabpanel" hidden>
+<form class="f narrow" id="af">
+<div class="two"><label>Artista o banda<select id="a-sel"></select></label><label>Ciudad<input name="city" maxlength="40"></label></div>
+<label>Biografía<textarea name="bio" maxlength="240" rows="3"></textarea></label>
+<label>Foto de perfil (JPG o PNG, se recorta en cuadrado)<input type="file" name="photo" accept="image/png,image/jpeg"></label>
+<div class="av av-prev" id="a-prev"></div>
+<button class="btn btn-p" type="submit">Guardar perfil</button></form></section>
+
+<section class="panel" id="t-stats" role="tabpanel" hidden>
+<div class="tools"><select id="st-artist" aria-label="Artista"></select><select id="st-range" aria-label="Periodo"><option value="7">Últimos 7 días</option><option value="30" selected>Últimos 30 días</option><option value="90">Últimos 90 días</option></select><button class="btn btn-s" id="st-csv" type="button">Exportar CSV</button></div>
+<div id="stats"></div></section>
+
+<section class="panel" id="t-mine" role="tabpanel" hidden>
+<div class="f narrow"><label>Clave de artista (solo si usas el servidor)<input id="key" type="password" autocomplete="off"></label></div><div class="f narrow gap"><label>Validar entrada en puerta<input id="vcode" placeholder="Código de la entrada" autocomplete="off"></label><button class="btn btn-s" type="button" id="vbtn">Validar</button></div><h2 class="gap">Productos y conciertos</h2><div id="mine"></div>
+<h2 class="gap">Pedidos para proveedores</h2>
+<div class="scroll"><table><thead><tr><th>Pedido</th><th>Proveedor</th><th>Artículos</th><th>Estado</th></tr></thead><tbody id="so"></tbody></table></div></section>
+</main>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

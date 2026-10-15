@@ -1,1381 +1,253 @@
-/* ==========================================================================
-   TOMA — script.js
-   Todo el comportamiento de la web en un solo archivo.
-
-   Organización:
-    0. Configuración y datos de ejemplo (catálogo, eventos)
-    1. Utilidades
-    2. Almacenamiento local
-    3. API SIMULADA  ← aquí se sustituirá por llamadas reales al backend
-    4. Fondo de estrellas
-    5. Avisos, modales y formularios
-    6. Catálogo, favoritos y eventos
-    7. Carrito
-    8. Checkout
-    9. Vista rápida y buscador
-   10. Cuenta y perfil
-   11. Personalizador
-   12. Router y arranque
-   ========================================================================== */
 (() => {
-    'use strict';
-
-    /* ======================================================================
-       0. CONFIGURACIÓN Y DATOS
-       Los valores de envío, IVA y códigos son de EJEMPLO: cuando exista el
-       backend deben venir del servidor (nunca se confía en el navegador).
-    ====================================================================== */
-    const CONFIG = {
-        vat: 0.21,
-        shipping: { cost: 4.9, freeFrom: 60 },
-        promos: { TOMA10: { percent: 10, label: 'TOMA10 (−10 %)' } },
-        maxLogoBytes: 1.5 * 1024 * 1024
-    };
-
-    const CATALOG = [
-        { id: 'tee-essential', code: '001', category: 'ropa', name: 'Camiseta Essential', detail: 'Algodón pesado · Tallas XS–XL', price: 32, tone: 'star', icon: 'tee', sizes: ['XS', 'S', 'M', 'L', 'XL'], tag: 'Más vendido' },
-        { id: 'hoodie-studio', code: '002', category: 'ropa', name: 'Sudadera Studio', detail: 'Felpa suave · Tallas S–XL', price: 58, tone: 'void', icon: 'hoodie', sizes: ['S', 'M', 'L', 'XL'] },
-        { id: 'cap-logo', code: '003', category: 'ropa', name: 'Gorra Logo', detail: 'Algodón lavado · Ajustable', price: 24, tone: 'dusk', icon: 'cap' },
-        { id: 'tote-toma', code: '004', category: 'objetos', name: 'Tote Bag TOMA', detail: 'Lona reciclada · Edición limitada', price: 18, tone: 'gold', icon: 'tote', tag: 'Nuevo' },
-        { id: 'desk-clock', code: '005', category: 'objetos', name: 'Reloj de sobremesa', detail: 'Aluminio · Mecanismo silencioso', price: 42, tone: 'noir', icon: 'watch' },
-        { id: 'print-manifiesto', code: '006', category: 'objetos', name: 'Lámina Manifiesto', detail: 'Serigrafía · 30 × 40 cm', price: 16, tone: 'star', icon: 'print' }
-    ];
-
-    const EVENTS = [
-        { id: 'toma-night-madrid', code: '012', date: '2026-10-12', city: 'Madrid', venue: 'Sala El Sol', title: 'TOMA Night', desc: 'Una noche de música, visuales y piezas nuevas con artistas invitados.', price: 15 },
-        { id: 'studio-sessions-barcelona', code: '013', date: '2026-11-07', city: 'Barcelona', venue: 'Razzmatazz', title: 'Studio Sessions', desc: 'Directos íntimos y una edición especial de merchandising del estudio.', price: 18 },
-        { id: 'objects-sounds-valencia', code: '014', date: '2026-11-21', city: 'Valencia', venue: 'La Mutant', title: 'Objects & Sounds', desc: 'Mercado de creadores, charla abierta y música durante toda la tarde.', price: 0 }
-    ];
-
-    const COLORS = {
-        black: { name: 'Negro', hex: '#0c0c0e', dark: true },
-        white: { name: 'Blanco', hex: '#f4f1e8', dark: false },
-        gold: { name: 'Oro', hex: '#d6ae54', dark: false },
-        graphite: { name: 'Grafito', hex: '#3b3b41', dark: true }
-    };
-
-    const PRODUCT_LABELS = { 'Camiseta': 'Camiseta Essential', 'Sudadera': 'Sudadera Studio', 'Tote Bag': 'Tote Bag' };
-    const PRODUCT_ICONS = { 'Camiseta': 'tee', 'Sudadera': 'hoodie', 'Tote Bag': 'tote' };
-
-    // Ideas rápidas del personalizador: puntos de partida, no productos reales.
-    const DESIGN_PRESETS = [
-        { label: 'Eclipse', product: 'Camiseta', color: 'black', text: 'ECLIPSE', font: 'display', size: 'M', textScale: 100, style: 'outline', printColor: 'gold' },
-        { label: 'Aurora', product: 'Sudadera', color: 'white', text: 'AURORA', font: 'sans', size: 'M', textScale: 90, style: 'solid', printColor: 'black' },
-        { label: 'Nova', product: 'Tote Bag', color: 'gold', text: 'NOVA', font: 'italic', size: 'M', textScale: 110, style: 'solid', printColor: 'black' },
-        { label: 'Cometa', product: 'Camiseta', color: 'graphite', text: 'COMETA', font: 'display', size: 'M', textScale: 95, style: 'solid', printColor: 'white' }
-    ];
-    const DEFAULT_DESIGN = { product: 'Camiseta', color: 'black', text: 'TOMA', font: 'display', size: 'M', textScale: 100, style: 'solid', printColor: 'auto' };
-
-    const DEMO_USER = { name: 'Lucía Martín', email: 'lucia@ejemplo.com', city: 'Madrid', username: 'luciamartin', demo: true };
-    const DEMO_ORDERS = [{ id: 'TM-1048', createdAt: '2026-09-15', status: 'Enviado', items: [{ name: 'Camiseta Essential', price: 32, quantity: 1, kind: 'product' }], totals: { total: 32 } }];
-    const DEMO_SALES = [
-        { name: 'Tote Bag “Noche Lenta”', meta: '3 unidades · última venta 14 sep 2026', amount: '54,00 €' },
-        { name: 'Lámina “Ritmo”', meta: '1 unidad · última venta 02 sep 2026', amount: '16,00 €' }
-    ];
-    const DEMO_PRODUCTS = [
-        { name: 'Noche Lenta / Tote', meta: 'Publicado · 12 unidades disponibles', state: 'Publicado' },
-        { name: 'Ritmo / Lámina', meta: 'Borrador · falta añadir imagen', state: 'Borrador' }
-    ];
-
-    /* ======================================================================
-       1. UTILIDADES
-    ====================================================================== */
-    const $ = (selector, root = document) => root.querySelector(selector);
-    const $$ = (selector, root = document) => Array.from(root.querySelectorAll(selector));
-
-    const money = (value) => Number(value).toLocaleString('es-ES', { minimumFractionDigits: 2, maximumFractionDigits: 2 }) + ' €';
-    const round2 = (value) => Math.round(value * 100) / 100;
-
-    const esc = (text) => String(text ?? '').replace(/[&<>"']/g, (char) => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[char]);
-
-    const normalize = (text) => String(text).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
-    const firstName = (name) => String(name || '').trim().split(/\s+/)[0] || 'tú';
-    const initials = (name) => String(name || '?').trim().split(/\s+/).slice(0, 2).map((part) => part[0]).join('').toUpperCase() || '?';
-    const capitalize = (text) => text.charAt(0).toUpperCase() + text.slice(1);
-
-    const parseDate = (iso) => new Date(String(iso).slice(0, 10) + 'T00:00:00');
-    const formatDate = (iso) => parseDate(iso).toLocaleDateString('es-ES', { day: 'numeric', month: 'short', year: 'numeric' });
-    const daysUntil = (iso) => Math.round((parseDate(iso) - new Date(new Date().toDateString())) / 86400000);
-
-    const iconSVG = (icon, className = 'pi') => `<svg class="${className}" viewBox="0 0 120 120" aria-hidden="true"><use href="#i-${icon}"/></svg>`;
-
-    // Retrasa la llamada hasta que pasen `wait` ms sin nuevas invocaciones (para el buscador, el resize, etc.)
-    function debounce(fn, wait) {
-        let timer;
-        return (...args) => { clearTimeout(timer); timer = setTimeout(() => fn(...args), wait); };
-    }
-
-    // Texto ⇄ base64 seguro con acentos y emoji, sin depender de escape()/unescape() (obsoletas).
-    function utf8ToBase64(text) {
-        const bytes = new TextEncoder().encode(text);
-        let binary = '';
-        bytes.forEach((byte) => { binary += String.fromCharCode(byte); });
-        return btoa(binary);
-    }
-    function base64ToUtf8(base64) {
-        const binary = atob(base64);
-        const bytes = Uint8Array.from(binary, (char) => char.charCodeAt(0));
-        return new TextDecoder().decode(bytes);
-    }
-
-    /* ======================================================================
-       2. ALMACENAMIENTO LOCAL (solo mientras no exista backend)
-    ====================================================================== */
-    const store = {
-        get(key, fallback) {
-            try {
-                const raw = localStorage.getItem('toma-' + key);
-                return raw === null ? fallback : JSON.parse(raw);
-            } catch { return fallback; }
-        },
-        set(key, value) {
-            try { localStorage.setItem('toma-' + key, JSON.stringify(value)); } catch { /* sin almacenamiento */ }
-        },
-        remove(key) {
-            try { localStorage.removeItem('toma-' + key); } catch { /* sin almacenamiento */ }
-        }
-    };
-
-    /* ======================================================================
-       3. API SIMULADA
-       Cada función devuelve una Promesa, igual que lo hará fetch().
-       Para conectar el backend basta con reescribir cada método; el resto
-       de la web no cambia. Endpoint sugerido en el comentario de cada uno.
-    ====================================================================== */
-    async function hashPassword(email, password) {
-        // DEMO: en producción el hash lo hace el servidor (Argon2 o bcrypt), nunca el navegador.
-        const text = `toma:${email}:${password}`;
-        try {
-            const bytes = new TextEncoder().encode(text);
-            const digest = await crypto.subtle.digest('SHA-256', bytes);
-            return Array.from(new Uint8Array(digest)).map((b) => b.toString(16).padStart(2, '0')).join('');
-        } catch { return utf8ToBase64(text); }
-    }
-
-    const publicUser = (user) => ({ id: user.id, name: user.name, email: user.email, city: user.city || '', username: user.username || '' });
-
-    const api = {
-        /** GET /api/products */
-        async getProducts() { return CATALOG; },
-        /** GET /api/events */
-        async getEvents() { return EVENTS; },
-
-        /** POST /api/auth/register */
-        async register({ name, email, password }) {
-            const users = store.get('users', []);
-            const key = email.trim().toLowerCase();
-            if (users.some((u) => u.email === key)) throw new Error('Ya existe una cuenta con ese email.');
-            const user = { id: 'u' + Date.now(), name: name.trim(), email: key, passHash: await hashPassword(key, password), createdAt: new Date().toISOString() };
-            users.push(user);
-            store.set('users', users);
-            store.set('session', publicUser(user));
-            return publicUser(user);
-        },
-        /** POST /api/auth/login */
-        async login({ email, password }) {
-            const key = email.trim().toLowerCase();
-            const user = store.get('users', []).find((u) => u.email === key);
-            if (!user || user.passHash !== await hashPassword(key, password)) throw new Error('Email o contraseña incorrectos.');
-            store.set('session', publicUser(user));
-            return publicUser(user);
-        },
-        /** POST /api/auth/logout */
-        async logout() { store.remove('session'); },
-        /** PATCH /api/me */
-        async updateProfile(patch) {
-            const session = store.get('session', null);
-            if (!session) throw new Error('Sin sesión.');
-            const users = store.get('users', []);
-            const record = users.find((u) => u.id === session.id);
-            const updated = { ...session, ...patch };
-            if (record) { Object.assign(record, patch, { email: (patch.email || record.email).toLowerCase() }); store.set('users', users); }
-            store.set('session', updated);
-            return updated;
-        },
-
-        /** GET /api/me/orders */
-        async getOrders() {
-            const session = store.get('session', null);
-            const orders = store.get('orders', []);
-            return session ? orders.filter((o) => o.userEmail === session.email) : orders.filter((o) => !o.userEmail || !store.get('users', []).some((u) => u.email === o.userEmail));
-        },
-        /** POST /api/orders (el servidor recalcula precios, stock y totales) */
-        async createOrder({ items, totals, customer, payment, promo }) {
-            const seq = store.get('order-seq', 1048) + 1;
-            store.set('order-seq', seq);
-            const session = store.get('session', null);
-            const order = {
-                id: 'TM-' + seq, createdAt: new Date().toISOString(),
-                status: items.every((i) => i.kind === 'event') ? 'Confirmada' : 'Recibido',
-                items, totals, customer, payment, promo: promo || null,
-                userEmail: session ? session.email : null
-            };
-            const orders = store.get('orders', []);
-            orders.unshift(order);
-            store.set('orders', orders);
-            return order;
-        },
-
-        /** GET /api/me/designs */
-        async getDesigns() { return store.get('designs', []); },
-        /** POST /api/me/designs */
-        async saveDesign(design) {
-            const designs = store.get('designs', []);
-            const saved = { ...design, id: 'd' + Date.now(), createdAt: new Date().toISOString() };
-            designs.unshift(saved);
-            store.set('designs', designs.slice(0, 30));
-            return saved;
-        },
-        /** DELETE /api/me/designs/:id */
-        async deleteDesign(id) { store.set('designs', store.get('designs', []).filter((d) => d.id !== id)); },
-
-        /** GET / POST /api/me/products (borradores del creador) */
-        async getDrafts() { return store.get('drafts', []); },
-        async saveDraft(draft) {
-            const drafts = store.get('drafts', []);
-            drafts.unshift({ ...draft, id: 'p' + Date.now(), createdAt: new Date().toISOString() });
-            store.set('drafts', drafts);
-        },
-        async deleteDraft(id) { store.set('drafts', store.get('drafts', []).filter((d) => d.id !== id)); },
-
-        /** POST /api/newsletter */
-        async subscribe(email) {
-            const list = store.get('newsletter', []);
-            if (!list.includes(email.toLowerCase())) list.push(email.toLowerCase());
-            store.set('newsletter', list);
-        },
-        /** POST /api/events/proposals */
-        async proposeEvent(data) {
-            const list = store.get('event-proposals', []);
-            list.push({ ...data, createdAt: new Date().toISOString() });
-            store.set('event-proposals', list);
-        },
-        /** POST /api/events/:id/rsvp */
-        async rsvp(eventId) {
-            const list = store.get('rsvps', []);
-            if (!list.includes(eventId)) list.push(eventId);
-            store.set('rsvps', list);
-        }
-    };
-
-    /* ======================================================================
-       4. FONDO DE ESTRELLAS
-    ====================================================================== */
-    function initStarfield() {
-        const canvas = $('#starfield');
-        const ctx = canvas?.getContext('2d');
-        if (!ctx) return;
-        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        let w = 0, h = 0, lastW = 0, stars = [], scroll = 0, mx = 0, raf = 0;
-
-        const draw = (t) => {
-            ctx.clearRect(0, 0, w, h);
-            for (const s of stars) {
-                const y = (((s.y - scroll * s.z * 0.35) % h) + h) % h;
-                const x = s.x + mx * s.z * 14;
-                ctx.globalAlpha = s.a * (reduce ? 1 : 0.65 + 0.35 * Math.sin((t / 1000) * s.sp + s.ph));
-                ctx.fillStyle = s.gold ? '#f4dc9a' : '#f6f3ea';
-                ctx.beginPath();
-                ctx.arc(x, y, s.r, 0, Math.PI * 2);
-                ctx.fill();
-            }
-            ctx.globalAlpha = 1;
-        };
-
-        const resize = () => {
-            const dpr = Math.min(window.devicePixelRatio || 1, 2);
-            w = window.innerWidth; h = window.innerHeight;
-            canvas.width = Math.round(w * dpr); canvas.height = Math.round(h * dpr);
-            ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
-            if (w !== lastW) {
-                lastW = w;
-                const count = Math.min(240, Math.round((w * h) / 8500));
-                stars = Array.from({ length: count }, () => {
-                    const z = Math.random();
-                    return { x: Math.random() * w, y: Math.random() * h, z, r: 0.4 + z * 1.2, a: 0.25 + z * 0.6, gold: Math.random() < 0.16, ph: Math.random() * 6.28, sp: 0.5 + Math.random() * 1.5 };
-                });
-            }
-            draw(0);
-        };
-
-        const loop = (t) => { draw(t); raf = requestAnimationFrame(loop); };
-
-        window.addEventListener('resize', resize);
-        window.addEventListener('scroll', () => { scroll = window.scrollY; if (reduce) draw(0); }, { passive: true });
-        window.addEventListener('pointermove', (e) => { mx = e.clientX / w - 0.5; }, { passive: true });
-        document.addEventListener('visibilitychange', () => {
-            if (reduce) return;
-            if (document.hidden) cancelAnimationFrame(raf); else raf = requestAnimationFrame(loop);
-        });
-
-        resize();
-        if (!reduce) raf = requestAnimationFrame(loop);
-    }
-
-    /* ======================================================================
-       5. AVISOS, MODALES Y FORMULARIOS
-    ====================================================================== */
-    let toastTimer;
-    function toast(message) {
-        const el = $('.toast');
-        if (!el) return;
-        el.textContent = message;
-        el.classList.add('is-visible');
-        clearTimeout(toastTimer);
-        toastTimer = setTimeout(() => el.classList.remove('is-visible'), 3000);
-    }
-
-    const FOCUSABLE = 'a[href], button:not([disabled]), input:not([disabled]):not([type="hidden"]), select:not([disabled]), textarea:not([disabled])';
-    const visibleFocusables = (root) => $$(FOCUSABLE, root).filter((el) => !el.closest('[hidden]') && el.offsetParent !== null);
-
-    const cartDrawer = $('.cart-drawer');
-    const drawerOverlay = $('.drawer-overlay');
-    const modalEls = Object.fromEntries($$('.modal-backdrop').map((el) => [el.dataset.modal, el]));
-    const AUTOFOCUS = { search: '#search-input', auth: 'form:not([hidden]) input', checkout: 'form:not([hidden]) input, .checkout-done a', quick: '#qv-add' };
-    let activeModal = null;
-    let returnFocus = null;
-    let drawerReturn = null;
-
-    function toggleDrawer(isOpen, silent = false) {
-        if (!cartDrawer) return;
-        if (isOpen) drawerReturn = document.activeElement;
-        cartDrawer.classList.toggle('is-open', isOpen);
-        drawerOverlay?.classList.toggle('is-visible', isOpen);
-        cartDrawer.setAttribute('aria-hidden', String(!isOpen));
-        cartDrawer.inert = !isOpen;
-        if (isOpen) $('.drawer-close', cartDrawer)?.focus();
-        else if (!silent) drawerReturn?.focus?.();
-    }
-
-    function openModal(name) {
-        const el = modalEls[name];
-        if (!el) return;
-        if (cartDrawer?.classList.contains('is-open')) toggleDrawer(false, true);
-        if (activeModal && activeModal !== name) closeModal(true);
-        if (!activeModal) returnFocus = document.activeElement;
-        activeModal = name;
-        el.inert = false;
-        el.setAttribute('aria-hidden', 'false');
-        document.body.classList.add('no-scroll');
-        requestAnimationFrame(() => {
-            el.classList.add('is-visible');
-            (AUTOFOCUS[name] && $(AUTOFOCUS[name], el) || visibleFocusables(el)[0])?.focus();
-        });
-    }
-
-    function closeModal(silent = false) {
-        if (!activeModal) return;
-        const el = modalEls[activeModal];
-        el.classList.remove('is-visible');
-        el.setAttribute('aria-hidden', 'true');
-        el.inert = true;
-        activeModal = null;
-        document.body.classList.remove('no-scroll');
-        if (!silent) returnFocus?.focus?.();
-    }
-
-    // Validación de formularios: <input data-rules="required email min:8 postal price checked">
-    const EMAIL_RE = /^[^\s@]+@[^\s@]+\.[^\s@]{2,}$/;
-
-    function validateField(input) {
-        const rules = (input.dataset.rules || '').split(/\s+/).filter(Boolean);
-        const value = input.type === 'checkbox' ? input.checked : input.value.trim();
-        let message = '';
-        for (const rule of rules) {
-            const [name, arg] = rule.split(':');
-            if (name === 'required' && !value) { message = 'Este campo es obligatorio.'; break; }
-            if (name === 'checked' && !value) { message = 'Debes aceptar para continuar.'; break; }
-            if (!value) continue;
-            if (name === 'email' && !EMAIL_RE.test(value)) { message = 'Introduce un email válido (nombre@dominio.com).'; break; }
-            if (name === 'min' && value.length < Number(arg)) { message = `Usa al menos ${arg} caracteres.`; break; }
-            if (name === 'postal' && !/^\d{5}$/.test(value)) { message = 'Introduce un código postal de 5 dígitos.'; break; }
-            if (name === 'price' && !(parseFloat(value.replace(',', '.')) > 0)) { message = 'Introduce un precio válido, por ejemplo 24,90.'; break; }
-        }
-        const field = input.closest('.field');
-        field?.classList.toggle('has-error', Boolean(message));
-        const error = field?.querySelector('.field-error');
-        if (error) error.textContent = message;
-        input.setAttribute('aria-invalid', message ? 'true' : 'false');
-        return !message;
-    }
-
-    function validateForm(form) {
-        const inputs = $$('[data-rules]', form).filter((input) => !input.closest('[hidden]'));
-        const results = inputs.map((input) => [input, validateField(input)]);
-        const firstBad = results.find(([, ok]) => !ok);
-        firstBad?.[0].focus();
-        return !firstBad;
-    }
-
-    function resetForm(form) {
-        form.reset();
-        $$('.field.has-error', form).forEach((field) => field.classList.remove('has-error'));
-    }
-
-    document.addEventListener('focusout', (event) => {
-        const input = event.target;
-        if (!input.matches?.('[data-rules]')) return;
-        if (input.value.trim() || input.closest('.field')?.classList.contains('has-error')) validateField(input);
-    });
-
-    document.addEventListener('input', (event) => {
-        const input = event.target;
-        if (input.matches?.('[data-rules]') && input.closest('.field')?.classList.contains('has-error')) validateField(input);
-    });
-
-    /* ======================================================================
-       6. CATÁLOGO, FAVORITOS Y EVENTOS
-    ====================================================================== */
-    const eventProduct = (ev) => ({
-        id: ev.id, kind: 'event', code: ev.code, category: 'eventos',
-        name: `${ev.title} — ${ev.city}`, detail: `${formatDate(ev.date)} · ${ev.venue}`,
-        price: ev.price, tone: 'noir', icon: 'ticket'
-    });
-
-    const findSellable = (id) => CATALOG.find((p) => p.id === id) || (EVENTS.find((e) => e.id === id) ? eventProduct(EVENTS.find((e) => e.id === id)) : null);
-
-    const getWishlist = () => store.get('wishlist', []);
-    const isWished = (id) => getWishlist().includes(id);
-
-    function toggleWish(id) {
-        const list = getWishlist();
-        const index = list.indexOf(id);
-        if (index >= 0) list.splice(index, 1); else list.push(id);
-        store.set('wishlist', list);
-        syncWishUI();
-        toast(index >= 0 ? 'Quitado de favoritos.' : 'Guardado en favoritos.');
-        if ($('.profile-block[data-panel="favoritos"]') && location.hash.startsWith('#/perfil')) renderProfile();
-        if (productState.filter === 'favoritos') renderProducts();
-    }
-
-    function syncWishUI() {
-        const list = getWishlist();
-        $$('[data-wish]').forEach((button) => button.setAttribute('aria-pressed', String(list.includes(button.dataset.wish))));
-        $$('.wish-count').forEach((el) => { el.textContent = list.length; });
-        const qvWish = $('#qv-wish');
-        if (qvWish && quickState.product) {
-            const pressed = list.includes(quickState.product.id);
-            qvWish.setAttribute('aria-pressed', String(pressed));
-            qvWish.textContent = pressed ? 'Quitar de favoritos' : 'Guardar en favoritos';
-        }
-    }
-
-    function productCard(p, { withTag = true } = {}) {
-        const isEvent = p.kind === 'event';
-        const tag = withTag && p.tag ? `<span class="product-tag">${esc(p.tag)}</span>` : '';
-        const wish = isEvent ? '' : `<button class="wish" type="button" data-wish="${p.id}" aria-pressed="${isWished(p.id)}" aria-label="Guardar ${esc(p.name)} en favoritos"><svg class="icon" aria-hidden="true"><use href="#i-heart"/></svg></button>`;
-        const quick = isEvent ? '' : `<button class="quick" type="button" data-quick="${p.id}">Vista rápida</button>`;
-        const label = isEvent ? 'Comprar entrada' : p.sizes ? 'Elegir talla' : 'Añadir al carrito';
-        const category = isEvent ? 'Evento' : capitalize(p.category);
-        return `<article class="product-card reveal" data-id="${p.id}">
-            <div class="product-image tone-${p.tone}">${tag}${wish}${quick}${iconSVG(p.icon)}</div>
-            <div class="product-info"><div><span class="product-category">${category} / ${p.code}</span><h3>${esc(p.name)}</h3><p>${esc(p.detail)}</p></div><strong class="price">${money(p.price)}</strong></div>
-            <button class="add-to-cart" type="button" data-add="${p.id}">${label} <span>+</span></button>
-        </article>`;
-    }
-
-    function renderFeatured() {
-        const grid = $('#featured-grid');
-        if (!grid) return;
-        const next = EVENTS.find((e) => daysUntil(e.date) >= 0 && e.price > 0) || EVENTS[0];
-        const items = [CATALOG[0], CATALOG[3], { ...eventProduct(next), tag: 'Próximo' }];
-        grid.innerHTML = items.map((p) => productCard(p)).join('');
-    }
-
-    const productState = { filter: 'all', sort: 'featured' };
-
-    function renderProducts() {
-        const grid = $('#products-grid');
-        if (!grid) return;
-        const wished = getWishlist();
-        let list = CATALOG.filter((p) => productState.filter === 'all' || (productState.filter === 'favoritos' ? wished.includes(p.id) : p.category === productState.filter));
-        const sorters = {
-            'price-asc': (a, b) => a.price - b.price,
-            'price-desc': (a, b) => b.price - a.price,
-            name: (a, b) => a.name.localeCompare(b.name, 'es')
-        };
-        if (sorters[productState.sort]) list = [...list].sort(sorters[productState.sort]);
-
-        grid.innerHTML = list.map((p) => productCard(p, { withTag: false })).join('');
-        grid.hidden = !list.length;
-        $('#products-empty').hidden = Boolean(list.length);
-        $('#products-empty-text').textContent = productState.filter === 'favoritos'
-            ? 'Aún no tienes favoritos. Pulsa el corazón de cualquier pieza para guardarla aquí.'
-            : 'No hay piezas con este filtro.';
-        $('#product-count').textContent = `${list.length} ${list.length === 1 ? 'pieza' : 'piezas'}`;
-
-        $$('#product-filters .filter-button').forEach((button) => {
-            const active = button.dataset.filter === productState.filter;
-            button.classList.toggle('is-selected', active);
-            button.setAttribute('aria-pressed', String(active));
-        });
-        syncWishUI();
-    }
-
-    const eventState = { city: 'all' };
-
-    function renderEvents() {
-        const list = $('#events-list');
-        if (!list) return;
-        const rsvps = store.get('rsvps', []);
-
-        const cities = [...new Set(EVENTS.map((e) => e.city))];
-        $('#event-filters').innerHTML = [['all', 'Todas']].concat(cities.map((c) => [c, c])).map(([value, label]) =>
-            `<button class="filter-button${eventState.city === value ? ' is-selected' : ''}" type="button" data-city="${esc(value)}" aria-pressed="${eventState.city === value}">${esc(label)}</button>`).join('');
-
-        list.innerHTML = EVENTS.filter((e) => eventState.city === 'all' || e.city === eventState.city).map((ev) => {
-            const days = daysUntil(ev.date);
-            const when = days < 0 ? 'Evento finalizado' : days === 0 ? 'Es hoy' : days === 1 ? 'Es mañana' : `Faltan ${days} días`;
-            const date = parseDate(ev.date);
-            const month = date.toLocaleDateString('es-ES', { month: 'short' }).replace('.', '');
-            let action;
-            if (days < 0) action = '<button class="button button-ink" type="button" disabled>Finalizado</button>';
-            else if (ev.price === 0) action = rsvps.includes(ev.id)
-                ? '<button class="button button-ink" type="button" disabled>Apuntado ✓</button>'
-                : `<button class="button button-ink" type="button" data-rsvp="${ev.id}">Apuntarme <span>↗</span></button>`;
-            else action = `<button class="add-to-cart" type="button" data-add="${ev.id}">Comprar entrada <span>+</span></button>`;
-
-            return `<article class="event-card reveal"><div class="ticket">
-                <div class="event-date"><strong>${String(date.getDate()).padStart(2, '0')}</strong><span>${capitalize(month)} ${date.getFullYear()}</span></div>
-                <div class="event-main"><span class="product-category">${esc(ev.city)} / ${esc(ev.venue)}</span><h2>${esc(ev.title)}</h2><p>${esc(ev.desc)}</p><span class="event-when">${when}</span>
-                    <div class="event-actions-secondary"><button class="link-button" type="button" data-ics="${ev.id}">Añadir al calendario</button></div></div>
-                <div class="event-action"><strong>${ev.price === 0 ? 'Entrada libre' : money(ev.price)}</strong>${action}</div>
-            </div></article>`;
-        }).join('');
-    }
-
-    // Descarga un archivo .ics para añadir el evento al calendario
-    function downloadICS(id) {
-        const ev = EVENTS.find((e) => e.id === id);
-        if (!ev) return;
-        const start = ev.date.replace(/-/g, '');
-        const end = new Date(parseDate(ev.date).getTime() + 86400000);
-        const endStr = `${end.getFullYear()}${String(end.getMonth() + 1).padStart(2, '0')}${String(end.getDate()).padStart(2, '0')}`;
-        const stamp = new Date().toISOString().replace(/[-:]/g, '').replace(/\.\d+/, '');
-        const clean = (text) => String(text).replace(/[\\;,]/g, (c) => '\\' + c);
-        const lines = ['BEGIN:VCALENDAR', 'VERSION:2.0', 'PRODID:-//TOMA//ES', 'BEGIN:VEVENT', `UID:${ev.id}@toma`, `DTSTAMP:${stamp}`,
-            `DTSTART;VALUE=DATE:${start}`, `DTEND;VALUE=DATE:${endStr}`, `SUMMARY:${clean(ev.title)}`, `LOCATION:${clean(ev.venue + ', ' + ev.city)}`, `DESCRIPTION:${clean(ev.desc)}`, 'END:VEVENT', 'END:VCALENDAR'];
-        const blob = new Blob([lines.join('\r\n')], { type: 'text/calendar;charset=utf-8' });
-        const link = document.createElement('a');
-        link.href = URL.createObjectURL(blob);
-        link.download = `${ev.id}.ics`;
-        document.body.appendChild(link);
-        link.click();
-        link.remove();
-        setTimeout(() => URL.revokeObjectURL(link.href), 1000);
-    }
-
-    // Cuenta atrás al próximo evento
-    function initLaunch() {
-        const box = $('#launch');
-        const next = EVENTS.filter((e) => daysUntil(e.date) >= 0).sort((a, b) => parseDate(a.date) - parseDate(b.date))[0];
-        if (!box || !next) return;
-        box.hidden = false;
-        $('#launch-title').textContent = next.title;
-        $('#launch-meta').textContent = `${next.city} · ${formatDate(next.date)}`;
-        const target = parseDate(next.date).getTime(); // TODO backend: enviar la hora de inicio real del evento
-        const units = { d: $('[data-unit="d"]'), h: $('[data-unit="h"]'), m: $('[data-unit="m"]'), s: $('[data-unit="s"]') };
-        const tick = () => {
-            const diff = Math.max(0, target - Date.now());
-            const pad = (n) => String(n).padStart(2, '0');
-            units.d.textContent = pad(Math.floor(diff / 86400000));
-            units.h.textContent = pad(Math.floor(diff / 3600000) % 24);
-            units.m.textContent = pad(Math.floor(diff / 60000) % 60);
-            units.s.textContent = pad(Math.floor(diff / 1000) % 60);
-        };
-        tick();
-        setInterval(tick, 1000);
-    }
-
-    /* ======================================================================
-       7. CARRITO
-    ====================================================================== */
-    const getCart = () => store.get('cart', []).map((item) => ({ kind: 'product', ...item, key: item.key || item.name }));
-    const saveCart = (cart) => store.set('cart', cart);
-    const getPromo = () => store.get('promo', null);
-
-    function computeTotals(cart) {
-        const subtotal = round2(cart.reduce((sum, item) => sum + item.price * item.quantity, 0));
-        const code = getPromo();
-        const promo = code && CONFIG.promos[code] ? { code, ...CONFIG.promos[code] } : null;
-        const discount = promo ? round2(subtotal * promo.percent / 100) : 0;
-        const net = round2(subtotal - discount);
-        const physical = cart.some((item) => item.kind !== 'event');
-        const shipping = physical && net < CONFIG.shipping.freeFrom ? CONFIG.shipping.cost : 0;
-        const total = round2(net + shipping);
-        return { subtotal, discount, shipping, total, vat: round2(total - total / (1 + CONFIG.vat)), physical, promo, missingForFree: physical ? Math.max(0, round2(CONFIG.shipping.freeFrom - net)) : 0 };
-    }
-
-    function updateCart(bump = false) {
-        const cart = getCart();
-        const count = cart.reduce((sum, item) => sum + item.quantity, 0);
-        $$('.cart-count').forEach((el) => {
-            el.textContent = count;
-            if (bump) { el.classList.remove('bump'); void el.offsetWidth; el.classList.add('bump'); }
-        });
-
-        const items = $('.cart-items');
-        if (!items) return;
-        items.innerHTML = cart.length ? cart.map((item, index) => `
-            <div class="cart-item">
-                <div class="cart-item-info"><strong>${esc(item.name)}</strong><small>${money(item.price)} / unidad${item.size ? ' · Talla ' + esc(item.size) : ''}</small></div>
-                <strong class="cart-item-total">${money(item.price * item.quantity)}</strong>
-                <div class="quantity-control">
-                    <button type="button" data-cart-action="decrease" data-index="${index}" aria-label="Quitar una unidad de ${esc(item.name)}">−</button>
-                    <span>${item.quantity}</span>
-                    <button type="button" data-cart-action="increase" data-index="${index}" aria-label="Añadir una unidad de ${esc(item.name)}">+</button>
-                </div>
-            </div>`).join('')
-            : '<p class="empty-cart"><strong>Tu carrito está vacío.</strong><span>Empieza con una pieza que te represente.</span></p>';
-
-        const t = computeTotals(cart);
-        $('.cart-subtotal').textContent = money(t.subtotal);
-        $('.line-discount').hidden = !t.promo;
-        $('.cart-discount').textContent = '−' + money(t.discount);
-        $('.cart-shipping').textContent = !cart.length || !t.physical ? '—' : t.shipping === 0 ? 'Gratis' : money(t.shipping);
-        $('.cart-total').textContent = money(t.total);
-        $('.ship-hint').textContent = !cart.length || !t.physical ? '' : t.shipping === 0 ? 'Tu pedido tiene envío gratis.' : `Te faltan ${money(t.missingForFree)} para el envío gratis.`;
-        $('.checkout-button').disabled = !cart.length;
-        if (t.promo) { const s = $('.promo-status'); s.classList.remove('is-error'); s.textContent = `Código aplicado: ${t.promo.label}`; }
-    }
-
-    function addItem(product, { size = null, quantity = 1, meta = null } = {}) {
-        const cart = getCart();
-        const kind = product.kind || 'product';
-        const key = [product.id, size].filter(Boolean).join('|');
-        const existing = cart.find((item) => item.key === key);
-        if (existing) existing.quantity += quantity;
-        else cart.push({ key, id: product.id, name: product.name, price: product.price, size, kind, quantity, ...(meta ? { meta } : {}) });
-        saveCart(cart);
-        updateCart(true);
-    }
-
-    function applyPromo(raw) {
-        const status = $('.promo-status');
-        const code = raw.trim().toUpperCase();
-        if (!code) { status.classList.add('is-error'); status.textContent = 'Escribe un código.'; return; }
-        if (!CONFIG.promos[code]) { status.classList.add('is-error'); status.textContent = 'Ese código no es válido.'; return; }
-        store.set('promo', code);
-        updateCart();
-    }
-
-    /* ======================================================================
-       8. CHECKOUT (3 pasos: datos, pago, confirmación)
-    ====================================================================== */
-    const checkoutState = { customer: null };
-
-    function renderCheckoutSummary() {
-        const cart = getCart();
-        const t = computeTotals(cart);
-        $('#checkout-lines').innerHTML = cart.map((item) => `<div class="sum-line"><span>${esc(item.name)}<small>${item.quantity} × ${money(item.price)}${item.size ? ' · Talla ' + esc(item.size) : ''}</small></span><b>${money(item.price * item.quantity)}</b></div>`).join('');
-        $('#checkout-totals').innerHTML = `
-            <div><dt>Subtotal</dt><dd>${money(t.subtotal)}</dd></div>
-            ${t.promo ? `<div><dt>Descuento ${esc(t.promo.code)}</dt><dd>−${money(t.discount)}</dd></div>` : ''}
-            <div><dt>Envío</dt><dd>${!t.physical ? '—' : t.shipping === 0 ? 'Gratis' : money(t.shipping)}</dd></div>
-            <div class="grand"><dt>Total</dt><dd>${money(t.total)}</dd></div>
-            <div class="vat"><dt>Incluye IVA (${Math.round(CONFIG.vat * 100)} %)</dt><dd>${money(t.vat)}</dd></div>`;
-    }
-
-    function goStep(step) {
-        $$('[data-step]').forEach((panel) => { panel.hidden = Number(panel.dataset.step) !== step; });
-        $$('[data-step-dot]').forEach((dot) => {
-            const n = Number(dot.dataset.stepDot);
-            dot.classList.toggle('is-current', n === step);
-            dot.classList.toggle('is-done', n < step);
-        });
-        const summary = $('.checkout-summary');
-        if (summary) summary.hidden = step === 3;
-        $('.checkout-modal').classList.toggle('is-done', step === 3);
-        visibleFocusables($(`[data-step="${step}"]`))[0]?.focus();
-    }
-
-    function openCheckout() {
-        const cart = getCart();
-        if (!cart.length) return;
-        const t = computeTotals(cart);
-        const user = getSession();
-        $('#ship-fields').hidden = !t.physical;
-        $('#digital-note').hidden = t.physical;
-        if (user) { $('#co-name').value ||= user.name; $('#co-email').value ||= user.email; $('#co-city').value ||= user.city || ''; }
-        renderCheckoutSummary();
-        openModal('checkout');
-        goStep(1);
-    }
-
-    /* ======================================================================
-       9. VISTA RÁPIDA Y BUSCADOR
-    ====================================================================== */
-    const quickState = { product: null, size: null, quantity: 1 };
-
-    function openQuick(id) {
-        const p = CATALOG.find((item) => item.id === id);
-        if (!p) return;
-        quickState.product = p;
-        quickState.size = p.sizes ? (p.sizes.includes('M') ? 'M' : p.sizes[0]) : null;
-        quickState.quantity = 1;
-
-        const plate = $('#qv-plate');
-        plate.className = `qv-plate product-image tone-${p.tone}`;
-        plate.innerHTML = iconSVG(p.icon);
-        $('#qv-cat').textContent = `${capitalize(p.category)} / ${p.code}`;
-        $('#qv-title').textContent = p.name;
-        $('#qv-detail').textContent = p.detail;
-        $('#qv-price').textContent = money(p.price);
-        $('#qv-qty-value').textContent = '1';
-        $('#qv-sizes-wrap').hidden = !p.sizes;
-        $('#qv-sizes').innerHTML = (p.sizes || []).map((size) => `<button type="button" role="radio" data-size="${size}" aria-checked="${size === quickState.size}">${size}</button>`).join('');
-        syncWishUI();
-        openModal('quick');
-    }
-
-    function runSearch(query) {
-        const box = $('#search-results');
-        const q = normalize(query.trim());
-        const products = CATALOG.map((p) => ({ type: 'product', id: p.id, title: p.name, sub: `${capitalize(p.category)} · ${p.detail}`, price: money(p.price), icon: p.icon, tone: p.tone, hay: normalize(`${p.name} ${p.detail} ${p.category}`) }));
-        const events = EVENTS.map((e) => ({ type: 'event', id: e.id, title: e.title, sub: `Evento · ${e.city}, ${formatDate(e.date)}`, price: e.price ? money(e.price) : 'Libre', icon: 'ticket', tone: 'noir', hay: normalize(`${e.title} ${e.city} ${e.venue} evento entrada`) }));
-        const results = q ? products.concat(events).filter((r) => r.hay.includes(q)).slice(0, 8) : products.slice(0, 4);
-
-        box.innerHTML = results.length
-            ? (q ? '' : '<p class="search-hint">Sugerencias</p>') + results.map((r, i) => `<button class="result${i === 0 ? ' is-active' : ''}" type="button" role="option" data-result="${r.type}:${r.id}"><span class="mini-plate tone-${r.tone}">${iconSVG(r.icon, '')}</span><span><strong>${esc(r.title)}</strong><small>${esc(r.sub)}</small></span><span class="result-price">${r.price}</span></button>`).join('')
-            : `<p class="search-hint">No encontramos nada para “${esc(query.trim())}”. Prueba con “camiseta”, “tote” o “Madrid”.</p>`;
-    }
-
-    function openSearch() {
-        $('#search-input').value = '';
-        openModal('search');
-        runSearch('');
-    }
-
-    function activateResult(value) {
-        const [type, id] = value.split(':');
-        closeModal(true);
-        if (type === 'product') openQuick(id);
-        else { location.hash = '#/eventos'; }
-    }
-
-    /* ======================================================================
-       10. CUENTA Y PERFIL
-    ====================================================================== */
-    const getSession = () => store.get('session', null);
-
-    function updateAccountUI() {
-        const user = getSession();
-        $('.account-label').textContent = user ? firstName(user.name) : 'Cuenta';
-    }
-
-    function setAuthTab(tab) {
-        $$('[data-auth-tab]').forEach((button) => button.setAttribute('aria-selected', String(button.dataset.authTab === tab)));
-        $$('form[data-form]').forEach((form) => { form.hidden = form.dataset.form !== tab; });
-        $('#auth-title').innerHTML = tab === 'login' ? 'Entra en<br>tu cuenta.' : 'Crea tu<br>cuenta.';
-        $('#auth-copy').textContent = tab === 'login'
-            ? 'Guarda tus productos, consulta tus entradas y gestiona tus creaciones.'
-            : 'Un perfil para tus pedidos, entradas, diseños y creaciones.';
-    }
-
-    function openAuth(tab = 'login') {
-        setAuthTab(tab);
-        openModal('auth');
-    }
-
-    let profileTab = 'resumen';
-
-    function showProfileTab(name) {
-        profileTab = name;
-        $$('.profile-tab').forEach((tab) => tab.classList.toggle('is-active', tab.dataset.tab === name));
-        $$('.profile-block').forEach((block) => { block.hidden = block.dataset.panel !== name; });
-    }
-
-    const emptyRow = (text, cta = '') => `<div class="empty-row"><p>${text}</p>${cta}</div>`;
-    const orderSummary = (order) => order.items.map((i) => `${i.name}${i.size ? ' (' + i.size + ')' : ''} ×${i.quantity}`).join(', ');
-
-    async function renderProfile() {
-        const session = getSession();
-        const user = session || DEMO_USER;
-        const demo = !session;
-
-        $('#profile-avatar').textContent = initials(user.name);
-        $('#profile-name').textContent = user.name;
-        $('#profile-email').textContent = user.email;
-        $('#profile-banner').textContent = demo ? 'Cuenta de demostración. Inicia sesión para ver tus propios datos.' : `Sesión iniciada como ${user.email}`;
-        $('#profile-greeting').innerHTML = `<span class="line">Hola, ${esc(firstName(user.name))}.</span><span class="line l2">Este es tu espacio.</span>`;
-        $('#logout-button').hidden = demo;
-
-        let orders = await api.getOrders();
-        if (demo && !orders.length) orders = DEMO_ORDERS;
-        const designs = await api.getDesigns();
-        const drafts = await api.getDrafts();
-        const wished = getWishlist().map((id) => CATALOG.find((p) => p.id === id)).filter(Boolean);
-
-        const orderRow = (o) => `<article><div><strong>Pedido #${esc(o.id)}</strong><p>${esc(orderSummary(o))} · ${money(o.totals.total)}</p></div><span class="row-end">${esc(o.status)}</span></article>`;
-        const shopCta = '<a class="text-link" href="#/productos">Ver productos</a>';
-
-        // Resumen
-        const recent = orders.slice(0, 2).map(orderRow).concat(designs.slice(0, 1).map((d) => `<article><div><strong>Diseño guardado</strong><p>${esc(d.product)} personalizada · ${formatDate(d.createdAt)}</p></div><span class="row-end"><button class="link-button" type="button" data-load-design="${d.id}">Editar ↗</button></span></article>`));
-        if (demo) recent.push('<article><div><strong>Diseño guardado</strong><p>Camiseta personalizada · hace 2 días</p></div><span class="row-end">Editar ↗</span></article>');
-        $('#list-resumen').innerHTML = recent.length ? recent.join('') : emptyRow('Todavía no hay actividad. Tus pedidos y diseños aparecerán aquí.', shopCta);
-
-        // Pedidos
-        $('#list-pedidos').innerHTML = orders.length ? orders.map(orderRow).join('') : emptyRow('Aún no has hecho ningún pedido.', shopCta);
-
-        // Diseños
-        $('#list-disenos').innerHTML = designs.length ? designs.map((d) => {
-            const color = COLORS[d.color] || COLORS.black;
-            return `<article><div class="row-lead"><span class="mini-plate ${color.dark ? 'tone-star' : 'tone-noir'}" style="color:${color.hex}">${iconSVG(PRODUCT_ICONS[d.product] || 'tee', '')}</span><div><strong>${esc(d.product)} personalizada</strong><p>“${esc(d.text)}” · Talla ${esc(d.size)} · ${esc(color.name)} · ${formatDate(d.createdAt)}</p></div></div>
-                <span class="row-end"><button class="link-button" type="button" data-load-design="${d.id}">Editar</button><button class="link-button" type="button" data-cart-design="${d.id}">Al carrito</button><button class="link-button" type="button" data-del-design="${d.id}">Eliminar</button></span></article>`;
-        }).join('') : emptyRow('Todavía no has guardado ningún diseño.', '<a class="text-link" href="#/creacion">Crear un diseño</a>');
-
-        // Entradas
-        const tickets = orders.flatMap((o) => o.items.filter((i) => i.kind === 'event').map((i) => ({ order: o.id, item: i })));
-        if (demo && !tickets.length) tickets.push({ order: 'TM-1048', item: { id: EVENTS[0].id, name: 'TOMA Night — Madrid', quantity: 1 } });
-        $('#list-entradas').innerHTML = tickets.length ? tickets.map(({ order, item }) => {
-            const ev = EVENTS.find((e) => e.id === item.id);
-            return `<article><div><strong>${esc(item.name)}</strong><p>${ev ? formatDate(ev.date) + ' · ' + esc(ev.venue) : ''} · Pedido #${esc(order)} · ${item.quantity} ${item.quantity === 1 ? 'entrada' : 'entradas'}</p></div><span class="row-end">${ev ? `<button class="link-button" type="button" data-ics="${ev.id}">Añadir al calendario</button>` : ''}</span></article>`;
-        }).join('') : emptyRow('No tienes entradas todavía.', '<a class="text-link" href="#/eventos">Ver eventos</a>');
-
-        // Favoritos
-        $('#list-favoritos').innerHTML = wished.length ? wished.map((p) => `<article><div class="row-lead"><span class="mini-plate tone-${p.tone}">${iconSVG(p.icon, '')}</span><div><strong>${esc(p.name)}</strong><p>${esc(p.detail)} · ${money(p.price)}</p></div></div><span class="row-end"><button class="link-button" type="button" data-quick="${p.id}">Ver</button><button class="link-button" type="button" data-wish="${p.id}">Quitar</button></span></article>`).join('')
-            : emptyRow('Aún no tienes favoritos. Pulsa el corazón de cualquier pieza para guardarla.', shopCta);
-
-        // Ventas y productos del creador
-        $('#list-ventas').innerHTML = (demo ? DEMO_SALES : []).map((s) => `<article><div><strong>${esc(s.name)}</strong><p>${esc(s.meta)}</p></div><span class="row-end">${s.amount}</span></article>`).join('')
-            || emptyRow('Todavía no tienes ventas. Cuando publiques piezas, verás aquí lo que vendes.');
-        const draftRows = drafts.map((d) => `<article><div><strong>${esc(d.name)}</strong><p>Borrador · ${esc(d.category)} · ${money(d.price)}${d.hasImage ? '' : ' · falta añadir imagen'}</p></div><span class="row-end"><button class="link-button" type="button" data-del-draft="${d.id}">Eliminar</button></span></article>`);
-        const demoRows = demo ? DEMO_PRODUCTS.map((p) => `<article><div><strong>${esc(p.name)}</strong><p>${esc(p.meta)}</p></div><span class="row-end">${p.state === 'Publicado' ? 'Editar ↗' : 'Continuar ↗'}</span></article>`) : [];
-        $('#list-productos').innerHTML = draftRows.concat(demoRows).join('') || emptyRow('Todavía no has preparado ningún producto.');
-
-        // Formulario de edición
-        $('#pf-name').value = user.name || '';
-        $('#pf-email').value = user.email || '';
-        $('#pf-city').value = user.city || '';
-        $('#pf-user').value = user.username || '';
-
-        showProfileTab(profileTab);
-    }
-
-    /* ======================================================================
-       11. PERSONALIZADOR
-    ====================================================================== */
-    const preview = $('#shirt-preview');
-    const printEl = $('#shirt-print');
-    const logoEl = $('#print-logo');
-    let logoURL = null;
-
-    function readDesign() {
-        const select = $('#product-type');
-        return {
-            product: select.value,
-            price: Number(select.selectedOptions[0].dataset.price),
-            color: $('.swatch.is-selected')?.dataset.color || 'black',
-            text: $('#shirt-text').value.trim() || 'TOMA',
-            font: $('#shirt-font').value,
-            size: $('#shirt-size').value,
-            textScale: Number($('#text-scale').value),
-            style: $('input[name="print-style"]:checked').value,
-            printColor: $('input[name="print-color"]:checked').value
-        };
-    }
-
-    function applyDesign() {
-        if (!preview) return;
-        const d = readDesign();
-        preview.dataset.product = d.product;
-        preview.dataset.size = d.size;
-        preview.dataset.color = d.color;
-        preview.dataset.print = d.printColor;
-        printEl.dataset.style = d.style;
-        printEl.dataset.font = d.font;
-        printEl.textContent = d.text;
-        const base = Math.min(7.4, 46 / Math.max(d.text.length, 5));
-        printEl.style.setProperty('--fs', `${Math.min(base * d.textScale / 100, 52 / Math.max(d.text.length, 3))}cqw`);
-        $('#preview-color-name').textContent = COLORS[d.color].name;
-        $('#stage-product').textContent = PRODUCT_LABELS[d.product] || d.product;
-        $('#stage-price').textContent = money(d.price);
-        $('#text-scale-out').textContent = `${d.textScale} %`;
-        $('#text-count').textContent = `${$('#shirt-text').value.length}/16`;
-    }
-
-    // Carga un diseño (guardado, preset o compartido por enlace) validando cada campo,
-    // para que un enlace manipulado o un diseño antiguo nunca deje el formulario roto.
-    function loadDesign(raw, navigate = true) {
-        const d = { ...DEFAULT_DESIGN, ...raw };
-        $('#product-type').value = PRODUCT_LABELS[d.product] ? d.product : DEFAULT_DESIGN.product;
-        const color = COLORS[d.color] ? d.color : DEFAULT_DESIGN.color;
-        $$('.swatch').forEach((s) => { const on = s.dataset.color === color; s.classList.toggle('is-selected', on); s.setAttribute('aria-pressed', String(on)); });
-        $('#shirt-text').value = String(d.text || DEFAULT_DESIGN.text).slice(0, 16);
-        $('#shirt-font').value = ['display', 'italic', 'sans'].includes(d.font) ? d.font : DEFAULT_DESIGN.font;
-        $('#shirt-size').value = ['XS', 'S', 'M', 'L', 'XL'].includes(d.size) ? d.size : DEFAULT_DESIGN.size;
-        $('#text-scale').value = Number(d.textScale) >= 60 && Number(d.textScale) <= 140 ? d.textScale : DEFAULT_DESIGN.textScale;
-        const style = $(`input[name="print-style"][value="${['solid', 'outline'].includes(d.style) ? d.style : DEFAULT_DESIGN.style}"]`);
-        if (style) style.checked = true;
-        const pc = $(`input[name="print-color"][value="${['auto', 'white', 'black', 'gold'].includes(d.printColor) ? d.printColor : DEFAULT_DESIGN.printColor}"]`);
-        if (pc) pc.checked = true;
-        applyDesign();
-        if (navigate) location.hash = '#/creacion';
-    }
-
-    function renderPresets() {
-        const box = $('#design-presets');
-        if (!box) return;
-        box.innerHTML = DESIGN_PRESETS.map((p, i) => `<button type="button" class="preset-chip" data-preset="${i}" style="--chip:${COLORS[p.color].hex}">${esc(p.label)}</button>`).join('');
-    }
-
-    // Codifica el diseño actual como texto para meterlo en la URL (sin backend: solo va y viene del navegador).
-    function encodeDesignState(payload) {
-        try { return utf8ToBase64(JSON.stringify(payload)); } catch { return null; }
-    }
-    function decodeDesignState(encoded) {
-        try { return JSON.parse(base64ToUtf8(encoded)); } catch { return null; }
-    }
-
-    function shareDesign() {
-        const { price, ...d } = readDesign();
-        const encoded = encodeDesignState(d);
-        if (!encoded) { toast('No se ha podido generar el enlace.'); return; }
-        history.replaceState(null, '', `#/creacion?d=${encoded}`);
-        const url = location.href;
-        if (navigator.clipboard?.writeText) {
-            navigator.clipboard.writeText(url).then(
-                () => toast('Enlace copiado. Compártelo para que vean tu diseño.'),
-                () => toast('Enlace listo en la barra de direcciones.')
-            );
-        } else {
-            toast('Enlace listo en la barra de direcciones.');
-        }
-    }
-
-    function resetDesign() {
-        loadDesign(DEFAULT_DESIGN, false);
-        $('#logo-input').value = '';
-        setLogo(null);
-        $('#design-status').textContent = 'Diseño reiniciado.';
-    }
-
-    // Si la ruta trae ?d=... (enlace compartido), carga ese diseño; si no, aplica el actual.
-    function applyRouteDesign(query) {
-        const encoded = new URLSearchParams(query).get('d');
-        const payload = encoded ? decodeDesignState(encoded) : null;
-        if (payload) loadDesign(payload, false);
-        else applyDesign();
-    }
-
-    function setLogo(file) {
-        if (logoURL) { URL.revokeObjectURL(logoURL); logoURL = null; }
-        const has = Boolean(file);
-        if (has) { logoURL = URL.createObjectURL(file); logoEl.src = logoURL; } else { logoEl.removeAttribute('src'); }
-        logoEl.hidden = !has;
-        $('.garment').classList.toggle('has-logo', has);
-        $('#logo-clear').hidden = !has;
-    }
-
-    function initCustomizer() {
-        if (!preview) return;
-        $$('.swatch').forEach((swatch) => swatch.addEventListener('click', () => {
-            $$('.swatch').forEach((s) => { const on = s === swatch; s.classList.toggle('is-selected', on); s.setAttribute('aria-pressed', String(on)); });
-            applyDesign();
-        }));
-
-        $('#design-form').addEventListener('input', applyDesign);
-        $('#design-form').addEventListener('change', applyDesign);
-
-        $('#logo-input').addEventListener('change', (event) => {
-            const file = event.target.files[0];
-            const status = $('#design-status');
-            if (!file) return setLogo(null);
-            if (!/^image\/(png|jpeg|webp)$/.test(file.type)) { event.target.value = ''; status.textContent = 'Formato no válido. Usa PNG, JPG o WebP.'; return; }
-            if (file.size > CONFIG.maxLogoBytes) { event.target.value = ''; status.textContent = 'El logo supera 1,5 MB.'; return; }
-            status.textContent = '';
-            setLogo(file);
-        });
-
-        $('#logo-clear').addEventListener('click', () => { $('#logo-input').value = ''; setLogo(null); });
-
-        $('#design-form').addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const { price, ...d } = readDesign();
-            await api.saveDesign({ ...d, price });
-            $('#design-status').textContent = `Diseño guardado: ${d.product}, talla ${d.size}, color ${COLORS[d.color].name}. Lo tienes en tu perfil.`;
-            toast('Diseño guardado.');
-            if (location.hash.startsWith('#/perfil')) renderProfile();
-        });
-
-        $('#add-design-to-cart').addEventListener('click', () => {
-            addDesignToCart(readDesign());
-            $('#design-status').textContent = 'Añadido al carrito.';
-            toggleDrawer(true);
-        });
-
-        $('#share-design').addEventListener('click', shareDesign);
-        $('#reset-design').addEventListener('click', resetDesign);
-
-        renderPresets();
-        applyDesign();
-    }
-
-    function addDesignToCart(d) {
-        const signature = [d.product, d.color, d.text, d.font, d.style, d.printColor, d.textScale].join('-');
-        addItem({ id: 'custom-' + signature.toLowerCase().replace(/[^a-z0-9]+/g, '-'), name: `${d.product} personalizada / ${d.text}`, price: d.price, kind: 'custom' }, { size: d.size, meta: d });
-    }
-
-    /* ======================================================================
-       12. ROUTER Y ARRANQUE
-    ====================================================================== */
-    const views = $$('.view');
-    const viewNames = views.map((v) => v.dataset.view);
-    const menuToggle = $('.menu-toggle');
-    const mainMenu = $('#main-menu');
-
-    function closeMenu() {
-        mainMenu?.classList.remove('open');
-        menuToggle?.setAttribute('aria-expanded', 'false');
-    }
-
-    // #/tienda  #/productos  #/productos/ropa  #/productos/favoritos  #/eventos  #/creacion  #/perfil
-    // #/creacion?d=... también funciona: un diseño compartido por enlace, codificado sin backend.
-    function route() {
-        const [path, query] = location.hash.replace(/^#\/?/, '').split('?');
-        const [rawName, param] = path.split('/');
-        const name = rawName || 'tienda';
-        const current = viewNames.includes(name) ? name : '404';
-
-        views.forEach((view) => { view.hidden = view.dataset.view !== current; });
-        $$('.main-menu a').forEach((link) => {
-            const active = link.dataset.nav === current;
-            link.classList.toggle('active', active);
-            if (active) link.setAttribute('aria-current', 'page'); else link.removeAttribute('aria-current');
-        });
-        document.title = $(`.view[data-view="${current}"]`)?.dataset.title || 'TOMA';
-        updateMetaDescription(current);
-
-        if (current === 'productos') {
-            productState.filter = ['ropa', 'objetos', 'favoritos'].includes(param) ? param : 'all';
-            renderProducts();
-        }
-        if (current === 'eventos') renderEvents();
-        if (current === 'creacion') applyRouteDesign(query || '');
-        if (current === 'perfil') renderProfile();
-
-        closeMenu();
-        window.scrollTo({ top: 0, left: 0, behavior: 'instant' });
-    }
-
-    function initEvents() {
-        // Menú móvil y cabecera
-        menuToggle?.addEventListener('click', () => {
-            const open = mainMenu.classList.toggle('open');
-            menuToggle.setAttribute('aria-expanded', String(open));
-        });
-        const header = $('.site-header');
-        const onScroll = () => header.classList.toggle('is-scrolled', window.scrollY > 8);
-        window.addEventListener('scroll', onScroll, { passive: true });
-        onScroll();
-        window.addEventListener('hashchange', route);
-
-        $('.cart-trigger').addEventListener('click', () => toggleDrawer(true));
-        $('.drawer-close').addEventListener('click', () => toggleDrawer(false));
-        drawerOverlay.addEventListener('click', () => toggleDrawer(false));
-        $('.search-trigger').addEventListener('click', openSearch);
-        $('.account-trigger').addEventListener('click', () => { if (getSession()) location.hash = '#/perfil'; else openAuth('login'); });
-        $('.checkout-button').addEventListener('click', openCheckout);
-
-        // Delegación de clics para elementos generados dinámicamente
-        document.addEventListener('click', async (event) => {
-            const t = event.target;
-            const pick = (selector) => t.closest(selector);
-
-            if (pick('[data-close]') || (activeModal && t.classList.contains('modal-backdrop'))) {
-                if (pick('[data-go-orders]')) { setTimeout(() => showProfileTab('pedidos'), 0); }
-                closeModal();
-                return;
-            }
-
-            let el;
-            if ((el = pick('[data-wish]'))) { toggleWish(el.dataset.wish); return; }
-            if ((el = pick('[data-quick]'))) { openQuick(el.dataset.quick); return; }
-            if ((el = pick('[data-add]'))) {
-                const p = findSellable(el.dataset.add);
-                if (!p) return;
-                if (p.sizes) { openQuick(p.id); return; }
-                addItem(p);
-                toggleDrawer(true);
-                return;
-            }
-            if ((el = pick('[data-ics]'))) { downloadICS(el.dataset.ics); return; }
-            if ((el = pick('[data-rsvp]'))) { await api.rsvp(el.dataset.rsvp); toast('Te has apuntado. ¡Nos vemos allí!'); renderEvents(); return; }
-            if ((el = pick('[data-city]'))) { eventState.city = el.dataset.city; renderEvents(); return; }
-            if ((el = pick('#product-filters [data-filter]'))) { productState.filter = el.dataset.filter; renderProducts(); return; }
-            if (pick('[data-filter-reset]')) { productState.filter = 'all'; renderProducts(); return; }
-            if ((el = pick('[data-preset]'))) { loadDesign(DESIGN_PRESETS[Number(el.dataset.preset)], false); $('#design-status').textContent = `Idea aplicada: ${DESIGN_PRESETS[Number(el.dataset.preset)].label}.`; return; }
-            if (pick('[data-open-auth]')) { openAuth('login'); return; }
-            if ((el = pick('[data-auth-tab]'))) { setAuthTab(el.dataset.authTab); return; }
-            if ((el = pick('[data-scroll]'))) { event.preventDefault(); document.getElementById(el.dataset.scroll)?.scrollIntoView({ behavior: 'smooth' }); return; }
-            if ((el = pick('[data-cart-action]'))) {
-                const cart = getCart();
-                const item = cart[Number(el.dataset.index)];
-                if (!item) return;
-                item.quantity += el.dataset.cartAction === 'increase' ? 1 : -1;
-                saveCart(cart.filter((i) => i.quantity > 0));
-                updateCart();
-                return;
-            }
-            if ((el = pick('[data-result]'))) { activateResult(el.dataset.result); return; }
-            if ((el = pick('[data-load-design]'))) { const d = (await api.getDesigns()).find((x) => x.id === el.dataset.loadDesign); if (d) loadDesign(d); return; }
-            if ((el = pick('[data-cart-design]'))) { const d = (await api.getDesigns()).find((x) => x.id === el.dataset.cartDesign); if (d) { addDesignToCart(d); toggleDrawer(true); } return; }
-            if ((el = pick('[data-del-design]'))) { await api.deleteDesign(el.dataset.delDesign); toast('Diseño eliminado.'); renderProfile(); return; }
-            if ((el = pick('[data-del-draft]'))) { await api.deleteDraft(el.dataset.delDraft); toast('Borrador eliminado.'); renderProfile(); return; }
-            if ((el = pick('[data-consent]'))) { store.set('consent', el.dataset.consent); $('.consent').hidden = true; return; }
-            if (pick('#logout-button')) { await api.logout(); updateAccountUI(); toast('Has cerrado sesión.'); profileTab = 'resumen'; renderProfile(); return; }
-            if ((el = pick('.profile-tab'))) { showProfileTab(el.dataset.tab); return; }
-        });
-
-        $('#sort-select').addEventListener('change', (event) => { productState.sort = event.target.value; renderProducts(); });
-
-        // Vista rápida
-        $('#qv-sizes').addEventListener('click', (event) => {
-            const button = event.target.closest('[data-size]');
-            if (!button) return;
-            quickState.size = button.dataset.size;
-            $$('#qv-sizes button').forEach((b) => b.setAttribute('aria-checked', String(b === button)));
-        });
-        $('#qv-qty').addEventListener('click', (event) => {
-            const button = event.target.closest('[data-qty]');
-            if (!button) return;
-            quickState.quantity = Math.min(10, Math.max(1, quickState.quantity + Number(button.dataset.qty)));
-            $('#qv-qty-value').textContent = quickState.quantity;
-        });
-        $('#qv-add').addEventListener('click', () => {
-            addItem(quickState.product, { size: quickState.size, quantity: quickState.quantity });
-            closeModal(true);
-            toggleDrawer(true);
-        });
-        $('#qv-wish').addEventListener('click', () => toggleWish(quickState.product.id));
-
-        // Buscador
-        const searchInput = $('#search-input');
-        searchInput.addEventListener('input', debounce(() => runSearch(searchInput.value), 120));
-        searchInput.addEventListener('keydown', (event) => {
-            const items = $$('#search-results .result');
-            if (!items.length) return;
-            let index = items.findIndex((el) => el.classList.contains('is-active'));
-            if (event.key === 'ArrowDown' || event.key === 'ArrowUp') {
-                event.preventDefault();
-                items[index]?.classList.remove('is-active');
-                index = (index + (event.key === 'ArrowDown' ? 1 : -1) + items.length) % items.length;
-                items[index].classList.add('is-active');
-                items[index].scrollIntoView({ block: 'nearest' });
-            } else if (event.key === 'Enter') {
-                event.preventDefault();
-                (items[index] || items[0]).click();
-            }
-        });
-
-        // Carrito: código promocional
-        $('.promo-form').addEventListener('submit', (event) => { event.preventDefault(); applyPromo($('#promo-input').value); });
-
-        // Checkout
-        $('#checkout-form-1').addEventListener('submit', (event) => {
-            event.preventDefault();
-            if (!validateForm(event.currentTarget)) return;
-            checkoutState.customer = {
-                name: $('#co-name').value.trim(), email: $('#co-email').value.trim(),
-                ...(computeTotals(getCart()).physical ? { address: $('#co-address').value.trim(), city: $('#co-city').value.trim(), zip: $('#co-zip').value.trim(), country: $('#co-country').value } : {})
-            };
-            goStep(2);
-        });
-        $('[data-back]').addEventListener('click', () => goStep(1));
-        $('#checkout-form-2').addEventListener('submit', async (event) => {
-            event.preventDefault();
-            if (!validateForm(event.currentTarget)) return;
-            const cart = getCart();
-            const button = $('button[type="submit"]', event.currentTarget);
-            button.disabled = true;
-            try {
-                const totals = computeTotals(cart);
-                const order = await api.createOrder({ items: cart, totals, customer: checkoutState.customer, payment: $('input[name="pay"]:checked').value, promo: totals.promo?.code });
-                saveCart([]); store.remove('promo');
-                $('#promo-input').value = ''; $('.promo-status').textContent = '';
-                updateCart();
-                $('#done-order').textContent = order.id;
-                resetForm($('#checkout-form-2'));
-                goStep(3);
-            } finally { button.disabled = false; }
-        });
-
-        // Cuenta
-        $('form[data-form="login"]').addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const form = event.currentTarget;
-            const status = $('.form-status', form);
-            status.textContent = '';
-            if (!validateForm(form)) return;
-            try {
-                const user = await api.login({ email: $('#login-email').value, password: $('#login-password').value });
-                resetForm(form);
-                closeModal(); updateAccountUI(); toast(`Hola de nuevo, ${firstName(user.name)}.`);
-                if (location.hash.startsWith('#/perfil')) renderProfile();
-            } catch (error) { status.textContent = error.message; }
-        });
-        $('form[data-form="register"]').addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const form = event.currentTarget;
-            const status = $('.form-status', form);
-            status.textContent = '';
-            if (!validateForm(form)) return;
-            try {
-                const user = await api.register({ name: $('#reg-name').value, email: $('#reg-email').value, password: $('#reg-password').value });
-                resetForm(form);
-                closeModal(); updateAccountUI(); toast(`Cuenta creada. Bienvenida/o, ${firstName(user.name)}.`);
-                if (location.hash.startsWith('#/perfil')) renderProfile();
-            } catch (error) { status.textContent = error.message; }
-        });
-
-        // Perfil
-        $('#profile-form').addEventListener('submit', async (event) => {
-            event.preventDefault();
-            if (!validateForm(event.currentTarget)) return;
-            if (!getSession()) { toast('Inicia sesión para guardar cambios en tu perfil.'); return; }
-            await api.updateProfile({ name: $('#pf-name').value.trim(), email: $('#pf-email').value.trim(), city: $('#pf-city').value.trim(), username: $('#pf-user').value.trim() });
-            updateAccountUI(); renderProfile(); toast('Cambios guardados.');
-        });
-        $('#draft-form').addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const form = event.currentTarget;
-            if (!validateForm(form)) return;
-            await api.saveDraft({ name: $('#draft-name').value.trim(), category: $('#draft-category').value, price: parseFloat($('#draft-price').value.replace(',', '.')), hasImage: Boolean($('#draft-image').files.length) });
-            resetForm(form); toast('Borrador guardado.'); renderProfile();
-        });
-
-        // Eventos y newsletter
-        $('.event-form').addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const form = event.currentTarget;
-            if (!validateForm(form)) return;
-            await api.proposeEvent({ name: $('#event-name').value.trim(), city: $('#event-city').value.trim(), date: $('#event-date-input').value });
-            resetForm(form);
-            $('.event-status').textContent = 'Propuesta recibida. La revisaremos antes de publicarla.';
-        });
-        $('.newsletter-form').addEventListener('submit', async (event) => {
-            event.preventDefault();
-            const form = event.currentTarget;
-            if (!validateForm(form)) return;
-            await api.subscribe($('#news-email').value.trim());
-            resetForm(form);
-            $('.newsletter-status').textContent = 'Listo. Te avisaremos del próximo drop.';
-        });
-
-        // Teclado: Escape, atajos de búsqueda y foco atrapado en modales
-        document.addEventListener('keydown', (event) => {
-            const typing = /^(INPUT|TEXTAREA|SELECT)$/.test(document.activeElement?.tagName);
-            if (event.key === 'Escape') {
-                if (activeModal) closeModal();
-                else if (cartDrawer.classList.contains('is-open')) toggleDrawer(false);
-                closeMenu();
-                return;
-            }
-            if (((event.key === 'k' || event.key === 'K') && (event.metaKey || event.ctrlKey)) || (event.key === '/' && !typing && !activeModal)) {
-                event.preventDefault();
-                openSearch();
-                return;
-            }
-            if (event.key === 'Tab' && activeModal) {
-                const items = visibleFocusables(modalEls[activeModal]);
-                if (!items.length) return;
-                const first = items[0], last = items[items.length - 1];
-                if (event.shiftKey && document.activeElement === first) { event.preventDefault(); last.focus(); }
-                else if (!event.shiftKey && document.activeElement === last) { event.preventDefault(); first.focus(); }
-            }
-        });
-
-        // Los enlaces del menú cierran el menú móvil
-        mainMenu?.addEventListener('click', (event) => { if (event.target.closest('a')) closeMenu(); });
-    }
-
-    /* ======================================================================
-       13. PULIDO: accesibilidad, revelado al scroll y botón de subir
-    ====================================================================== */
-
-    // Enlaza cada mensaje de error con su campo para que los lectores de pantalla lo anuncien.
-    function wireFieldErrors() {
-        $$('.field').forEach((field) => {
-            const input = $('input, select', field);
-            const error = $('.field-error', field);
-            if (!input || !error) return;
-            if (!error.id) error.id = `${input.id || 'campo'}-error`;
-            error.setAttribute('role', 'alert');
-            input.setAttribute('aria-describedby', error.id);
-        });
-    }
-
-    // Revelado suave: los elementos .reveal aparecen al entrar en pantalla.
-    // Un MutationObserver recoge también las tarjetas que se generan después con innerHTML.
-    function initReveal() {
-        const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-        if (reduce || !('IntersectionObserver' in window)) {
-            const showAll = () => $$('.reveal:not(.is-visible)').forEach((el) => el.classList.add('is-visible'));
-            showAll();
-            new MutationObserver(showAll).observe(document.body, { childList: true, subtree: true });
-            return;
-        }
-        const io = new IntersectionObserver((entries) => {
-            entries.forEach((entry) => {
-                if (!entry.isIntersecting) return;
-                entry.target.classList.add('is-visible');
-                io.unobserve(entry.target);
-            });
-        }, { threshold: 0.12, rootMargin: '0px 0px -6% 0px' });
-
-        const watch = () => $$('.reveal:not(.is-visible)').forEach((el) => io.observe(el));
-        watch();
-        new MutationObserver(debounce(watch, 30)).observe($('main'), { childList: true, subtree: true });
-    }
-
-    function initToTop() {
-        const button = $('.to-top');
-        if (!button) return;
-        button.hidden = false;
-        const toggle = () => button.classList.toggle('is-visible', window.scrollY > 700);
-        window.addEventListener('scroll', toggle, { passive: true });
-        button.addEventListener('click', () => {
-            const reduce = window.matchMedia('(prefers-reduced-motion: reduce)').matches;
-            window.scrollTo({ top: 0, behavior: reduce ? 'auto' : 'smooth' });
-        });
-        toggle();
-    }
-
-    // Descripción por página (útil al compartir y para el historial del navegador)
-    const VIEW_DESCRIPTIONS = {
-        tienda: 'TOMA: tienda de productos, entradas y creaciones con identidad.',
-        productos: 'Catálogo completo de TOMA: ropa y objetos de edición limitada.',
-        eventos: 'Agenda de eventos de TOMA: conciertos, sesiones y encuentros.',
-        creacion: 'Diseña tu propia camiseta, sudadera o tote bag con TOMA y compártela.',
-        perfil: 'Tu espacio en TOMA: pedidos, entradas, diseños y favoritos.',
-        404: 'La página que buscas no existe en TOMA.'
-    };
-
-    function updateMetaDescription(view) {
-        $('meta[name="description"]')?.setAttribute('content', VIEW_DESCRIPTIONS[view] || VIEW_DESCRIPTIONS.tienda);
-    }
-
-    function init() {
-        initReveal();
-        initStarfield();
-        renderFeatured();
-        renderProducts();
-        renderEvents();
-        initLaunch();
-        initCustomizer();
-        initEvents();
-        wireFieldErrors();
-        initToTop();
-
-        cartDrawer.inert = true;
-        Object.values(modalEls).forEach((el) => { el.inert = true; });
-        if (!store.get('consent', null)) $('.consent').hidden = false;
-
-        updateAccountUI();
-        updateCart();
-        syncWishUI();
-        route();
-    }
-
-    init();
+'use strict';
+const $ = (s, r = document) => r.querySelector(s), $$ = (s, r = document) => [...r.querySelectorAll(s)];
+const esc = t => String(t ?? '').replace(/[&<>"']/g, c => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' }[c]));
+const eur = n => Number(n).toLocaleString('es-ES', { style: 'currency', currency: 'EUR' });
+const store = {
+  get(k, d) { try { return JSON.parse(localStorage.getItem('toma-' + k)) ?? d; } catch { return d; } },
+  set(k, v) { try { localStorage.setItem('toma-' + k, JSON.stringify(v)); return true; } catch { return false; } }
+};
+const uid = p => p + Date.now().toString(36) + Math.random().toString(36).slice(2, 5);
+const norm = t => String(t).normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+const hex = c => /^#[0-9a-f]{6}$/i.test(c) ? c : '#C9A24B';
+// id: [nombre, categoría, ¿lleva talla?]
+const CATALOG = {
+  tee: ['Camiseta', 'Ropa', 1], hoodie: ['Sudadera', 'Ropa', 1], cap: ['Gorra', 'Ropa'], beanie: ['Gorro', 'Ropa'], socks: ['Calcetines', 'Ropa'],
+  vinyl: ['Vinilo', 'Música'], cd: ['CD', 'Música'], cassette: ['Casete', 'Música'],
+  tote: ['Tote bag', 'Accesorios'], pin: ['Chapa', 'Accesorios'], sticker: ['Pegatinas', 'Accesorios'], patch: ['Parche', 'Accesorios'], keychain: ['Llavero', 'Accesorios'], phonecase: ['Funda de móvil', 'Accesorios'],
+  strap: ['Correa de guitarra', 'Instrumentos'], pick: ['Púas', 'Instrumentos'], drumsticks: ['Baquetas', 'Instrumentos'],
+  mug: ['Taza', 'Hogar'], bottle: ['Botella', 'Hogar'], poster: ['Póster', 'Hogar']
+};
+const TYPES = Object.fromEntries(Object.entries(CATALOG).map(([k, v]) => [k, v[0]]));
+const CATS = [...new Set(Object.values(CATALOG).map(v => v[1]))];
+const SIZED = Object.keys(CATALOG).filter(k => CATALOG[k][2]);
+const GENRES = ['Pop', 'Rock', 'Urbano', 'Electrónica', 'Flamenco', 'Indie', 'Jazz', 'Folk', 'Clásica'];
+// Costes base estimados (EUR por unidad, sin envío). Camisetas y sudaderas siguen comparativas de 2026
+// (Printify es el más barato; Gelato produce cerca del cliente); el resto son estimaciones: usa los precios reales de tu cuenta.
+const SUPPLIERS = {
+  Printify: { tee: 6.5, hoodie: 18, cap: 8, beanie: 8.5, socks: 7, tote: 6, phonecase: 7.5, mug: 5.5, bottle: 9, poster: 5, pin: 1.3, sticker: .6, patch: 1.5, keychain: 2, strap: 11, pick: .5, drumsticks: 7 },
+  Gelato: { tee: 7.5, hoodie: 17.5, cap: 8.5, tote: 6.5, mug: 5, poster: 4.5, phonecase: 8, bottle: 9.5, sticker: .7 },
+  SPOD: { tee: 7, hoodie: 18.5, cap: 7.5, beanie: 8, socks: 6.5, tote: 6.5, mug: 5.5, poster: 5 },
+  Printful: { tee: 9, hoodie: 21, cap: 11, beanie: 11, socks: 10, tote: 9, phonecase: 10, mug: 7, bottle: 11, poster: 7, sticker: 1, pin: 2.5, patch: 3 },
+  'Fábrica de discos': { vinyl: 8, cd: 1.6, cassette: 2.5 } // tiradas mínimas de 300 unidades o más
+};
+const FEE = .1;
+const SHAPES = {
+  tee: 'M40 18L18 30 6 52l22 11 6-9v48h52V54l6 9 22-11-12-22-22-12C76 27 68 31 60 31S44 27 40 18Z',
+  hoodie: 'M44 14C46 24 53 28 60 28S74 24 76 14L92 20 112 62 96 70 88 56V104H32V56L24 70 8 62 28 20Z',
+  cap: 'M24 78C24 48 40 30 62 30S98 48 98 78ZM18 80H98C108 80 117 86 117 93 96 86 46 87 18 90Z',
+  beanie: 'M26 82C26 46 42 28 60 28S94 46 94 82ZM22 82H98V98H22Z',
+  socks: 'M40 10H80V66L98 84C106 94 100 108 86 108H52C40 108 34 98 40 88Z',
+  vinyl: 'M8 60a52 52 0 1 0 104 0 52 52 0 1 0-104 0Z', cd: 'M16 60a44 44 0 1 0 88 0 44 44 0 1 0-88 0Z',
+  cassette: 'M10 28H110V94H92L86 80H34L28 94H10Z', tote: 'M26 44H94L100 108H20Z',
+  pin: 'M30 60a30 30 0 1 0 60 0 30 30 0 1 0-60 0Z', sticker: 'M60 6L75 34 106 38 83 60 90 92 60 77 30 92 37 60 14 38 45 34Z',
+  patch: 'M26 30H94C102 30 108 36 108 44V76C108 84 102 90 94 90H26C18 90 12 84 12 76V44C12 36 18 30 26 30Z',
+  keychain: 'M34 40H86V108H34Z',
+  phonecase: 'M34 8H86C92 8 96 12 96 18V102C96 108 92 112 86 112H34C28 112 24 108 24 102V18C24 12 28 8 34 8Z',
+  strap: 'M8 36H112V84H8Z', pick: 'M60 10C92 10 106 40 98 64 90 90 72 110 60 110S30 90 22 64C14 40 28 10 60 10Z',
+  drumsticks: 'M16 98L84 30 92 38 24 106ZM104 98L36 30 28 38 96 106Z',
+  mug: 'M20 30H84V98C84 104 80 108 74 108H30C24 108 20 104 20 98ZM84 44H98C110 44 110 78 90 78H84V70H92C100 70 100 52 90 52H84Z',
+  bottle: 'M48 8H72V24L84 40V104C84 108 80 112 76 112H44C40 112 36 108 36 104V40L48 24Z', poster: 'M24 10H96V110H24Z'
+};
+const EXTRA = { tote: 'M44 46V34C44 12 76 12 76 34V46', keychain: 'M46 42C42 6 78 6 74 42' };
+// Zona de impresión [x, y, ancho, alto] de cada producto (viewBox 120x120)
+const PA = { tee: [38, 38, 44, 44], hoodie: [40, 44, 40, 36], cap: [44, 38, 36, 28], beanie: [40, 46, 40, 30], socks: [44, 18, 32, 40], vinyl: [40, 40, 40, 40], cd: [44, 44, 32, 32], cassette: [20, 34, 80, 40], tote: [34, 56, 52, 46], pin: [40, 40, 40, 40], sticker: [38, 36, 44, 44], patch: [20, 38, 80, 44], keychain: [38, 52, 44, 48], phonecase: [32, 34, 56, 60], strap: [20, 42, 80, 36], pick: [38, 34, 44, 52], drumsticks: [40, 40, 40, 40], mug: [28, 42, 48, 50], bottle: [40, 46, 36, 50], poster: [28, 18, 64, 84] };
+const PALETTE = ['#FFFFFF', '#0B0B0B', '#C9A24B', '#BFE3C8', '#8D8D95', '#1E3A8A', '#B91C1C', '#15803D'];
+const lum = c => (parseInt(c.slice(1, 3), 16) * 299 + parseInt(c.slice(3, 5), 16) * 587 + parseInt(c.slice(5, 7), 16) * 114) / 1000;
+const IMG = /^data:image\/(png|jpeg);base64,[A-Za-z0-9+\/=]+$/;
+const GENRE_MOTIF = { Pop: 'burst', Rock: 'bolt', Urbano: 'crown', 'Electrónica': 'rings', Flamenco: 'fan', Indie: 'sun', Jazz: 'keys', Folk: 'leaf', 'Clásica': 'staff' };
+// Dibujo propio de cada género (caja de 100x100)
+const MOTIFS = {
+  burst: '<path d="M50 4l9 25 24-12-9 26 26 4-21 16 16 21-26-3 2 26-21-15-21 15 2-26-26 3 16-21L4 47l26-4-9-26 24 12z"/>',
+  bolt: '<path d="M60 2L20 58h26l-8 40 42-58H54z"/>',
+  crown: '<path d="M8 74V28l24 22 18-34 18 34 24-22v46zM8 82h84v10H8z"/>',
+  rings: '<g fill="none" stroke-width="6"><circle cx="50" cy="50" r="44"/><circle cx="50" cy="50" r="29"/><circle cx="50" cy="50" r="14"/></g>',
+  fan: '<g fill="none" stroke-width="5" stroke-linecap="round"><path d="M50 92L10 40M50 92L28 26M50 92V20M50 92L72 26M50 92L90 40M10 40A56 56 0 0 1 90 40"/></g>',
+  sun: '<circle cx="50" cy="50" r="18"/><g stroke-width="5" stroke-linecap="round"><path d="M50 6v14M50 80v14M6 50h14M80 50h14M19 19l10 10M71 71l10 10M81 19L71 29M29 71L19 81"/></g>',
+  keys: '<g fill="none" stroke-width="5"><path d="M8 18h84v64H8zM29 18v64M50 18v64M71 18v64"/></g><path d="M23 18h12v36H23zM44 18h12v36H44zM65 18h12v36H65z"/>',
+  leaf: '<path d="M50 94C18 72 12 36 50 6c38 30 32 66 0 88z"/>',
+  staff: '<g fill="none" stroke-width="3"><path d="M6 28h88M6 40h88M6 52h88M6 64h88M6 76h88"/></g><ellipse cx="36" cy="68" rx="11" ry="8"/><path d="M45 66V18" stroke-width="5" fill="none"/><path d="M45 18c16 4 22 16 17 30" stroke-width="5" fill="none"/>'
+};
+let mid = 0;
+// Maqueta: producto en su color, estampado dentro de su zona de impresión y luces y sombras de tejido.
+const mock = (p, base, guide = false) => {
+  const t = SHAPES[p.type] ? p.type : 'tee', c = hex(base || p.base || p.color), [x, y, w, h] = PA[t], id = 'm' + ++mid;
+  const tc = hex(p.textColor || (lum(c) > 150 ? '#0B0B0B' : '#FFFFFF')), txt = String(p.text || ''), k = (p.scale || 85) / 100;
+  const cx = x + w / 2, cy = y + h / 2 + (p.dy || 0) * h / 100;
+  const m = MOTIFS[p.motif === undefined ? GENRE_MOTIF[p.genre] : p.motif];
+  let print = '';
+  if (IMG.test(p.design || '')) print = `<image href="${p.design}" x="${(cx - w * k / 2).toFixed(1)}" y="${(cy - h * k / 2).toFixed(1)}" width="${(w * k).toFixed(1)}" height="${(h * k).toFixed(1)}" preserveAspectRatio="xMidYMid meet"/>`;
+  else {
+    const ms = m ? Math.min(w * k, h * k * (txt ? .68 : 1)) : 0, top = cy - h * k / 2;
+    if (m) print += `<g transform="translate(${(cx - ms / 2).toFixed(1)} ${top.toFixed(1)}) scale(${(ms / 100).toFixed(3)})" fill="${tc}" stroke="${tc}">${m}</g>`;
+    if (txt) { const fs = Math.min(w * k / (.62 * txt.length), h * k * (m ? .24 : .8)), ty = m ? top + ms + fs * 1.05 : cy + fs * .35; print += `<text x="${cx}" y="${ty.toFixed(1)}" text-anchor="middle" textLength="${(.62 * fs * txt.length).toFixed(1)}" lengthAdjust="spacingAndGlyphs" font-family="Playfair Display,Georgia,serif" font-weight="700" font-size="${fs.toFixed(1)}" fill="${tc}">${esc(txt)}</text>`; }
+  }
+  return `<svg viewBox="0 0 120 120" role="img" aria-label="${esc(TYPES[t])}"><defs><clipPath id="${id}c"><path d="${SHAPES[t]}"/></clipPath><linearGradient id="${id}s" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#fff" stop-opacity=".25"/><stop offset=".5" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".3"/></linearGradient></defs>${EXTRA[t] ? `<path d="${EXTRA[t]}" fill="none" stroke="${c}" stroke-width="5" stroke-linecap="round"/>` : ''}<path d="${SHAPES[t]}" fill="${c}"/><g clip-path="url(#${id}c)">${print}</g><path d="${SHAPES[t]}" fill="url(#${id}s)" stroke="#000" stroke-opacity=".12"/>${guide ? `<rect x="${x}" y="${y}" width="${w}" height="${h}" rx="2" fill="none" stroke="#B8923A" stroke-width=".8" stroke-dasharray="2 2"/>` : ''}</svg>`;
+};
+
+const SEED = window.SEED; // artistas, productos y conciertos de ejemplo (seed.js)
+if (SEED && store.get('seeded') !== 2) { // se conservan los productos y conciertos creados por el usuario
+  const own = (k, re) => store.get(k, []).filter(x => !re.test(x.id));
+  store.set('products', [...own('products', /^p\d+$/), ...SEED.products]);
+  store.set('events', [...own('events', /^e\d+$/), ...SEED.events]);
+  store.set('artists', SEED.artists); store.set('seeded', 2);
+}
+const products = () => store.get('products', []), events = () => store.get('events', []);
+const artists = () => store.get('artists', []);
+// Icono de información: al pasar el ratón o enfocarlo con el teclado muestra la explicación
+const tip = t => `<span class="tip" tabindex="0" role="img" aria-label="${esc(t)}" data-tip="${esc(t)}">i</span>`;
+const addTip = (el, t) => { if (!el) return; const n = [...el.childNodes].find(x => x.nodeType === 3 && x.textContent.trim()), s = document.createElement('template'); s.innerHTML = tip(t); n ? n.after(s.content) : el.append(s.content); };
+let tt;
+const toast = m => { const t = $('#toast'); if (!t) return; t.textContent = m; t.classList.add('on'); clearTimeout(tt); tt = setTimeout(() => t.classList.remove('on'), 2200); };
+window.TOMA = { $, $$, esc, eur, store, uid, hex, TYPES, CATALOG, CATS, GENRES, SUPPLIERS, FEE, PALETTE, mock, products, events, artists, toast, tip, addTip };
+document.documentElement.dataset.theme = store.get('theme', matchMedia('(prefers-color-scheme: dark)').matches ? 'dark' : 'light');
+const tb = $('#theme');
+if (tb) tb.addEventListener('click', () => { const t = document.documentElement.dataset.theme === 'dark' ? 'light' : 'dark'; document.documentElement.dataset.theme = t; store.set('theme', t); });
+
+const QR = window.QR || (() => '');
+if ($('#ticket')) { // entrada.html: muestra la entrada con su QR
+  const code = new URLSearchParams(location.search).get('c') || '';
+  fetch('/api/ticket/' + encodeURIComponent(code)).then(r => r.ok ? r.json() : Promise.reject()).then(t => {
+    $('#ticket').innerHTML = `<div class="qr big">${QR(code)}</div><h1>${esc(t.title)}</h1><p>${esc(t.venue)}, ${esc(t.date)}</p><p class="mu">${esc(code)}</p><p><b>${t.used ? 'Entrada ya utilizada' : 'Entrada válida'}</b></p>`;
+  }).catch(() => { $('#ticket').innerHTML = '<p class="empty">No encontramos esta entrada. Revisa el enlace del email.</p>'; });
+  return;
+}
+if (!$('#grid')) return; // El resto es solo de la tienda (index.html)
+
+const today = new Date().toISOString().slice(0, 10);
+const page = document.body.dataset.page || 'home', qs = new URLSearchParams(location.search);
+const AVATAR = window.AVATAR || (() => '');
+const artist0 = artists().find(a => a.id === qs.get('a'));
+let genre = page === 'genre' ? qs.get('g') || '' : artist0 ? artist0.genre : '', who = artist0 ? artist0.name : '';
+const aid = n => artists().find(a => a.name === n)?.id;
+const GENRE_INFO = {
+  Pop: 'Estribillos, color y escenarios que brillan. Merch para cantar en primera fila.',
+  Rock: 'Guitarras, carretera y directos que tiemblan. Camisetas y discos con carácter.',
+  Urbano: 'Rimas, bases y calle. Gorras, sudaderas y piezas con actitud.',
+  'Electrónica': 'Pulso, luz y sesiones largas. Pósters y piezas pensadas para la pista.',
+  Flamenco: 'Cante, guitarra y palmas. Duende en cada pieza.',
+  Indie: 'Canciones pequeñas y mucha atmósfera. Piezas suaves, de tirada corta.',
+  Jazz: 'Improvisación, club y luz baja. Vinilos y objetos para escuchar despacio.',
+  Folk: 'Cuerda, voz y tradición. Tejidos y objetos que cuentan historias.',
+  'Clásica': 'Cámara, orquesta y repertorio. Ediciones cuidadas para quien escucha con atención.'
+};
+const fav = () => store.get('fav', []);
+const toggleFav = id => { const f = fav(); store.set('fav', f.includes(id) ? f.filter(x => x !== id) : [...f, id]); };
+const cart = () => store.get('cart', []);
+const sellable = id => {
+  const p = products().find(x => x.id === id);
+  if (p) return { kind: 'p', name: p.name, price: p.price, artist: p.artist, p };
+  const e = events().find(x => x.id === id);
+  return e && { kind: 'e', name: `${e.artist} en ${e.city}`, price: e.price, artist: e.artist, e };
+};
+const lines = () => cart().map((l, i) => { const s = sellable(l.id); return s && { ...l, ...s, i }; }).filter(Boolean);
+const totals = ls => {
+  const sub = ls.reduce((a, l) => a + l.price * l.qty, 0), merch = ls.filter(l => l.kind === 'p').reduce((a, l) => a + l.price * l.qty, 0);
+  const phys = merch > 0, ship = phys && merch < 60 ? 4.9 : 0;
+  return { sub, phys, ship, total: sub + ship };
+};
+const paint = () => {
+  const ls = lines(), t = totals(ls);
+  $('#count').textContent = ls.reduce((a, l) => a + l.qty, 0);
+  $('#lines').innerHTML = ls.length ? ls.map(l => `<div class="line"><div><b>${esc(l.name)}</b><small>${l.color ? `<i class="dot" style="background:${hex(l.color)}"></i>` : ''}${l.size ? 'Talla ' + esc(l.size) : esc(l.artist)}</small></div><div class="qty"><button type="button" data-q="-1" data-i="${l.i}" aria-label="Quitar uno">−</button><span>${l.qty}</span><button type="button" data-q="1" data-i="${l.i}" aria-label="Añadir uno">+</button></div><b>${eur(l.price * l.qty)}</b></div>`).join('')
+    : '<p class="empty">Tu carrito está vacío. Elige algo del merch o reserva una entrada.</p>';
+  $('#tot').innerHTML = `<dt>Subtotal</dt><dd>${eur(t.sub)}</dd>` + (t.phys ? `<dt>Envío${tip('Las entradas no llevan gastos de envío. El merch se envía gratis a partir de 60 € en artículos.')}</dt><dd>${t.ship ? eur(t.ship) : 'Gratis'}</dd>` : '') + `<dt><b>Total</b></dt><dd><b>${eur(t.total)}</b></dd>`;
+};
+const saveCart = c => { store.set('cart', c); paint(); };
+const add = (id, size, color = null) => {
+  const c = cart(), k = c.find(l => l.id === id && l.size === size && l.color === color), e = events().find(x => x.id === id);
+  if (e && (k ? k.qty : 0) >= Math.min(e.stock, 8)) return toast('Has alcanzado el máximo de entradas');
+  k ? k.qty++ : c.push({ id, size, color, qty: 1 });
+  saveCart(c); toast('Añadido al carrito');
+};
+
+const chips = () => { const c = $('#chips'); if (!c) return; c.innerHTML = ['Todos', ...GENRES].map(g => `<button class="chip" type="button" data-g="${g === 'Todos' ? '' : g}" aria-pressed="${g === 'Todos' ? !genre : g === genre}">${g}</button>`).join(''); };
+const empty = w => `<p class="empty">Todavía no hay ${w} en este género. <a href="artista.html">Publica el tuyo</a>.</p>`;
+const renderP = () => {
+  const q = norm($('#q').value), c = $('#cat').value, o = $('#sort').value, fv = $('#favs').checked;
+  const l = products().filter(p => (!genre || p.genre === genre) && (!who || p.artist === who) && (!fv || fav().includes(p.id)) && (!c || CATALOG[p.type]?.[1] === c) && norm(`${p.name} ${p.artist} ${TYPES[p.type]}`).includes(q))
+    .sort((a, b) => o === 'a' ? a.price - b.price : o === 'd' ? b.price - a.price : 0);
+  $('#grid').innerHTML = l.length ? l.map(p => { const cs = (p.colors?.length ? p.colors : [p.base || p.color]).map(hex); return `<article class="pcard" data-genre="${esc(p.genre)}" style="--c:${hex(p.color)}"><div class="tile">${mock(p, cs[0])}<button class="fav" type="button" data-fav="${p.id}" aria-pressed="${fav().includes(p.id)}" aria-label="Favorito: ${esc(p.name)}">♥</button></div>${cs.length > 1 ? `<div class="sws" data-for="${p.id}">${cs.map((c, i) => `<button class="sw" type="button" data-c="${c}" aria-pressed="${!i}" aria-label="Color ${i + 1}" style="background:${c}"></button>`).join('')}</div>` : ''}<h3>${esc(p.name)}</h3><p class="mu">${aid(p.artist) ? `<a href="perfil.html?a=${aid(p.artist)}">${esc(p.artist)}</a>` : esc(p.artist)}, ${TYPES[p.type] || ''}</p><div class="buy"><b>${eur(p.price)}</b>${SIZED.includes(p.type) ? `<select aria-label="Talla de ${esc(p.name)}">${['S', 'M', 'L', 'XL'].map(s => `<option${s === 'M' ? ' selected' : ''}>${s}</option>`).join('')}</select>` : ''}<button class="btn btn-p" type="button" data-add="${p.id}">Añadir</button></div></article>`; }).join('') : empty('merch');
+};
+const renderE = () => {
+  const l = events().filter(e => (!genre || e.genre === genre) && (!who || e.artist === who) && e.date >= today).sort((a, b) => a.date < b.date ? -1 : 1);
+  $('#events').innerHTML = l.length ? l.map(e => { const d = new Date(e.date + 'T00:00:00'), ymd = e.date.replace(/-/g, ''), end = new Date(Date.parse(e.date) + 864e5).toISOString().slice(0, 10).replace(/-/g, ''), place = encodeURIComponent(e.venue + ', ' + e.city); return `<article class="ev" data-genre="${esc(e.genre)}" style="--c:${hex(e.color)}"><div class="stub"><b>${d.getDate()}</b>${d.toLocaleDateString('es-ES', { month: 'short' })}</div><div class="info"><h3>${aid(e.artist) ? `<a href="perfil.html?a=${aid(e.artist)}">${esc(e.artist)}</a>` : esc(e.artist)}</h3><p class="mu">${esc(e.venue)}, ${esc(e.city)}</p><p class="links"><a href="https://www.google.com/maps/search/?api=1&amp;query=${place}" target="_blank" rel="noopener">Cómo llegar</a><a href="https://calendar.google.com/calendar/render?action=TEMPLATE&amp;text=${encodeURIComponent(e.artist)}&amp;dates=${ymd}/${end}&amp;location=${place}" target="_blank" rel="noopener">Añadir al calendario</a></p></div><div class="buy"><b>${eur(e.price)}</b>${e.stock > 0 ? `<button class="btn btn-s" type="button" data-add="${e.id}">Comprar entrada</button>` : '<span class="mu">Agotadas</span>'}</div></article>`; }).join('') : empty('conciertos');
+};
+
+const renderHero = () => {
+  const h = $('#hero'); if (!h) return;
+  if (genre) h.dataset.genre = genre; else delete h.dataset.genre;
+  const art = $('#hero-art'); if (!art) return;
+  art.innerHTML = [['tee', '#0B0B0B', 'TOMA'], ['hoodie', '#BFE3C8', 'ARTE'], ['vinyl', '#C9A24B', 'SONIDO'], ['cap', '#FFFFFF', 'ESTILO']].map(([type, c, text], i) => `<div class="bento fx b${i}">${mock({ type, text: genre ? '' : text, genre, scale: 85 }, c)}</div>`).join('');
+};
+const renderA = () => {
+  const box = $('#artists'); if (!box) return;
+  const l = artists().filter(a => (!genre || a.genre === genre) && (!who || a.name === who));
+  box.innerHTML = l.length ? l.map(a => `<a class="acard" href="perfil.html?a=${esc(a.id)}" data-genre="${esc(a.genre)}"><div class="av">${AVATAR(a)}</div><b>${esc(a.name)}</b><span>${esc(a.genre)}${a.city ? ', ' + esc(a.city) : ''}</span></a>`).join('') : empty('artistas');
+};
+const renderHead = () => {
+  if (page === 'genre') {
+    const a = artists().filter(x => !genre || x.genre === genre).length, p = products().filter(x => !genre || x.genre === genre).length, e = events().filter(x => (!genre || x.genre === genre) && x.date >= today).length;
+    $('#g-title').textContent = genre || 'Todos los géneros'; $('#g-blurb').textContent = GENRE_INFO[genre] || 'Artistas de todos los estilos.';
+    $('#g-stats').textContent = [[a, 'artista', 'artistas'], [p, 'producto', 'productos'], [e, 'concierto', 'conciertos']].map(([n, o, m]) => `${n} ${n === 1 ? o : m}`).join(', ').replace(/, ([^,]+)$/, ' y $1'); document.title = `${genre || 'Géneros'} | TOMA`;
+  }
+  if (page === 'profile') {
+    if (!artist0) { $('#p-name').textContent = 'Artista no encontrado'; return; }
+    $('#p-avatar').innerHTML = AVATAR(artist0); $('#p-name').textContent = artist0.name;
+    $('#p-meta').textContent = artist0.genre + (artist0.city ? ', ' + artist0.city : ''); $('#p-bio').textContent = artist0.bio || '';
+    $('#p-genre-link').href = 'genero.html?g=' + encodeURIComponent(artist0.genre); $('#p-genre-link').textContent = artist0.genre; document.title = `${artist0.name} | TOMA`;
+  }
+};
+// La cinta de géneros lleva a la página de cada género
+if ($('#mq')) $('#mq').innerHTML = Array(4).fill(GENRES).flat().map(g => `<a href="genero.html?g=${encodeURIComponent(g)}">${g}</a>`).join('');
+
+$('#cat').innerHTML = '<option value="">Todas las categorías</option>' + CATS.map(c => `<option>${c}</option>`).join('');
+['q', 'cat', 'sort', 'favs'].forEach(i => $('#' + i).addEventListener('input', renderP));
+document.addEventListener('click', e => {
+  const a = e.target.closest('[data-add]');
+  if (a) { const s = $('select', a.parentElement); const sw = $('.sws .sw[aria-pressed=true]', a.closest('.pcard') || document.createElement('i')); add(a.dataset.add, s ? s.value : null, sw ? sw.dataset.c : null); }
+  const g = e.target.closest('[data-g]');
+  if (g) { genre = g.dataset.g; chips(); renderP(); renderE(); renderA(); renderHero(); }
+  const sw = e.target.closest('.sws .sw');
+  if (sw) { const box = sw.parentElement, p = products().find(x => x.id === box.dataset.for); $$('.sw', box).forEach(b => b.setAttribute('aria-pressed', b === sw)); box.closest('.pcard').querySelector('.tile svg').outerHTML = mock(p, sw.dataset.c); }
+  const fv = e.target.closest('[data-fav]');
+  if (fv) { toggleFav(fv.dataset.fav); fv.setAttribute('aria-pressed', fav().includes(fv.dataset.fav)); if ($('#favs').checked) renderP(); }
+});
+$$('dialog').forEach(d => d.addEventListener('click', e => { if (e.target === d || e.target.closest('[data-close]')) d.close(); }));
+$('#open-cart').onclick = () => $('#cart').showModal();
+$('#lines').addEventListener('click', e => {
+  const b = e.target.closest('[data-q]'); if (!b) return;
+  const c = cart(); c[b.dataset.i].qty += +b.dataset.q; saveCart(c.filter(x => x.qty > 0));
+});
+$('#go').onclick = () => {
+  const t = totals(lines()); if (!t.sub) return toast('Tu carrito está vacío');
+  $('#cart').close(); $('#co').hidden = false; $('#done').hidden = true;
+  $('#ship').hidden = !t.phys; $$('#ship input:not([name=zip])').forEach(i => i.required = t.phys);
+  $('#checkout').showModal();
+};
+const done = (id, tix = []) => {
+  $('#co').hidden = true; $('#done').hidden = false; $('#done-id').textContent = id;
+  $('#tix').innerHTML = tix.map(t => `<div class="tix"><div class="qr">${QR(t.code)}</div><div><b>${esc(t.title)}</b><small>${esc(t.code)}</small></div></div>`).join('');
+};
+$('#co').addEventListener('submit', async e => {
+  e.preventDefault();
+  try { // Con servidor (server.js): precios y stock se validan allí y el pago pasa por Stripe.
+    const r = await fetch('/api/checkout', { method: 'POST', headers: { 'Content-Type': 'application/json' }, body: JSON.stringify({ items: cart(), buyer: Object.fromEntries(new FormData(e.target)) }) });
+    if (r.ok) { const d = await r.json(); if (d.url) return location.assign(d.url); saveCart([]); e.target.reset(); return done(d.id, d.tickets); }
+    if (![404, 405].includes(r.status)) return toast((await r.json()).error || 'No se pudo completar el pedido');
+  } catch { /* sin servidor: pedido local de demostración */ }
+  const f = new FormData(e.target), ls = lines(), t = totals(ls), orders = store.get('orders', []), id = 'TM-' + (1001 + orders.length), by = {};
+  // Cada artículo de merch se agrupa por proveedor: un pedido por proveedor.
+  ls.filter(l => l.kind === 'p').forEach(l => { const s = l.p.supplier; (by[s] = by[s] || []).push({ name: l.p.name, size: l.size, qty: l.qty, cost: SUPPLIERS[s][l.p.type] * l.qty }); });
+  store.set('orders', [...orders, { id, date: today, buyer: { name: f.get('name'), email: f.get('email'), city: f.get('city') || '' }, items: ls.map(l => ({ kind: l.kind, id: l.id, artist: l.artist, name: l.name, type: l.p?.type, supplier: l.p?.supplier, size: l.size, color: l.color, qty: l.qty, price: l.price })), ship: t.ship, total: t.total, status: 'pagado' }]);
+  store.set('supplier-orders', [...store.get('supplier-orders', []), ...Object.entries(by).map(([supplier, items], i) => ({ id: `${id}-${i + 1}`, supplier, items, cost: items.reduce((a, x) => a + x.cost, 0), status: 'Pendiente de enviar al proveedor' }))]);
+  const evs = events(); ls.filter(l => l.kind === 'e').forEach(l => { const x = evs.find(y => y.id === l.id); if (x) x.stock = Math.max(0, x.stock - l.qty); });
+  store.set('events', evs); saveCart([]); renderE(); e.target.reset();
+  const rnd = () => Array.from(crypto.getRandomValues(new Uint8Array(6)), b => b.toString(16).padStart(2, '0')).join('');
+  done(id, ls.filter(l => l.kind === 'e').flatMap(l => Array.from({ length: l.qty }, () => ({ code: `${id}-${rnd()}`, title: l.name }))));
+});
+
+chips(); renderP(); renderE(); renderA(); renderHero(); renderHead(); paint();
+if (location.search.includes('pedido=')) { saveCart([]); toast('¡Pago recibido! Te enviaremos el resumen y las entradas por email.'); history.replaceState(null, '', location.pathname); }
+fetch('/api/catalog').then(r => r.ok ? r.json() : null).then(d => { if (d) { store.set('products', d.products); store.set('events', d.events); if (d.artists) store.set('artists', d.artists); renderP(); renderE(); renderA(); renderHead(); paint(); } }).catch(() => {});
 })();

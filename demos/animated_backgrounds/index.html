@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<!-- Página principal: presenta el lienzo, el selector de fondos y sus controles. -->
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#050611">
+  <title>Background Lab — Interactive Collection</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+<main class="app">
+  <header class="hero">
+    <div>
+      <div class="eyebrow"><i></i> INTERACTIVE BACKGROUND LAB</div>
+      <h1 class="hero-title"><span class="hero-title-count">12</span><span class="hero-title-word">fondos</span><span class="hero-title-word hero-title-accent">animados</span></h1>
+      <p>Cada experiencia tiene una mecánica propia. No son simples fondos animados: están diseñados para responder al usuario.</p>
+    </div>
+    <div class="live"><b></b> INTERACTIVE</div>
+  </header>
+
+  <!-- Escenario donde se dibuja cada fondo y aparece el cursor interactivo. -->
+  <section class="stage-shell">
+    <div class="stage" id="stage">
+      <canvas id="canvas"></canvas>
+      <div class="css-layer"></div>
+      <div class="custom-color-overlay" id="customColorOverlay" aria-hidden="true"></div>
+      <div class="hud">
+      </div>
+      <div class="cursor-ring" id="cursorRing"></div>
+    </div>
+  </section>
+
+  <!-- Selector de experiencias y diálogo de personalización. -->
+  <section class="controls">
+    <div class="controls-head">
+      <div>
+        <span class="section-label">COLLECTION</span>
+        <h3>Elige una experiencia</h3>
+      </div>
+      <div class="controls-actions">
+        <div class="controls-action-buttons">
+          <button class="reset-customization reset-customization-toolbar" id="resetDefaultsButton" type="button">
+            Ajustes predeterminados
+          </button>
+          <button class="customize" id="customizeButton" type="button" aria-expanded="false" aria-controls="customizationPanel">
+            Personalizar
+          </button>
+        </div>
+        <span class="settings-reset-status" id="settingsResetStatus" role="status" aria-live="polite"></span>
+      </div>
+    </div>
+
+    <div class="buttons">
+      <button class="effect active" data-effect="aurora">Aurora Borealis</button>
+      <button class="effect" data-effect="bubbles">Bubbles</button>
+      <button class="effect" data-effect="particles">Fireflies</button>
+      <button class="effect" data-effect="waves">Nighttime Maritime Rain</button>
+      <button class="effect" data-effect="grid">Cubic Wall</button>
+      <button class="effect" data-effect="sunset">High-Mountain Day</button>
+      <button class="effect" data-effect="network">Neural Network</button>
+      <button class="effect" data-effect="cyber">Cyber Warfare</button>
+      <button class="effect" data-effect="ocean">Abyssal Garden</button>
+      <button class="effect" data-effect="sakura">Sakura</button>
+      <button class="effect" data-effect="flare">Solar Flare</button>
+      <button class="effect" data-effect="prism">Liquid Prism</button>
+    </div>
+
+    <dialog class="customization-panel customization-dialog" id="customizationPanel" aria-labelledby="customizationTitle">
+      <div class="customization-heading">
+        <div>
+          <span class="section-label">PERSONALIZACIÓN</span>
+          <h3 id="customizationTitle">Aurora Borealis</h3>
+          <p>Los cambios se guardan automáticamente en este navegador.</p>
+        </div>
+        <div class="customization-actions">
+          <button class="reset-customization" id="resetCustomizations" type="button">
+            Restaurar valores predeterminados
+          </button>
+          <button class="close-customization" id="closeCustomizations" type="button" aria-label="Cerrar personalización">×</button>
+        </div>
+      </div>
+      <div class="customization-controls" id="customizationControls"></div>
+      <p class="customization-status" id="customizationStatus" role="status" aria-live="polite"></p>
+    </dialog>
+  </section>
+
+  <footer><span>HTML · CSS · CANVAS · JAVASCRIPT</span><span>12 FONDOS ANIMADOS</span></footer>
+</main>
+<!-- El motor se carga antes de los efectos que registran sus funciones de dibujo. -->
+<script src="engine.js"></script>
+<script src="animations/aurora-borealis.js"></script>
+<script src="animations/bubbles.js"></script>
+<script src="animations/fireflies.js"></script>
+<script src="animations/nighttime-maritime-rain.js"></script>
+<script src="animations/cubic-wall.js"></script>
+<script src="animations/high-mountain-day.js"></script>
+<script src="animations/neural-network.js"></script>
+<script src="animations/cyber-warfare.js"></script>
+<script src="animations/deep-ocean.js"></script>
+<script src="animations/sakura-drift.js"></script>
+<script src="animations/solar-flare.js"></script>
+<script src="animations/liquid-prism.js"></script>
+<script src="animations/background-interactions.js"></script>
+<script src="animations/experience-menu.js"></script>
+</body>
+</html>

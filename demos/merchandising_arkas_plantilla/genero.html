@@ -1,0 +1,48 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width,initial-scale=1">
+<meta name="description" content="TOMA: merchandising y entradas directamente de los artistas, de todos los géneros.">
+<meta http-equiv="Content-Security-Policy" content="default-src 'self'; style-src 'self' 'unsafe-inline' https://fonts.googleapis.com; font-src https://fonts.gstatic.com; img-src 'self' data:; base-uri 'none'; form-action 'none'">
+<title>Género | TOMA</title>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@600;700&family=Figtree:wght@400;500;600&display=swap" rel="stylesheet">
+<link rel="stylesheet" href="style.css">
+<script src="seed.js" defer></script><script src="avatar.js" defer></script><script src="qr.js" defer></script><script src="script.js" defer></script>
+</head>
+<body data-page="genre">
+<header class="top"><div class="wrap bar">
+<a class="brand" href="index.html"><span class="logo" aria-hidden="true"><i></i><i></i><i></i></span>TOMA</a>
+<nav aria-label="Principal"><a class="hm" href="#merch">Merch</a><a class="hm" href="#conciertos">Conciertos</a><a href="artista.html">Soy artista</a></nav>
+<button class="icon-btn" id="theme" type="button" aria-label="Cambiar entre tema claro y oscuro">◐</button>
+<button class="btn btn-p" id="open-cart" type="button">Carrito <b id="count">0</b></button>
+</div></header>
+<main>
+<section class="hero wrap" id="hero"><div class="pattern" aria-hidden="true"></div>
+<div><p class="crumb"><a href="index.html">Inicio</a> / Géneros</p><h1 id="g-title"></h1><p id="g-blurb"></p><p class="stats" id="g-stats"></p></div>
+<div class="hero-art" id="hero-art" aria-hidden="true"></div></section>
+<div class="marquee"><div id="mq"></div></div>
+<section class="wrap sec" id="artistas"><h2>Artistas</h2><div class="artists" id="artists"></div></section>
+<div class="wrap tools"><input id="q" type="search" placeholder="Busca por artista o producto" aria-label="Buscar"><select id="cat" aria-label="Categoría"></select><select id="sort" aria-label="Ordenar"><option value="">Destacados</option><option value="a">Precio: de menor a mayor</option><option value="d">Precio: de mayor a menor</option></select><label class="chk"><input type="checkbox" id="favs"> Solo favoritos</label></div>
+<section class="wrap sec" id="merch"><h2>Merch</h2><div class="grid" id="grid"></div></section>
+<section class="wrap sec" id="conciertos"><h2>Próximos conciertos</h2><div id="events"></div></section>
+</main>
+<footer class="wrap foot"><p>&copy; 2026 TOMA. Modo demostración: no se realiza ningún cobro.</p><a href="artista.html">Vender mi merch</a></footer>
+
+<dialog id="cart" class="drawer" aria-label="Carrito"><div class="pane">
+<div class="row"><h2>Tu carrito</h2><button class="x" type="button" data-close aria-label="Cerrar">×</button></div>
+<div id="lines"></div><dl id="tot"></dl><button class="btn btn-p" id="go" type="button">Finalizar compra</button></div></dialog>
+
+<dialog id="checkout" class="modal" aria-label="Finalizar compra"><div class="pane">
+<form class="f" id="co"><div class="row"><h2>Finalizar compra</h2><button class="x" type="button" data-close aria-label="Cerrar">×</button></div>
+<div class="two"><label>Nombre<input name="name" required autocomplete="name"></label><label>Email<input name="email" type="email" required autocomplete="email"></label></div>
+<div id="ship" class="f"><label>Dirección<input name="address" autocomplete="street-address"></label>
+<div class="two"><label>Ciudad<input name="city" autocomplete="address-level2"></label><label>Código postal<input name="zip" inputmode="numeric" autocomplete="postal-code"></label></div></div>
+<p class="mu">Modo demostración: no se cobra nada.</p>
+<button class="btn btn-p" type="submit">Confirmar pedido</button></form>
+<div id="done" hidden><h2>¡Pedido recibido!</h2><p>Tu pedido <b id="done-id"></b> está en marcha. El merch pasa al proveedor para fabricarlo y las entradas llegan por email.</p><div id="tix" class="f"></div><button class="btn btn-s" type="button" data-close>Seguir comprando</button></div>
+</div></dialog>
+<div class="toast" id="toast" role="status" aria-live="polite"></div>
+</body>
+</html>

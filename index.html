@@ -11,25 +11,40 @@
 <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap"
   rel="stylesheet">
 <link rel="stylesheet" href="css/styles.css">
+<link rel="stylesheet" href="css/hero-animation.css">
 </head>
 <body>
 <!-- =========================
    NAVBAR
 ========================== -->
 <header class="navbar">
-  <a href="#" class="logo">
+  <a href="#inicio" class="logo">
     ARKAS<span>.</span>
   </a>
   <nav class="nav-menu" id="primary-navigation">
-    <a href="#plantillas">Plantillas</a>
-    <a href="#categorias">Categorías</a>
-    <a href="#proceso">Cómo funciona</a>
-    <a href="#sobre-arkas">Sobre ARKAS</a>
-    <a href="#sobre-mi">Sobre mí</a>
+    <a href="#plantillas" data-i18n="navTemplates">Plantillas</a>
+    <a href="#proceso" data-i18n="navProcess">Cómo funciona</a>
+    <a href="#sobre-arkas" data-i18n="navAbout">Sobre ARKAS</a>
+    <a href="#sobre-mi" data-i18n="navAboutMe">Sobre mí</a>
   </nav>
-  <a href="#plantillas" class="nav-button">
+  <a href="#plantillas" class="nav-button button-demo" data-i18n="navExplore">
     Explorar
   </a>
+  <div class="language-switcher" data-language-switcher>
+    <button class="language-toggle" type="button" data-language-menu-toggle aria-expanded="false" aria-controls="language-menu" aria-label="Seleccionar idioma">
+      <span class="language-current-flag" data-language-flag aria-hidden="true">🇪🇸</span>
+      <span data-language-code>ES</span>
+      <span class="language-chevron" aria-hidden="true">⌄</span>
+    </button>
+    <div class="language-menu" id="language-menu" data-language-menu role="group" aria-label="Seleccionar idioma" hidden>
+      <button class="language-option" type="button" data-language-option="es" aria-pressed="true"><span aria-hidden="true">🇪🇸</span> Español</button>
+      <button class="language-option" type="button" data-language-option="en" aria-pressed="false"><span aria-hidden="true">🇬🇧</span> English</button>
+      <button class="language-option" type="button" data-language-option="de" aria-pressed="false"><span aria-hidden="true">🇩🇪</span> Deutsch</button>
+      <button class="language-option" type="button" data-language-option="it" aria-pressed="false"><span aria-hidden="true">🇮🇹</span> Italiano</button>
+      <button class="language-option" type="button" data-language-option="fr" aria-pressed="false"><span aria-hidden="true">🇫🇷</span> Français</button>
+      <button class="language-option" type="button" data-language-option="hi" aria-pressed="false"><span aria-hidden="true">🇮🇳</span> हिन्दी</button>
+    </div>
+  </div>
   <button class="menu-button" id="menuButton" type="button" aria-label="Abrir menú" aria-expanded="false" aria-controls="primary-navigation">
     ☰
   </button>
@@ -38,79 +53,147 @@
   <!-- =========================
      HERO
   ========================== -->
-  <section class="hero">
+  <section class="hero" id="inicio">
     <div class="hero-content">
       <div class="hero-label">
         <span></span>
         ARKAS TEMPLATES
       </div>
       <h1>
-        <span class="hero-title-line hero-title-line-first">Crea una web</span>
-        <strong><span class="hero-title-line hero-title-line-second">que destaque</span><span class="hero-title-dot">.</span></strong>
+        <span class="hero-title-line hero-title-line-first" data-i18n="heroTitleFirst">Crea una web</span>
+        <strong><span class="hero-title-line hero-title-line-second" data-i18n="heroTitleSecond">que destaque</span><span class="hero-title-dot">.</span></strong>
       </h1>
-      <p class="hero-description">
+      <p class="hero-description" data-i18n="heroDescription">
         Plantillas web profesionales diseñadas y desarrolladas
         para que puedas comenzar tu proyecto con una base sólida.
       </p>
       <div class="hero-buttons">
-        <a href="#plantillas" class="button button-primary">
+        <a href="#plantillas" class="button button-primary button-demo" data-i18n="heroExplore">
           Explorar plantillas
           <span>→</span>
         </a>
-        <a href="#proceso" class="button button-secondary">
+        <a href="#proceso" class="button button-secondary" data-i18n="heroHow">
           Cómo funciona
         </a>
       </div>
       <div class="hero-info">
         <div>
-          <strong>04</strong>
-          <span>Plantillas</span>
+          <strong>06</strong>
+          <span data-i18n="statTemplates">Plantillas</span>
         </div>
         <div>
           <strong>100%</strong>
-          <span>Personalizables</span>
+          <span data-i18n="statCustomizable">Personalizables</span>
         </div>
         <div>
           <strong>∞</strong>
-          <span>Posibilidades</span>
+          <span data-i18n="statPossibilities">Posibilidades</span>
         </div>
       </div>
     </div>
     <!-- VISUAL HERO -->
-    <div class="hero-visual">
-      <div class="hero-window">
-        <div class="window-header">
-          <div class="window-dots">
-            <span></span>
-            <span></span>
-            <span></span>
-          </div>
-          <div class="window-title">
-            arkas_templates
-          </div>
-        </div>
-        <div class="window-content">
-          <div class="code-line line-1"></div>
-          <div class="code-line line-2"></div>
-          <div class="code-line line-3"></div>
-          <div class="code-line line-4"></div>
-          <div class="code-line line-5"></div>
-          <div class="preview-box">
-            <span>ARKAS</span>
-            <strong>
-              CREATE<br>
-              SOMETHING<br>
-              <em>DIFFERENT.</em>
-            </strong>
-            <button>
-              EXPLORE
-            </button>
-          </div>
-        </div>
-        <div class="gold-accent"></div>
-      </div>
+    <div class="hero-visual" aria-hidden="true">
       <div class="hero-orbit orbit-one"></div>
       <div class="hero-orbit orbit-two"></div>
+      <div class="hero-page-peek hero-page-peek--left">
+        <span class="peek-browser-bar"><i></i><i></i><i></i></span>
+        <span class="peek-page peek-page--warm"><i></i><b></b><em></em></span>
+      </div>
+      <div class="hero-page-peek hero-page-peek--right">
+        <span class="peek-browser-bar"><i></i><i></i><i></i></span>
+        <span class="peek-page peek-page--blue"><i></i><b></b><em></em></span>
+      </div>
+      <div class="hero-window">
+        <div class="hero-browser-header">
+          <span class="hero-browser-dots"><i></i><i></i><i></i></span>
+          <span class="hero-browser-address"><i></i> arkas.studio / live-preview</span>
+          <span class="hero-browser-live">LIVE</span>
+        </div>
+        <div class="hero-screen-stage">
+          <article class="hero-site-scene hero-site-scene--atelier">
+            <div class="hero-scene-nav hero-intro" style="--intro-delay: .22s">
+              <span class="hero-wordmark">FORMA<span>.</span></span>
+              <span class="hero-nav-links">STUDIO&nbsp;&nbsp;&nbsp; JOURNAL&nbsp;&nbsp;&nbsp; CONTACT</span>
+              <span class="hero-nav-menu"><i></i><i></i></span>
+            </div>
+            <div class="hero-scene-main">
+              <div class="hero-scene-copy">
+                <span class="hero-scene-kicker hero-intro" style="--intro-delay: .68s">01 / DIGITAL ATELIER</span>
+                <h2 class="hero-scene-title hero-intro" style="--intro-delay: .98s">Shape the<br><em>feeling.</em></h2>
+                <p class="hero-scene-description hero-intro" style="--intro-delay: 1.62s">Identidades con intención.<br>Experiencias que permanecen.</p>
+                <span class="hero-scene-cta hero-intro" style="--intro-delay: 2.18s">EXPLORE PROJECT <b>↗</b></span>
+              </div>
+              <div class="hero-scene-art hero-scene-art--atelier hero-intro" style="--intro-delay: 1.25s">
+                <span class="hero-art-sun"></span>
+                <span class="hero-art-vase"></span>
+                <span class="hero-art-card"><i></i><b>OBJECT<br>STUDY Nº 04</b></span>
+                <span class="hero-art-caption">FORM / 2026</span>
+                <span class="hero-art-spark">✳</span>
+              </div>
+            </div>
+            <div class="hero-scene-bottom hero-intro" style="--intro-delay: 4.25s">
+              <span>STRATEGY&nbsp; / &nbsp;DESIGN&nbsp; / &nbsp;DIGITAL</span>
+              <span>SCROLL TO DISCOVER <b>↓</b></span>
+            </div>
+            <span class="hero-scene-index hero-intro" style="--intro-delay: 4.38s">01 <i>—</i> 03</span>
+          </article>
+
+          <article class="hero-site-scene hero-site-scene--noir">
+            <div class="hero-scene-nav">
+              <span class="hero-wordmark">NOIR<span>®</span></span>
+              <span class="hero-nav-links">COLLECTION&nbsp;&nbsp;&nbsp; ABOUT&nbsp;&nbsp;&nbsp; VISIT</span>
+              <span class="hero-nav-menu"><i></i><i></i></span>
+            </div>
+            <div class="hero-scene-main">
+              <div class="hero-scene-copy">
+                <span class="hero-scene-kicker">02 / OBJECTS WITH PRESENCE</span>
+                <h2 class="hero-scene-title">Less,<br><em>but deeper.</em></h2>
+                <p class="hero-scene-description">Una colección para vivir<br>despacio y mirar de cerca.</p>
+                <span class="hero-scene-cta">VIEW THE COLLECTION <b>↗</b></span>
+              </div>
+              <div class="hero-scene-art hero-scene-art--noir">
+                <span class="noir-art-halo"></span>
+                <span class="noir-art-object"></span>
+                <span class="noir-art-slab"></span>
+                <span class="noir-art-card"><b>NO. 08</b><i>STONE / SERIES</i></span>
+                <span class="noir-art-cross">+</span>
+              </div>
+            </div>
+            <div class="hero-scene-bottom"><span>NOIR ATELIER&nbsp; / &nbsp;COPENHAGEN</span><span>DISCOVER <b>↗</b></span></div>
+            <span class="hero-scene-index">02 <i>—</i> 03</span>
+          </article>
+
+          <article class="hero-site-scene hero-site-scene--solaris">
+            <div class="hero-scene-nav">
+              <span class="hero-wordmark">SOLARIS<span>✳</span></span>
+              <span class="hero-nav-links">PLATFORM&nbsp;&nbsp;&nbsp; STUDIO&nbsp;&nbsp;&nbsp; INSIGHTS</span>
+              <span class="hero-nav-menu"><i></i><i></i></span>
+            </div>
+            <div class="hero-scene-main">
+              <div class="hero-scene-copy">
+                <span class="hero-scene-kicker">03 / TOMORROW, IN FOCUS</span>
+                <h2 class="hero-scene-title">Ideas into<br><em>orbit.</em></h2>
+                <p class="hero-scene-description">Tecnología útil para<br>un mundo en movimiento.</p>
+                <span class="hero-scene-cta">EXPLORE SOLARIS <b>↗</b></span>
+              </div>
+              <div class="hero-scene-art hero-scene-art--solaris">
+                <span class="solaris-art-orbit solaris-art-orbit--one"></span>
+                <span class="solaris-art-orbit solaris-art-orbit--two"></span>
+                <span class="solaris-art-planet"></span>
+                <span class="solaris-art-panel"><b>ENERGY<br>IN MOTION</b><i>+24.8%</i></span>
+                <span class="solaris-art-dot"></span>
+              </div>
+            </div>
+            <div class="hero-scene-bottom"><span>CLIMATE&nbsp; / &nbsp;DATA&nbsp; / &nbsp;PEOPLE</span><span>SCROLL TO EXPLORE <b>↓</b></span></div>
+            <span class="hero-scene-index">03 <i>—</i> 03</span>
+          </article>
+        </div>
+      </div>
+      <div class="hero-build-note hero-intro" style="--intro-delay: 4.25s">
+        <span class="build-note-dot"></span>
+        <span>THREE WORLDS. ONE STUDIO.</span>
+        <strong>AUTOPLAY</strong>
+      </div>
     </div>
   </section>
   <!-- =========================
@@ -119,22 +202,23 @@
   <section class="templates section" id="plantillas">
     <div class="section-header">
       <div>
-        <p class="section-label">
+        <p class="section-label" data-i18n="collectionLabel">
           COLECCIÓN ARKAS
         </p>
-        <h2>
+        <h2 data-i18n="featuredTemplates">
           Plantillas destacadas
         </h2>
       </div>
-      <p class="section-description">
+      <p class="section-description" data-i18n="collectionDescription">
         Diseños listos para convertirse
         en tu próxima web.
       </p>
     </div>
     <div class="templates-grid">
       <!-- INSTITUTO -->
+       <div id="preview-instituto">
       <article class="template-card">
-        <a href="plantilla.html?demo=instituto" class="template-preview preview-instituto">
+        <a href="plantilla.html?demo=instituto" class="template-preview preview-instituto" aria-label="Ver demo de la plantilla Instituto" data-i18n-aria="previewInstitute">
           <div class="preview-browser">
             <div class="preview-top">
               <strong>
@@ -154,12 +238,12 @@
                 Aprende.
                 <span>Crece.</span>
               </h3>
-              <button>
+              <span class="preview-cta">
                 DESCUBRIR
-              </button>
+              </span>
             </div>
           </div>
-          <span class="preview-category">
+          <span class="preview-category" data-i18n="categoryEducation">
             Educación
           </span>
         </a>
@@ -169,9 +253,9 @@
               01
             </span>
             <h3>
-              Instituto
+              <span data-i18n="templateInstitute">Instituto</span>
             </h3>
-            <p>
+            <p data-i18n="descriptionInstitute">
               Web educativa profesional.
             </p>
           </div>
@@ -181,13 +265,18 @@
         </div>
         <div class="template-actions">
           <a href="plantilla.html?demo=instituto" class="demo-link button-demo">
-            Ver demo →
+            <span data-i18n="viewDemo">Ver demo</span> →
+          </a>
+          <a href="mailto:marcoagvgl@gmail.com?subject=Consulta%20sobre%20la%20plantilla%20Instituto" class="purchase-link">
+            <span data-i18n="requestTemplate">Solicitar esta plantilla</span> →
           </a>
         </div>
       </article>
+      </div>
       <!-- RESTAURANTE -->
+       <div id="preview-restaurante">
       <article class="template-card">
-        <a href="plantilla.html?demo=restaurante" class="template-preview preview-restaurante">
+        <a href="plantilla.html?demo=restaurante" class="template-preview preview-restaurante" aria-label="Ver demo de la plantilla Restaurante" data-i18n-aria="previewRestaurant">
           <div class="preview-browser">
             <div class="preview-top">
               <strong>
@@ -207,12 +296,12 @@
                 Taste the
                 <span>moment.</span>
               </h3>
-              <button>
+              <span class="preview-cta">
                 RESERVAR
-              </button>
+              </span>
             </div>
           </div>
-          <span class="preview-category">
+          <span class="preview-category" data-i18n="categoryRestaurant">
             Restaurante
           </span>
         </a>
@@ -222,9 +311,9 @@
               02
             </span>
             <h3>
-              Restaurant
+              <span data-i18n="templateRestaurant">Restaurante</span>
             </h3>
-            <p>
+            <p data-i18n="descriptionRestaurant">
               Web gastronómica moderna.
             </p>
           </div>
@@ -234,13 +323,18 @@
         </div>
         <div class="template-actions">
           <a href="plantilla.html?demo=restaurante" class="demo-link button-demo">
-            Ver demo →
+            <span data-i18n="viewDemo">Ver demo</span> →
+          </a>
+          <a href="mailto:marcoagvgl@gmail.com?subject=Consulta%20sobre%20la%20plantilla%20Restaurante" class="purchase-link">
+            <span data-i18n="requestTemplate">Solicitar esta plantilla</span> →
           </a>
         </div>
       </article>
+      </div>
       <!-- MERCHANDISING -->
+       <div id="preview-merchandising">
       <article class="template-card">
-        <a href="plantilla.html?demo=merchandising" class="template-preview preview-merchandising">
+        <a href="plantilla.html?demo=merchandising" class="template-preview preview-merchandising" aria-label="Ver demo de la plantilla Merchandising" data-i18n-aria="previewMerchandising">
           <div class="preview-browser">
             <div class="preview-top">
               <strong>
@@ -260,12 +354,12 @@
                 Wear your
                 <span>identity.</span>
               </h3>
-              <button>
+              <span class="preview-cta">
                 SHOP NOW
-              </button>
+              </span>
             </div>
           </div>
-          <span class="preview-category">
+          <span class="preview-category" data-i18n="categoryMerchandising">
             Merchandising
           </span>
         </a>
@@ -275,9 +369,9 @@
               03
             </span>
             <h3>
-              Merchandising
+              <span data-i18n="templateMerchandising">Merchandising</span>
             </h3>
-            <p>
+            <p data-i18n="descriptionMerchandising">
               Tienda para marcas y artistas.
             </p>
           </div>
@@ -287,13 +381,18 @@
         </div>
         <div class="template-actions">
           <a href="plantilla.html?demo=merchandising" class="demo-link button-demo">
-            Ver demo →
+            <span data-i18n="viewDemo">Ver demo</span> →
+          </a>
+          <a href="mailto:marcoagvgl@gmail.com?subject=Consulta%20sobre%20la%20plantilla%20Merchandising" class="purchase-link">
+            <span data-i18n="requestTemplate">Solicitar esta plantilla</span> →
           </a>
         </div>
       </article>
+      </div>
       <!-- LANDING -->
+       <div id="preview-landing">
       <article class="template-card">
-        <a href="plantilla.html?demo=landing" class="template-preview preview-landing">
+        <a href="plantilla.html?demo=landing" class="template-preview preview-landing" aria-label="Ver demo de la plantilla Landing Page" data-i18n-aria="previewLanding">
           <div class="preview-browser">
             <div class="preview-top">
               <strong>
@@ -313,12 +412,12 @@
                 Make an
                 <span>impact.</span>
               </h3>
-              <button>
+              <span class="preview-cta">
                 START
-              </button>
+              </span>
             </div>
           </div>
-          <span class="preview-category">
+          <span class="preview-category" data-i18n="categoryLanding">
             Landing Page
           </span>
         </a>
@@ -328,9 +427,9 @@
               04
             </span>
             <h3>
-              Landing Page
+              <span data-i18n="templateLanding">Landing Page</span>
             </h3>
-            <p>
+            <p data-i18n="descriptionLanding">
               Landing page enfocada a conversión.
             </p>
           </div>
@@ -340,71 +439,131 @@
         </div>
         <div class="template-actions">
           <a href="plantilla.html?demo=landing" class="demo-link button-demo">
-            Ver demo →
+            <span data-i18n="viewDemo">Ver demo</span> →
+          </a>
+          <a href="mailto:marcoagvgl@gmail.com?subject=Consulta%20sobre%20la%20plantilla%20Landing%20Page" class="purchase-link">
+            <span data-i18n="requestTemplate">Solicitar esta plantilla</span> →
           </a>
         </div>
       </article>
-    </div>
-  </section>
-  <!-- =========================
-     CATEGORÍAS
-  ========================== -->
-  <section class="categories section" id="categorias">
-    <div class="section-header">
-      <div>
-        <p class="section-label">
-          EXPLORA
-        </p>
-        <h2>
-          Encuentra tu estilo.
-        </h2>
       </div>
-    </div>
-    <div class="categories-grid">
-      <a href="#plantillas" class="category-card">
-        <span>01</span>
-        <h3>
-          Educación
-        </h3>
-        <p>
-          Webs para centros, academias
-          y proyectos educativos.
-        </p>
-        <strong>→</strong>
-      </a>
-      <a href="#plantillas" class="category-card">
-        <span>02</span>
-        <h3>
-          Restaurantes
-        </h3>
-        <p>
-          Diseños para restaurantes,
-          cafeterías y gastronomía.
-        </p>
-        <strong>→</strong>
-      </a>
-      <a href="#plantillas" class="category-card">
-        <span>03</span>
-        <h3>
-          Merchandising
-        </h3>
-        <p>
-          Tiendas para artistas,
-          marcas y productos.
-        </p>
-        <strong>→</strong>
-      </a>
-      <a href="#plantillas" class="category-card">
-        <span>04</span>
-        <h3>
-          Landing html
-        </h3>
-        <p>
-          Páginas diseñadas para
-          presentar y convertir.
-        </p>
-        <strong>→</strong>
-      </a>
+      <!-- GIMNASIO -->
+       <div id="preview-gimnasio">
+      <article class="template-card">
+        <a href="plantilla.html?demo=gimnasio" class="template-preview preview-gimnasio" aria-label="Ver demo de la plantilla Templo Coba" data-i18n-aria="previewGym">
+          <div class="preview-browser">
+            <div class="preview-top">
+              <strong>
+                TEMPLO COBA
+              </strong>
+              <div>
+                ACTIVIDADES
+                PRODUCTOS
+                CONTACTO
+              </div>
+            </div>
+            <div class="preview-main">
+              <small>
+                CENTRO DE ENTRENAMIENTO
+              </small>
+              <h3>
+                Supera tus
+                <span>límites.</span>
+              </h3>
+              <span class="preview-cta">
+                ENTRENAR
+              </span>
+            </div>
+          </div>
+          <span class="preview-category" data-i18n="categoryGym">
+            Gimnasio
+          </span>
+        </a>
+        <div class="template-details">
+          <div>
+            <span class="template-number">
+              05
+            </span>
+            <h3>
+              <span data-i18n="templateGym">Templo Coba</span>
+            </h3>
+            <p data-i18n="descriptionGym">
+              Web completa para un centro deportivo.
+            </p>
+          </div>
+          <div class="template-includes">
+            <span data-i18n="includes">Incluye</span>
+            <strong data-i18n="includesGym">6 clases</strong>
+          </div>
+        </div>
+        <div class="template-actions">
+          <a href="plantilla.html?demo=gimnasio" class="demo-link button-demo">
+            <span data-i18n="viewDemo">Ver demo</span> →
+          </a>
+          <a href="mailto:marcoagvgl@gmail.com?subject=Consulta%20sobre%20la%20plantilla%20Templo%20Coba" class="purchase-link">
+            <span data-i18n="requestTemplate">Solicitar esta plantilla</span> →
+          </a>
+        </div>
+      </article>
+      </div>
+      <!-- FONDOS ANIMADOS -->
+       <div id="preview-fondos-animados">
+      <article class="template-card">
+        <a href="plantilla.html?demo=fondos-animados" class="template-preview preview-fondos-animados" aria-label="Ver demo de la plantilla Fondos Animados" data-i18n-aria="previewBackgrounds">
+          <div class="preview-browser">
+            <div class="preview-top">
+              <strong>
+                BACKGROUND LAB
+              </strong>
+              <div>
+                EFFECTS
+                INTERACTION
+                CUSTOMIZE
+              </div>
+            </div>
+            <div class="preview-main">
+              <small>
+                EXPERIENCIAS INTERACTIVAS
+              </small>
+              <h3>
+                12 fondos.
+                <span>12 interacciones.</span>
+              </h3>
+              <span class="preview-cta">
+                EXPLORAR
+              </span>
+            </div>
+          </div>
+          <span class="preview-category" data-i18n="categoryBackgrounds">
+            Fondos animados
+          </span>
+        </a>
+        <div class="template-details">
+          <div>
+            <span class="template-number">
+              06
+            </span>
+            <h3>
+              <span data-i18n="templateBackgrounds">Fondos animados</span>
+            </h3>
+            <p data-i18n="descriptionBackgrounds">
+              Efectos visuales interactivos y personalizables.
+            </p>
+          </div>
+          <div class="template-includes">
+            <span data-i18n="includes">Incluye</span>
+            <strong data-i18n="includesBackgrounds">12 efectos</strong>
+          </div>
+        </div>
+        <div class="template-actions">
+          <a href="plantilla.html?demo=fondos-animados" class="demo-link button-demo">
+            <span data-i18n="viewDemo">Ver demo</span> →
+          </a>
+          <a href="mailto:marcoagvgl@gmail.com?subject=Consulta%20sobre%20la%20plantilla%20Fondos%20Animados" class="purchase-link">
+            <span data-i18n="requestTemplate">Solicitar esta plantilla</span> →
+          </a>
+        </div>
+      </article>
     </div>
   </section>
   <!-- =========================
@@ -412,15 +571,15 @@
   ========================== -->
   <section class="process section" id="proceso">
     <div class="process-intro">
-      <p class="section-label">
+      <p class="section-label" data-i18n="processLabel">
         CÓMO FUNCIONA
       </p>
-      <h2>
+      <h2 data-i18n="processTitleFirst">
         Empieza.
-        <span>Personaliza.</span>
-        Publica.
+        <span data-i18n="processTitleSecond">Personaliza.</span>
+        <span data-i18n="processTitleThird">Publica.</span>
       </h2>
-      <p>
+      <p data-i18n="processDescription">
         No necesitas comenzar desde cero.
         Elige una base profesional y hazla tuya.
       </p>
@@ -428,40 +587,40 @@
     <div class="process-steps">
       <div class="process-step">
         <span>01</span>
-        <h3>
+        <h3 data-i18n="processChoose">
           Elige
         </h3>
-        <p>
+        <p data-i18n="processChooseDescription">
           Encuentra la plantilla
           adecuada para tu proyecto.
         </p>
       </div>
       <div class="process-step">
         <span>02</span>
-        <h3>
+        <h3 data-i18n="processBuy">
           Compra
         </h3>
-        <p>
+        <p data-i18n="processBuyDescription">
           Obtén todos los archivos
           de la plantilla.
         </p>
       </div>
       <div class="process-step">
         <span>03</span>
-        <h3>
+        <h3 data-i18n="processCustomize">
           Personaliza
         </h3>
-        <p>
+        <p data-i18n="processCustomizeDescription">
           Modifica textos, imágenes,
           colores y contenido.
         </p>
       </div>
       <div class="process-step">
         <span>04</span>
-        <h3>
+        <h3 data-i18n="processPublish">
           Publica
         </h3>
-        <p>
+        <p data-i18n="processPublishDescription">
           Sube tu web y lleva
           tu proyecto al siguiente nivel.
         </p>
@@ -476,25 +635,25 @@
       A
     </div>
     <div class="about-content">
-      <p class="section-label">
+      <p class="section-label" data-i18n="aboutLabel">
         SOBRE ARKAS
       </p>
-      <h2>
+      <h2 data-i18n="aboutTitleFirst">
         Diseñado para
-        <span>crear.</span>
+        <span data-i18n="aboutTitleSecond">crear.</span>
       </h2>
-      <p>
+      <p data-i18n="aboutDescription">
         ARKAS TEMPLATES nace con una idea sencilla:
         crear plantillas web profesionales que permitan
         comenzar cualquier proyecto con una base sólida.
       </p>
-      <p>
+      <p data-i18n="aboutDescriptionSecondary">
         Cada diseño está pensado para combinar
         estética, funcionalidad, responsive design
         y facilidad de personalización.
       </p>
-      <a href="#" class="about-link">
-        Conoce ARKAS →
+      <a href="#plantillas" class="about-link">
+        <span data-i18n="aboutExplore">Explora las plantillas</span> →
       </a>
     </div>
   </section>
@@ -506,19 +665,19 @@
       MG
     </div>
     <div class="about-content">
-      <p class="section-label">
+      <p class="section-label" data-i18n="aboutMeLabel">
         SOBRE MÍ
       </p>
-      <h2>
+      <h2 data-i18n="aboutMeTitleFirst">
         Hola, soy
-        <span>Marco.</span>
+        <span data-i18n="aboutMeTitleSecond">Marco.</span>
       </h2>
-      <p>
+      <p data-i18n="aboutMeDescription">
         Estoy estudiando Desarrollo de Aplicaciones Web y busco
         una oportunidad de prácticas FCT para empezar a aportar
         y seguir aprendiendo en proyectos reales.
       </p>
-      <p>
+      <p data-i18n="aboutMeDescriptionSecondary">
         Me interesa especialmente el desarrollo frontend, aunque
         también quiero seguir creciendo en backend. Disfruto
         aprendiendo por mi cuenta, resolviendo problemas y creando
@@ -526,10 +685,10 @@
       </p>
       <div class="about-actions">
         <a href="plantilla.html?demo=cv" class="about-link">
-          Descubre mi currículum oculto <span aria-hidden="true">→</span>
+          <span data-i18n="aboutResume">Descubre mi currículum oculto</span> <span aria-hidden="true">→</span>
         </a>
         <a href="curriculum-editor.html" class="about-link about-link-secondary">
-          Te regalo mi plantilla <span aria-hidden="true">→</span>
+          <span data-i18n="aboutGift">Te regalo mi plantilla</span> <span aria-hidden="true">→</span>
         </a>
       </div>
     </div>
@@ -538,17 +697,17 @@
      CTA
   ========================== -->
   <section class="cta">
-    <p class="section-label">
+    <p class="section-label" data-i18n="ctaLabel">
       ARKAS TEMPLATES
     </p>
-    <h2>
+    <h2 data-i18n="ctaTitleFirst">
       Tu proyecto.
-      <span>Tu identidad.</span>
+      <span data-i18n="ctaTitleSecond">Tu identidad.</span>
     </h2>
-    <p>
+    <p data-i18n="ctaDescription">
       Empieza con una plantilla profesional.
     </p>
-    <a href="#plantillas" class="button button-primary">
+    <a href="#plantillas" class="button button-primary button-demo" data-i18n="heroExplore">
       Explorar plantillas
       <span>→</span>
     </a>
@@ -560,58 +719,57 @@
 <footer>
   <div class="footer-main">
     <div class="footer-brand">
-      <a href="#" class="logo">
+      <a href="#inicio" class="logo">
         ARKAS<span>.</span>
       </a>
-      <p>
+      <p data-i18n="footerDescription">
         Plantillas web profesionales
         diseñadas para proyectos digitales.
       </p>
     </div>
     <div class="footer-column">
-      <h4>
+      <h4 data-i18n="footerProduct">
         PRODUCTO
       </h4>
       <a href="#plantillas">
-        Plantillas
-      </a>
-      <a href="#categorias">
-        Categorías
+        <span data-i18n="navTemplates">Plantillas</span>
       </a>
       <a href="#proceso">
-        Cómo funciona
+        <span data-i18n="navProcess">Cómo funciona</span>
       </a>
     </div>
     <div class="footer-column">
-      <h4>
+      <h4 data-i18n="footerArkas">
         ARKAS
       </h4>
       <a href="#sobre-arkas">
-        Sobre nosotros
+        <span data-i18n="footerAbout">Sobre nosotros</span>
       </a>
       <a href="#sobre-mi">
-        Sobre mí
+        <span data-i18n="navAboutMe">Sobre mí</span>
       </a>
       <a href="plantilla.html?demo=cv">
-        Ver currículum
+        <span data-i18n="footerResume">Ver currículum</span>
       </a>
-      <a href="#">
-        Contacto
+      <a href="mailto:marcoagvgl@gmail.com?subject=Contacto%20ARKAS%20TEMPLATES">
+        <span data-i18n="footerContact">Contacto</span>
       </a>
-      <a href="#">
-        Licencias
+      <a href="mailto:marcoagvgl@gmail.com?subject=Consulta%20sobre%20licencias">
+        <span data-i18n="footerLicenses">Consultar licencias</span>
       </a>
     </div>
   </div>
   <div class="footer-bottom">
-    <span>
+    <span data-i18n="copyright">
       © 2026 ARKAS TEMPLATES
     </span>
-    <span>
+    <span data-i18n="credits">
       Designed & Developed by ARKAS
     </span>
   </div>
 </footer>
+<script src="js/i18n.js"></script>
 <script src="js/script.js"></script>
+<script src="js/demo-transition.js"></script>
 </body>
 </html>

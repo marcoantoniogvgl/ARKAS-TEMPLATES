@@ -9,28 +9,49 @@
     <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="css/styles.css">
+    <script src="js/i18n.js" defer></script>
     <script src="js/plantilla.js" defer></script>
+    <script src="js/demo-transition.js" defer></script>
 </head>
 <body class="viewer-page">
-    <header class="navbar viewer-navbar">
-        <a href="index.html" class="logo" aria-label="ARKAS TEMPLATES, página principal">ARKAS<span>.</span></a>
-        <div class="viewer-context">
-            <span class="viewer-label">Vista dentro de ARKAS TEMPLATES</span>
-            <a href="index.html#plantillas" class="viewer-back">← Volver a plantillas</a>
+    <div class="viewer-shell" id="viewer-main">
+        <div class="demo-transition" id="demo-transition" aria-hidden="true">
+            <div class="demo-transition__content">
+                <span class="demo-transition__eyebrow">ARKAS <i>/</i> 01</span>
+                <span class="demo-transition__title">Vista previa</span>
+                <span class="demo-transition__caption">Nueva vista previa</span>
+                <span class="demo-transition__rule"></span>
+            </div>
         </div>
-    </header>
-    <main class="viewer-main">
-        <div class="viewer-toolbar">
-            <h1 id="viewer-title">Cargando vista previa…</h1>
-        </div>
-        <div class="viewer-frame-wrap" id="viewer-frame-wrap">
-            <iframe class="viewer-frame" id="template-frame" title="Vista previa de plantilla"></iframe>
-        </div>
-        <section class="viewer-error" id="viewer-error" hidden>
-            <h1>No encontramos esta vista previa</h1>
-            <p>Vuelve a la colección para elegir otra plantilla.</p>
-            <a class="button button-primary" href="index.html#plantillas">Ver plantillas</a>
-        </section>
-    </main>
+        <header class="navbar viewer-navbar">
+            <a href="index.html" class="logo" aria-label="ARKAS TEMPLATES, página principal" data-i18n-aria="homeLabel">ARKAS<span>.</span></a>
+            <a href="index.html#plantillas" class="viewer-back button-demo" aria-label="Volver a las plantillas" data-i18n-aria="backToTemplates">
+                <span data-i18n="backToTemplates">← Volver a plantillas</span>
+            </a>
+            <div class="viewer-toolbar">
+                <h1 id="viewer-title">Cargando vista previa…</h1>
+                <div class="viewer-controls">
+                    <button class="viewer-control" id="previous-demo" type="button" aria-label="Demo anterior" data-i18n-aria="previousDemo">←</button>
+                    <span class="viewer-position" id="demo-position" aria-live="polite"></span>
+                    <button class="viewer-control" id="next-demo" type="button" aria-label="Siguiente demo" data-i18n-aria="nextDemo">→</button>
+                </div>
+            </div>
+            <button class="viewer-control viewer-fullscreen button-demo" id="fullscreen-button" type="button" aria-label="Ver demo en pantalla completa" data-i18n-aria="fullscreen">
+                <span aria-hidden="true">⛶</span>
+                <span data-i18n="fullscreenButton">Pantalla completa</span>
+            </button>
+        </header>
+        <main class="viewer-main">
+            <div class="viewer-frame-wrap" id="viewer-frame-wrap">
+                <iframe class="viewer-frame" id="template-frame" title="Vista previa de plantilla"></iframe>
+            </div>
+            <p class="viewer-status" id="viewer-status" role="status" aria-live="polite"></p>
+            <section class="viewer-error" id="viewer-error" hidden>
+                <h1 data-i18n="previewNotFound">No encontramos esta vista previa</h1>
+                <p data-i18n="previewNotFoundDescription">Vuelve a la colección para elegir otra plantilla.</p>
+                <a class="button button-primary" href="index.html#plantillas" data-i18n="viewTemplates">Ver plantillas</a>
+            </section>
+        </main>
+    </div>
 </body>
 </html>
