@@ -81,6 +81,12 @@ function resize(){
   if(current === "grid")
     buildGridCells();
 
+  if(current === "orbits")
+    buildGeometricOrbits();
+
+  if(current === "ink")
+    buildInkFlow();
+
   if(current === "sunset")
     buildSky();
 
@@ -93,11 +99,17 @@ function resize(){
   if(current === "sakura")
     buildSakura();
 
-  if(current === "flare")
-    buildSolarFlare();
-
   if(current === "prism")
     buildLiquidPrism();
+
+  if(current === "merge")
+    resizeMergeGame();
+
+  if(current === "catch")
+    resizeCatchDodgeGame();
+
+  if(current === "breaker")
+    resizeBlockBreaker();
 }
 
 
@@ -488,6 +500,12 @@ function animate(
   if(current==="grid")
     drawGrid(animationTime,dt);
 
+  if(current==="orbits")
+    drawGeometricOrbits(animationTime,dt);
+
+  if(current==="ink")
+    drawInkFlow(animationTime,dt);
+
   if(current==="sunset")
     drawSunset(animationTime,dt);
 
@@ -503,11 +521,17 @@ function animate(
   if(current==="sakura")
     drawSakura(animationTime,dt);
 
-  if(current==="flare")
-    drawSolarFlare(animationTime,dt);
-
   if(current==="prism")
     drawLiquidPrism(animationTime,dt);
+
+  if(current==="merge")
+    drawMergeGame(dt);
+
+  if(current==="catch")
+    drawCatchDodgeGame(dt);
+
+  if(current==="breaker")
+    drawBlockBreaker(dt);
 
   animation=0;
   scheduleAnimation();

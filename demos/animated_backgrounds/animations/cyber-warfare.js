@@ -12,6 +12,8 @@ let cyberShipId = 0;
 
 let cyberKills = 0;
 
+let cyberBossDefeats = 0;
+
 let cyberWeapons = [3,3];
 
 let cyberWeaponRepair = [0,0];
@@ -36,6 +38,9 @@ function buildCyberStars(){
   cyberShips=[];
   cyberShots=[];
   cyberHostileShots=[];
+  cyberBoss=null;
+  cyberKills=0;
+  cyberBossDefeats=0;
   cyberSpawnIn=rand(1.8,3.2);
 }
 
@@ -638,13 +643,15 @@ function explodeCyberShip(ship,countsTowardBoss=false){
   if(ship.kind==="ship"&&countsTowardBoss){
     cyberKills++;
   }
-  if(cyberKills>=10&&!cyberBoss){
+  if(cyberKills>=10&&!cyberBoss&&cyberBossDefeats<3){
     cyberBoss={
       x:W()*rand(.3,.7),
       y:H()+65,
-      vx:rand(3.4,4.8)*(Math.random()<.5?-1:1),
-      size:68,
-      health:10,
+      tier:cyberBossDefeats,
+      vx:(rand(3.4,4.8)+cyberBossDefeats*.45)*(Math.random()<.5?-1:1),
+      size:68+cyberBossDefeats*20,
+      health:10+cyberBossDefeats*5,
+      maxHealth:10+cyberBossDefeats*5,
       phase:rand(0,Math.PI*2),
       fireIn:.65,
       entered:false
@@ -787,7 +794,7 @@ function drawCyberBoss(dt){
       const dx=targetX-boss.x;
       const dy=18-sourceY;
       const distance=Math.hypot(dx,dy)||1;
-      const speed=7.2;
+      const speed=7.2+boss.tier*.8;
       cyberHostileShots.push({
         x:boss.x,y:sourceY,
         vx:dx/distance*speed,
@@ -797,38 +804,59 @@ function drawCyberBoss(dt){
         target
       });
     }
-    boss.fireIn=rand(.45,.75);
+    boss.fireIn=Math.max(.24,rand(.45,.75)-boss.tier*.08);
   }
 
   const s=boss.size;
+  const bossHues=[30,188,278];
+  const hue=bossHues[boss.tier];
+  const silhouettes=[
+    [[-1,-.15],[-.68,-.48],[-.26,-.34],[0,-.62],[.26,-.34],[.68,-.48],[1,-.15],[.69,.3],[.25,.39],[0,.57],[-.25,.39],[-.69,.3]],
+    [[-1,0],[-.72,-.3],[-.43,-.28],[-.28,-.72],[0,-.42],[.28,-.72],[.43,-.28],[.72,-.3],[1,0],[.62,.25],[.24,.18],[0,.62],[-.24,.18],[-.62,.25]],
+    [[-1,-.08],[-.72,-.52],[-.34,-.35],[-.2,-.86],[0,-.52],[.2,-.86],[.34,-.35],[.72,-.52],[1,-.08],[.57,.06],[.83,.5],[.28,.34],[0,.7],[-.28,.34],[-.83,.5],[-.57,.06]]
+  ];
   ctx.save();
   ctx.translate(boss.x,boss.y);
-  ctx.fillStyle="rgba(255,93,43,.16)";
-  ctx.strokeStyle="rgba(255,185,91,.98)";
-  ctx.lineWidth=2;
-  ctx.shadowBlur=28;
-  ctx.shadowColor="#ff6b39";
+  ctx.fillStyle=`hsla(${hue},90%,52%,.24)`;
+  ctx.strokeStyle=`hsla(${hue},100%,78%,.98)`;
+  ctx.lineWidth=2+boss.tier*.6;
+  ctx.shadowBlur=28+boss.tier*8;
+  ctx.shadowColor=`hsl(${hue},100%,62%)`;
   ctx.beginPath();
-  ctx.moveTo(-s,-s*.15);
-  ctx.lineTo(-s*.68,-s*.48);
-  ctx.lineTo(-s*.26,-s*.34);
-  ctx.lineTo(0,-s*.62);
-  ctx.lineTo(s*.26,-s*.34);
-  ctx.lineTo(s*.68,-s*.48);
-  ctx.lineTo(s,-s*.15);
-  ctx.lineTo(s*.69,s*.3);
-  ctx.lineTo(s*.25,s*.39);
-  ctx.lineTo(0,s*.57);
-  ctx.lineTo(-s*.25,s*.39);
-  ctx.lineTo(-s*.69,s*.3);
+  silhouettes[boss.tier].forEach(([x,y],index)=>{
+    if(index===0)ctx.moveTo(x*s,y*s);
+    else ctx.lineTo(x*s,y*s);
+  });
   ctx.closePath();
   ctx.fill();
   ctx.stroke();
-  ctx.fillStyle="rgba(36,15,14,.9)";
+  ctx.fillStyle=`hsla(${hue},100%,20%,.92)`;
   ctx.fillRect(-s*.45,-4,s*.9,8);
-  ctx.fillStyle="#fff0b2";
-  ctx.shadowBlur=18;
-  ctx.fillRect(-s*.45,-4,s*.9*(boss.health/10),8);
+  ctx.fillStyle=`hsl(${hue},100%,82%)`;
+  ctx.shadowBlur=18+boss.tier*5;
+  ctx.fillRect(-s*.45,-4,s*.9*(boss.health/boss.maxHealth),8);
+  if(boss.tier===1){
+    ctx.fillStyle="#eaffff";
+    ctx.beginPath();
+    ctx.arc(0,0,s*.16,0,Math.PI*2);
+    ctx.fill();
+    ctx.fillStyle=`hsl(${hue},100%,78%)`;
+    for(const side of [-1,1]){
+      ctx.beginPath();
+      ctx.arc(side*s*.58,0,s*.065,0,Math.PI*2);
+      ctx.fill();
+    }
+  }else if(boss.tier===2){
+    ctx.strokeStyle="rgba(245,226,255,.8)";
+    ctx.lineWidth=Math.max(2,s*.035);
+    ctx.beginPath();
+    ctx.ellipse(0,0,s*1.16,s*.35,-.18,0,Math.PI*2);
+    ctx.stroke();
+    ctx.fillStyle="#fff2ff";
+    ctx.beginPath();
+    ctx.arc(0,0,s*.13,0,Math.PI*2);
+    ctx.fill();
+  }
   ctx.restore();
 
   const hit=cyberShots.findIndex(shot=>
@@ -858,6 +886,7 @@ function damageCyberBoss(boss){
     explodeCyberShip({x:boss.x,y:boss.y,hue:35,kind:"boss"});
     cyberBoss=null;
     cyberKills=0;
+    cyberBossDefeats++;
   }
 }
 

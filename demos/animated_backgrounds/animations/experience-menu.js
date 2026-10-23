@@ -10,21 +10,28 @@ const resetDefaultsButton = document.getElementById("resetDefaultsButton");
 const settingsResetStatus = document.getElementById("settingsResetStatus");
 const closeCustomizationsButton = document.getElementById("closeCustomizations");
 const customColorOverlay = document.getElementById("customColorOverlay");
+const stageShell = document.querySelector(".stage-shell");
+const fullscreenButton = document.getElementById("toggleStageFullscreen");
+const fullscreenStatus = document.getElementById("fullscreenStatus");
 const customizationStorageKey = "background-lab.customizations.v1";
 
 const effectNames = {
-  aurora:"Aurora Borealis",
-  bubbles:"Bubbles",
-  particles:"Fireflies",
-  waves:"Nighttime Maritime Rain",
-  grid:"Cubic Wall",
-  sunset:"High-Mountain Day",
-  network:"Neural Network",
-  cyber:"Cyber Warfare",
-  ocean:"Abyssal Garden",
-  sakura:"Sakura",
-  flare:"Solar Flare",
-  prism:"Liquid Prism",
+  aurora:"Aurora boreal",
+  bubbles:"Burbujas",
+  particles:"Luciérnagas",
+  waves:"Lluvia marítima nocturna",
+  grid:"Muro cúbico",
+  orbits:"Cubo en 4D",
+  ink:"Tinta líquida",
+  sunset:"Día de alta montaña",
+  network:"Red neuronal",
+  cyber:"Guerra cibernética",
+  ocean:"Jardín abisal",
+  sakura:"Flores de cerezo",
+  prism:"Prisma",
+  merge:"Fusión de bolas",
+  catch:"Atrapa y esquiva",
+  breaker:"Rompebloques",
 };
 
 const customizationDefaults = {
@@ -33,17 +40,25 @@ const customizationDefaults = {
   particles:{color:"#facc15",secondaryColor:"#fb7185",speed:1,intensity:1,amount:170,multicolor:true,glowSize:1,attraction:1},
   waves:{color:"#67b8ff",secondaryColor:"#b8e6ff",speed:1,intensity:1,amount:46,wind:0,dropSize:1},
   grid:{color:"#ffd600",secondaryColor:"#fff18a",speed:1,intensity:1,amount:38,maxCubes:3},
+  orbits:{color:"#55e7ff",secondaryColor:"#b28cff",speed:1,intensity:1,scale:1},
+  ink:{color:"#f05bcb",secondaryColor:"#42d7ff",mouseColor:"#ffd166",speed:1,intensity:1,amount:16},
   sunset:{color:"#f59e0b",secondaryColor:"#22c55e",speed:1,intensity:1,amount:4,daySpeed:1,wildlife:3},
   network:{color:"#5bcfff",secondaryColor:"#a78bfa",speed:1,intensity:1,amount:105,connectionDistance:118,crowdRadius:48},
   cyber:{color:"#ff7837",secondaryColor:"#ff3d70",speed:1,intensity:1,amount:7,spawnRate:1},
   ocean:{color:"#21e6c1",secondaryColor:"#80f7ff",speed:1,intensity:1,amount:150,fish:18},
   sakura:{color:"#ff8fab",secondaryColor:"#ffd6a5",speed:1,intensity:1,amount:3,gustStrength:1,bloomInterval:8,zoom:.8},
-  flare:{color:"#ff8a4c",secondaryColor:"#ffe08a",speed:1,intensity:1,amount:20},
   prism:{color:"#5fe0ed",secondaryColor:"#ad8cff",speed:1,intensity:1,amount:7},
+  merge:{color:"#5fe0ed",secondaryColor:"#ad8cff",speed:1,intensity:1},
+  catch:{color:"#ffd166",secondaryColor:"#5bcfff",speed:1,intensity:1,constantSpeed:false},
+  breaker:{color:"#68d7ff",secondaryColor:"#9b7bff",speed:1,intensity:1},
 };
 
 const customizationOptions = {
-  flare:{amount:{label:"Rayos de luz",min:6,max:36,step:1}},
+  orbits:{scale:{label:"Zoom del cubo 4D",min:.65,max:1.5,step:.05,unit:"×"}},
+  ink:{amount:{label:"Densidad de líquidos",min:8,max:28,step:2}},
+  merge:{},
+  catch:{},
+  breaker:{},
   prism:{amount:{label:"Capas de prisma",min:3,max:12,step:1}},
   aurora:{amount:{label:"PartÃ­culas de luz",min:40,max:220,step:5},width:{label:"Anchura de las cortinas",min:.5,max:1.8,step:.05,unit:"Ã—"}},
   bubbles:{amount:{label:"TamaÃ±o de las burbujas",min:.65,max:1.6,step:.05,unit:"Ã—"},popRate:{label:"Frecuencia de explosiÃ³n",min:.5,max:2.5,step:.1,unit:"Ã—"}},
@@ -68,7 +83,7 @@ function loadCustomizations(){
       const saved=parsed[effect];
       if(!saved||typeof saved!=="object")
         continue;
-      for(const key of ["color","secondaryColor"]){
+      for(const key of ["color","secondaryColor","mouseColor"]){
         if(typeof saved[key]==="string"&&/^#[\da-f]{6}$/i.test(saved[key])&&key in values)
           values[key]=saved[key];
       }
@@ -89,6 +104,8 @@ function loadCustomizations(){
         if(typeof value==="boolean"&&typeof saved[key]==="boolean")
           values[key]=saved[key];
       }
+      if(effect==="merge"&&["glow","billiards","planets"].includes(saved.ballStyle))
+        values.ballStyle=saved.ballStyle;
     }
     return defaults;
   }catch(error){
@@ -212,7 +229,7 @@ function hexToRgba(hex,alpha=1){
 }
 
 function getEffectHueRotation(key=current){
-  if(["particles","bubbles","waves","grid","sunset","network","ocean","sakura","flare","prism"].includes(key))
+  if(["particles","bubbles","waves","grid","sunset","network","ocean","sakura","prism","orbits","ink","merge","catch"].includes(key))
     return 0;
   const settings=getEffectSettings(key);
   const baseHue=hexToHue(customizationDefaults[key].color);
@@ -231,12 +248,13 @@ function getCurrentEffectControl(){
     case "particles":return buildParticles;
     case "waves":return buildRain;
     case "grid":return buildGridCells;
+    case "orbits":return buildGeometricOrbits;
+    case "ink":return buildInkFlow;
     case "network":return buildNetwork;
     case "ocean":return buildDeepOcean;
     case "sakura":return buildSakura;
     case "sunset":return buildSky;
     case "cyber":return buildCyberStars;
-    case "flare":return buildSolarFlare;
     case "prism":return buildLiquidPrism;
   }
 }
@@ -246,12 +264,30 @@ function renderCustomizationControls(){
   const settings=getEffectSettings();
   const effectOptions=customizationOptions[current];
   const controls=[
-    ...("color" in settings?[
+    ...("color" in settings&&current!=="merge"?[
       {key:"color",label:"Color principal",type:"color"},
       {key:"secondaryColor",label:"Color secundario",type:"color"}
     ]:[]),
+    ...(current==="ink"?[
+      {key:"mouseColor",label:"Color del mouse",type:"color"}
+    ]:[]),
     ...(current==="particles"?[
       {key:"multicolor",label:"LuciÃ©rnagas de todos los colores",type:"checkbox"}
+    ]:[]),
+    ...(current==="catch"?[
+      {key:"constantSpeed",label:"Velocidad constante",type:"checkbox"}
+    ]:[]),
+    ...(current==="merge"?[
+      {
+        key:"ballStyle",
+        label:"Aspecto de las bolas",
+        type:"select",
+        options:[
+          {value:"glow",label:"Luminosas (actual)"},
+          {value:"billiards",label:"Billar"},
+          {value:"planets",label:"Planetas del sistema solar"}
+        ]
+      }
     ]:[]),
     {key:"speed",label:"Velocidad",type:"range",min:.4,max:2,step:.05,unit:"Ã—"},
     {key:"intensity",label:"Intensidad de luz",type:"range",min:.5,max:1.5,step:.05,unit:"Ã—"},
@@ -274,9 +310,18 @@ function renderCustomizationControls(){
     const title=document.createElement("span");
     title.className="customization-label";
     title.textContent=control.label;
-    const input=document.createElement("input");
-    input.type=control.type;
+    const input=document.createElement(control.type==="select"?"select":"input");
+    if(control.type!=="select")
+      input.type=control.type;
     input.name=control.key;
+    if(control.type==="select"){
+      for(const option of control.options){
+        const choice=document.createElement("option");
+        choice.value=option.value;
+        choice.textContent=option.label;
+        input.append(choice);
+      }
+    }
     if(control.type==="range"){
       input.min=control.min;
       input.max=control.max;
@@ -304,7 +349,9 @@ function renderCustomizationControls(){
         ? input.value
         : control.type==="checkbox"
           ? input.checked
-          : Number(input.value);
+          : control.type==="select"
+            ? input.value
+            : Number(input.value);
       settings[control.key]=value;
       if(control.key==="color"||control.key==="secondaryColor")
         applyEffectColors(settings.color,settings.secondaryColor);
@@ -340,9 +387,11 @@ function randomizeCurrentCustomization(){
   const settings=getEffectSettings();
   const hue=Math.floor(Math.random()*360);
   const separation=100+Math.floor(Math.random()*100);
-  if("color" in settings){
+  if("color" in settings&&current!=="merge"){
     settings.color=hslToHex(hue,.8,.58);
     settings.secondaryColor=hslToHex((hue+separation)%360,.78,.66);
+    if(current==="ink")
+      settings.mouseColor=hslToHex((hue+240)%360,.85,.62);
   }
 
   const randomRange=(min,max,step)=>{
@@ -379,7 +428,7 @@ function updateCustomizationOverlay(){
   }
   const hasCustomColors=
     "color" in settings&&
-    !["particles","bubbles","waves","grid","network","ocean","sakura"].includes(current);
+    !["particles","bubbles","waves","grid","network","ocean","sakura","orbits","ink"].includes(current);
   customColorOverlay.hidden=!hasCustomColors;
 }
 
@@ -415,6 +464,12 @@ function setEffect(key){
   }
   if(key==="grid")
     gridCellSize=getEffectSettings(key).amount;
+  if(key==="merge")
+    resetMergeGame();
+  if(key==="catch")
+    resetCatchDodgeGame();
+  if(key==="breaker")
+    resetBlockBreaker();
   updatePageAtmosphere();
   updateCustomizationOverlay();
   updateCanvasFilter();
@@ -482,6 +537,58 @@ customizationPanel.addEventListener("close",()=>{
 customizationPanel.addEventListener("click",event=>{
   if(event.target===customizationPanel)
     customizationPanel.close();
+});
+
+function updateFullscreenButton(){
+  const isFullscreen=
+    document.fullscreenElement===stageShell||
+    stageShell.classList.contains("stage-fullscreen-mode");
+  fullscreenButton.textContent=isFullscreen?"Salir de pantalla completa":"Pantalla completa";
+  fullscreenButton.setAttribute("aria-label",isFullscreen
+    ?"Salir de pantalla completa"
+    :"Ver fondo en pantalla completa"
+  );
+  fullscreenButton.setAttribute("aria-pressed",String(isFullscreen));
+  requestAnimationFrame(resize);
+}
+
+function exitFullscreenFallback(){
+  stageShell.classList.remove("stage-fullscreen-mode");
+  document.body.classList.remove("stage-fullscreen-active");
+  fullscreenStatus.textContent="";
+}
+
+fullscreenButton.addEventListener("click",async()=>{
+  fullscreenStatus.textContent="";
+  try{
+    if(stageShell.classList.contains("stage-fullscreen-mode")){
+      exitFullscreenFallback();
+    }else if(document.fullscreenElement===stageShell){
+      await document.exitFullscreen();
+    }else if(stageShell.requestFullscreen){
+      await stageShell.requestFullscreen();
+    }else{
+      throw new Error("La API de pantalla completa no está disponible.");
+    }
+    updateFullscreenButton();
+  }catch(error){
+    console.error("No se pudo cambiar el modo de pantalla completa.",error);
+    if(document.fullscreenElement===stageShell){
+      fullscreenStatus.textContent="No se pudo salir de la pantalla completa.";
+      return;
+    }
+    stageShell.classList.add("stage-fullscreen-mode");
+    document.body.classList.add("stage-fullscreen-active");
+    fullscreenStatus.textContent="La pantalla completa del navegador no está disponible; se muestra el escenario ampliado.";
+    updateFullscreenButton();
+  }
+});
+document.addEventListener("fullscreenchange",updateFullscreenButton);
+document.addEventListener("keydown",event=>{
+  if(event.key!=="Escape"||!stageShell.classList.contains("stage-fullscreen-mode"))
+    return;
+  exitFullscreenFallback();
+  updateFullscreenButton();
 });
 
 function resetAllCustomizations(){

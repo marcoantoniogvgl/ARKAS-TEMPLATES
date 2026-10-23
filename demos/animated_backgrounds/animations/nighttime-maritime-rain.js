@@ -20,9 +20,9 @@ function buildRain(){
 
       x:rand(0,W()),
 
-      y:rand(-H(),H()*.55),
+      y:rand(-H()*.14,H()*.72),
 
-      vy:rand(2.5,5),
+      vy:rand(1.1,2.2),
 
       len:rand(3,8),
 
@@ -45,7 +45,7 @@ function buildRain(){
   );
 
   rainClouds=Array.from(
-    {length:15},
+    {length:26},
     () => ({
       x:rand(-.12,1.12),
       y:rand(.12,.76),
@@ -69,7 +69,7 @@ function drawWaves(time,dt){
   const secondary=hexToRgb(settings.secondaryColor);
 
   const horizon=H()*.50;
-  const floor=H()*.93;
+  const floor=H()*.99;
 
   const colorWash=ctx.createLinearGradient(0,0,0,H());
   colorWash.addColorStop(0,`rgba(${secondary.join(",")},.025)`);
@@ -167,7 +167,7 @@ function drawWaves(time,dt){
         );
       }
 
-      drop.y=rand(horizon-H()*.48,horizon-5);
+      drop.y=rand(-H()*.18,-drop.len);
       drop.x=rand(0,W());
       drop.depth=rand(.35,1);
     }
@@ -222,11 +222,11 @@ function drawWaves(time,dt){
 
     w.r +=
       w.speed*
-      dt*.55*
+      dt*.42*
       (.75+w.depth*.65);
 
     w.energy *=
-      Math.pow(.998,dt);
+      Math.pow(.9992,dt);
 
     let interference=0;
 
@@ -247,7 +247,7 @@ function drawWaves(time,dt){
           Math.cos(d*.08)*
           other.energy*
           (1-d/72)*
-          .2;
+          .12;
       }
     }
 
@@ -268,8 +268,8 @@ function drawWaves(time,dt){
     for(let i=0;i<=points;i++){
       const angle=i/points*Math.PI*2;
       const uneven=1+
-        .018*Math.sin(angle*3+w.phase+time*.00045)+
-        .009*Math.sin(angle*7-w.phase*.7+time*.00025);
+        .009*Math.sin(angle*3+w.phase+time*.00045)+
+        .004*Math.sin(angle*7-w.phase*.7+time*.00025);
       const px=w.x+Math.cos(angle)*w.r*uneven;
       const py=w.y+Math.sin(angle)*ry*uneven;
       if(i===0)ctx.moveTo(px,py);
@@ -290,7 +290,7 @@ function drawWaves(time,dt){
     for(let i=0;i<=points;i++){
       const angle=i/points*Math.PI*2;
       const uneven=1+
-        .014*Math.sin(angle*4+w.phase+time*.00045);
+        .007*Math.sin(angle*4+w.phase+time*.00045);
       const px=w.x+Math.cos(angle)*w.r*.69*uneven;
       const py=w.y+Math.sin(angle)*ry*.5*uneven;
       if(i===0)ctx.moveTo(px,py);

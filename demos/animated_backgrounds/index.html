@@ -16,7 +16,7 @@
   <header class="hero">
     <div>
       <div class="eyebrow"><i></i> INTERACTIVE BACKGROUND LAB</div>
-      <h1 class="hero-title"><span class="hero-title-count">12</span><span class="hero-title-word">fondos</span><span class="hero-title-word hero-title-accent">animados</span></h1>
+      <h1 class="hero-title"><span class="hero-title-count">13</span><span class="hero-title-word">fondos</span><span class="hero-title-word hero-title-accent">animados</span></h1>
       <p>Cada experiencia tiene una mecánica propia. No son simples fondos animados: están diseñados para responder al usuario.</p>
     </div>
     <div class="live"><b></b> INTERACTIVE</div>
@@ -30,6 +30,17 @@
       <div class="custom-color-overlay" id="customColorOverlay" aria-hidden="true"></div>
       <div class="hud">
       </div>
+      <button class="stage-fullscreen" id="toggleStageFullscreen" type="button" aria-label="Ver fondo en pantalla completa" aria-pressed="false">
+        Pantalla completa
+      </button>
+      <button class="merge-game-clear" id="clearMergeGame" type="button" aria-label="Vaciar todas las bolas">
+        Vaciar
+      </button>
+      <button class="breaker-game-reset" id="resetBlockBreaker" type="button" aria-label="Reiniciar Rompebloques">
+        Reiniciar
+      </button>
+      <p class="visually-hidden" id="fullscreenStatus" role="status" aria-live="polite"></p>
+      <p class="visually-hidden" id="mergeGameStatus" role="status" aria-live="polite"></p>
       <div class="cursor-ring" id="cursorRing"></div>
     </div>
   </section>
@@ -54,26 +65,50 @@
       </div>
     </div>
 
-    <div class="buttons">
-      <button class="effect active" data-effect="aurora">Aurora Borealis</button>
-      <button class="effect" data-effect="bubbles">Bubbles</button>
-      <button class="effect" data-effect="particles">Fireflies</button>
-      <button class="effect" data-effect="waves">Nighttime Maritime Rain</button>
-      <button class="effect" data-effect="grid">Cubic Wall</button>
-      <button class="effect" data-effect="sunset">High-Mountain Day</button>
-      <button class="effect" data-effect="network">Neural Network</button>
-      <button class="effect" data-effect="cyber">Cyber Warfare</button>
-      <button class="effect" data-effect="ocean">Abyssal Garden</button>
-      <button class="effect" data-effect="sakura">Sakura</button>
-      <button class="effect" data-effect="flare">Solar Flare</button>
-      <button class="effect" data-effect="prism">Liquid Prism</button>
+    <div class="experience-groups">
+      <section class="experience-group" aria-labelledby="light-group-title">
+        <h4 id="light-group-title">Luz y conexiones</h4>
+        <div class="buttons">
+          <button class="effect active" data-effect="aurora">Aurora boreal</button>
+          <button class="effect" data-effect="particles">Luciérnagas</button>
+          <button class="effect" data-effect="network">Red neuronal</button>
+          <button class="effect" data-effect="prism">Prisma</button>
+        </div>
+      </section>
+      <section class="experience-group" aria-labelledby="nature-group-title">
+        <h4 id="nature-group-title">Paisajes naturales</h4>
+        <div class="buttons">
+          <button class="effect" data-effect="sunset">Día de alta montaña</button>
+          <button class="effect" data-effect="sakura">Flores de cerezo</button>
+          <button class="effect" data-effect="waves">Lluvia marítima nocturna</button>
+          <button class="effect" data-effect="ocean">Jardín abisal</button>
+        </div>
+      </section>
+      <section class="experience-group" aria-labelledby="shapes-group-title">
+        <h4 id="shapes-group-title">Materia en movimiento</h4>
+        <div class="buttons">
+          <button class="effect" data-effect="grid">Muro cúbico</button>
+          <button class="effect" data-effect="bubbles">Burbujas</button>
+          <button class="effect" data-effect="orbits">Cubo en 4D</button>
+          <button class="effect" data-effect="ink">Tinta líquida</button>
+        </div>
+      </section>
+      <section class="experience-group" aria-labelledby="games-group-title">
+        <h4 id="games-group-title">Juegos</h4>
+        <div class="buttons">
+          <button class="effect" data-effect="cyber">Guerra cibernética</button>
+          <button class="effect" data-effect="merge">Fusión de bolas</button>
+          <button class="effect" data-effect="catch">Atrapa y esquiva</button>
+          <button class="effect" data-effect="breaker">Rompebloques</button>
+        </div>
+      </section>
     </div>
 
     <dialog class="customization-panel customization-dialog" id="customizationPanel" aria-labelledby="customizationTitle">
       <div class="customization-heading">
         <div>
           <span class="section-label">PERSONALIZACIÓN</span>
-          <h3 id="customizationTitle">Aurora Borealis</h3>
+          <h3 id="customizationTitle">Aurora boreal</h3>
           <p>Los cambios se guardan automáticamente en este navegador.</p>
         </div>
         <div class="customization-actions">
@@ -88,7 +123,7 @@
     </dialog>
   </section>
 
-  <footer><span>HTML · CSS · CANVAS · JAVASCRIPT</span><span>12 FONDOS ANIMADOS</span></footer>
+  <footer><span>HTML · CSS · CANVAS · JAVASCRIPT</span><span>13 FONDOS ANIMADOS · 3 JUEGOS</span></footer>
 </main>
 <!-- El motor se carga antes de los efectos que registran sus funciones de dibujo. -->
 <script src="engine.js"></script>
@@ -102,8 +137,12 @@
 <script src="animations/cyber-warfare.js"></script>
 <script src="animations/deep-ocean.js"></script>
 <script src="animations/sakura-drift.js"></script>
-<script src="animations/solar-flare.js"></script>
 <script src="animations/liquid-prism.js"></script>
+<script src="animations/geometric-orbits.js"></script>
+<script src="animations/ink-flow.js"></script>
+<script src="animations/merge-drop.js"></script>
+<script src="animations/catch-dodge.js"></script>
+<script src="animations/block-breaker.js"></script>
 <script src="animations/background-interactions.js"></script>
 <script src="animations/experience-menu.js"></script>
 </body>

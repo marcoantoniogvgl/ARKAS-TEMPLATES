@@ -1,6 +1,7 @@
 
-let prismOrbits = [];
 let prismLight = { x: 0, y: 0 };
+let prismBursts = [];
+let prismCrystals = [];
 
 // Paleta espectral adicional.
 const PRISM_SPECTRUM = [
@@ -30,7 +31,7 @@ function buildLiquidPrism() {
   }));
 
   prismShards = Array.from(
-    { length: Math.min(amount * 7, 180) },
+    { length: Math.min(amount * 12, 260) },
     () => ({
       x: rand(0, W()),
       y: rand(0, H()),
@@ -45,16 +46,44 @@ function buildLiquidPrism() {
     })
   );
 
-  prismOrbits = Array.from({ length: 4 }, (_, i) => ({
-    phase: rand(0, Math.PI * 2),
-    radius: 0.45 + i * 0.19,
-    speed: rand(0.00004, 0.00012),
-    rotation: rand(0, Math.PI * 2),
-    opacity: rand(0.10, 0.25)
-  }));
-
   prismLight.x = W() * 0.52;
   prismLight.y = H() * 0.5;
+  prismBursts = [];
+  prismCrystals = [];
+}
+
+function createPrismBurst(x, y) {
+  prismBursts.push({
+    x,
+    y,
+    age: 0,
+    hue: rand(0, 360),
+    strength: rand(0.9, 1.2),
+    rotation: rand(0, Math.PI * 2),
+    rotationSpeed: rand(-3.2, 3.2)
+  });
+  if (prismBursts.length > 12)
+    prismBursts.shift();
+
+  const count = Math.floor(rand(11, 17));
+  for (let i = 0; i < count; i++) {
+    const angle = Math.PI * 2 * i / count + rand(-0.16, 0.16);
+    const speed = rand(65, 185);
+    prismCrystals.push({
+      x,
+      y,
+      vx: Math.cos(angle) * speed,
+      vy: Math.sin(angle) * speed,
+      age: 0,
+      lifetime: rand(0.48, 0.82),
+      size: rand(3, 8),
+      rotation: rand(0, Math.PI * 2),
+      rotationSpeed: rand(-5, 5),
+      colorIndex: Math.floor(rand(0, PRISM_SPECTRUM.length))
+    });
+  }
+  if (prismCrystals.length > 180)
+    prismCrystals.splice(0, prismCrystals.length - 180);
 }
 
 // Utilidades de dibujo.
@@ -136,14 +165,20 @@ function drawLiquidPrism(time, dt) {
   // Limita dt para evitar saltos después de cambiar de pestaña.
   const delta = Math.min(Math.max(dt || 0, 0), 40);
 
-  const targetX = mouse.active ? mouse.x : w * 0.52;
-  const targetY = mouse.active ? mouse.y : h * 0.48;
+  const targetX = w * (0.5 + Math.sin(time * 0.00013) * 0.06);
+  const targetY = h * (0.48 + Math.cos(time * 0.00017) * 0.045);
 
-  // La luz sigue al ratón con suavidad.
+  // La luz principal deriva lentamente por el centro, sin seguir al cursor.
   const follow = 1 - Math.exp(-delta * 0.004);
 
   prismLight.x += (targetX - prismLight.x) * follow;
   prismLight.y += (targetY - prismLight.y) * follow;
+  for (const burst of prismBursts)
+  {
+    burst.age += delta / 1000;
+    burst.rotation += burst.rotationSpeed * delta / 1000;
+  }
+  prismBursts = prismBursts.filter(burst => burst.age < 0.62);
 
   const lx = prismLight.x;
   const ly = prismLight.y;
@@ -381,7 +416,7 @@ function drawLiquidPrism(time, dt) {
 
   ctx.restore();
 
-  // 3. DESTELLOS VOLUMÉTRICOS CERCA DEL CURSOR.
+  // 3. DESTELLOS VOLUMÉTRICOS EN EL PUNTO DE LUZ.
 
   ctx.save();
   ctx.globalCompositeOperation = "screen";
@@ -427,10 +462,14 @@ function drawLiquidPrism(time, dt) {
     const dy = shard.y - ly;
     const distance = Math.hypot(dx, dy) || 1;
 
-    // El cristal reacciona a la luz del cursor.
-    const influence = mouse.active
-      ? Math.max(0, 1 - distance / 220)
-      : 0;
+    // Los fragmentos reaccionan al paso de las ondas generadas al hacer clic.
+    const influence = prismBursts.reduce((highest, burst) => {
+      const burstDistance = Math.hypot(shard.x - burst.x, shard.y - burst.y);
+      const progress = burst.age / 0.62;
+      const reach = progress * Math.max(w, h) * 0.32;
+      const pulse = Math.max(0, 1 - Math.abs(burstDistance - reach) / 85);
+      return Math.max(highest, pulse * burst.strength * (1 - progress));
+    },0);
 
     shard.x += (dx / distance) * influence * delta * 0.12;
     shard.y += (dy / distance) * influence * delta * 0.12;
@@ -517,300 +556,86 @@ function drawLiquidPrism(time, dt) {
 
   ctx.restore();
 
-  // 5. LENTE ÓPTICA CENTRAL.
-
-  const lensRadius =
-    Math.min(w, h) * (mouse.active ? 0.19 : 0.145);
-
-  const lensRotation =
-    time * 0.00009 +
-    Math.sin(time * 0.00013) * 0.10;
-
-  const lensWidth = lensRadius * 1.42;
-  const lensHeight = lensRadius * 0.78;
-
+  // Las ondas del clic giran y dispersan fragmentos de cristal.
   ctx.save();
-  ctx.translate(lx, ly);
-  ctx.rotate(lensRotation);
   ctx.globalCompositeOperation = "screen";
 
-  function traceLens() {
-    ctx.beginPath();
+  prismCrystals = prismCrystals.filter(crystal => {
+    crystal.age += delta / 1000;
+    if (crystal.age >= crystal.lifetime)
+      return false;
 
-    ctx.moveTo(-lensWidth * 0.76, -lensHeight * 0.30);
+    const seconds = delta / 1000;
+    crystal.x += crystal.vx * seconds;
+    crystal.y += crystal.vy * seconds;
+    crystal.vx *= Math.pow(0.16, seconds);
+    crystal.vy *= Math.pow(0.16, seconds);
+    crystal.rotation += crystal.rotationSpeed * seconds;
 
-    ctx.bezierCurveTo(
-      -lensWidth * 1.00, -lensHeight * 0.85,
-      -lensWidth * 0.20, -lensHeight * 1.02,
-      lensWidth * 0.19, -lensHeight * 0.70
-    );
-
-    ctx.bezierCurveTo(
-      lensWidth * 0.70, -lensHeight * 0.82,
-      lensWidth * 1.02, -lensHeight * 0.30,
-      lensWidth * 0.80, lensHeight * 0.10
-    );
-
-    ctx.bezierCurveTo(
-      lensWidth * 0.96, lensHeight * 0.62,
-      lensWidth * 0.35, lensHeight * 0.92,
-      lensWidth * 0.02, lensHeight * 0.72
-    );
-
-    ctx.bezierCurveTo(
-      -lensWidth * 0.45, lensHeight * 0.98,
-      -lensWidth * 0.98, lensHeight * 0.42,
-      -lensWidth * 0.76, -lensHeight * 0.30
-    );
-
-    ctx.closePath();
-  }
-
-  // Interior con profundidad y transparencia.
-  const lensFill = ctx.createRadialGradient(
-    -lensRadius * 0.24,
-    -lensRadius * 0.34,
-    1,
-    0, 0,
-    lensRadius * 1.2
-  );
-
-  lensFill.addColorStop(
-    0, "rgba(255,255,255,0.17)"
-  );
-  lensFill.addColorStop(
-    0.28, prismRGBA(primary, 0.09 * intensity)
-  );
-  lensFill.addColorStop(
-    0.57, prismRGBA(secondary, 0.07 * intensity)
-  );
-  lensFill.addColorStop(
-    0.82, prismRGBA(PRISM_SPECTRUM[2], 0.055 * intensity)
-  );
-  lensFill.addColorStop(1, "rgba(255,255,255,0)");
-
-  traceLens();
-  ctx.fillStyle = lensFill;
-  ctx.fill();
-
-  // Recubrimiento óptico interior.
-  ctx.save();
-  traceLens();
-  ctx.clip();
-
-  const caustic = ctx.createLinearGradient(
-    -lensWidth, -lensHeight,
-    lensWidth, lensHeight
-  );
-
-  caustic.addColorStop(0, "rgba(255,255,255,0)");
-  caustic.addColorStop(
-    0.34, "rgba(255,255,255,0.015)"
-  );
-  caustic.addColorStop(
-    0.46, "rgba(255,255,255,0.22)"
-  );
-  caustic.addColorStop(
-    0.51, prismRGBA(PRISM_SPECTRUM[0], 0.16)
-  );
-  caustic.addColorStop(
-    0.57, prismRGBA(PRISM_SPECTRUM[2], 0.15)
-  );
-  caustic.addColorStop(1, "rgba(255,255,255,0)");
-
-  ctx.fillStyle = caustic;
-  ctx.fillRect(
-    -lensWidth * 1.5,
-    -lensHeight * 1.5,
-    lensWidth * 3,
-    lensHeight * 3
-  );
-
-  // Banda especular que gira dentro de la lente.
-  const reflectionX =
-    Math.sin(time * 0.00023) * lensWidth * 0.35;
-
-  const reflection = ctx.createLinearGradient(
-    reflectionX - lensWidth * 0.4,
-    -lensHeight,
-    reflectionX + lensWidth * 0.4,
-    lensHeight
-  );
-
-  reflection.addColorStop(0, "rgba(255,255,255,0)");
-  reflection.addColorStop(
-    0.48, "rgba(255,255,255,0.015)"
-  );
-  reflection.addColorStop(
-    0.52, "rgba(255,255,255,0.17)"
-  );
-  reflection.addColorStop(1, "rgba(255,255,255,0)");
-
-  ctx.fillStyle = reflection;
-  ctx.fillRect(
-    -lensWidth * 1.5,
-    -lensHeight * 1.5,
-    lensWidth * 3,
-    lensHeight * 3
-  );
-
-  ctx.restore();
-
-  // Contorno iridiscente.
-  const rim = ctx.createLinearGradient(
-    -lensWidth, -lensHeight * 0.3,
-    lensWidth, lensHeight * 0.3
-  );
-
-  rim.addColorStop(
-    0, prismRGBA(PRISM_SPECTRUM[0], 0.05)
-  );
-  rim.addColorStop(
-    0.20, prismRGBA(PRISM_SPECTRUM[0], 0.68)
-  );
-  rim.addColorStop(
-    0.42, prismRGBA(PRISM_SPECTRUM[1], 0.62)
-  );
-  rim.addColorStop(
-    0.62, prismRGBA(PRISM_SPECTRUM[2], 0.68)
-  );
-  rim.addColorStop(
-    0.82, prismRGBA(PRISM_SPECTRUM[3], 0.45)
-  );
-  rim.addColorStop(
-    1, prismRGBA(PRISM_SPECTRUM[0], 0.05)
-  );
-
-  traceLens();
-  ctx.strokeStyle = rim;
-  ctx.lineWidth = Math.max(1.3, h * 0.0028);
-  ctx.shadowColor = prismRGBA(primary, 0.65);
-  ctx.shadowBlur = lensRadius * 0.12;
-  ctx.stroke();
-  ctx.shadowBlur = 0;
-
-  // Doble contorno para simular dispersión de luz.
-  ctx.save();
-  ctx.translate(-2, 1);
-
-  traceLens();
-  ctx.strokeStyle = prismRGBA(
-    PRISM_SPECTRUM[0], 0.30
-  );
-  ctx.lineWidth = Math.max(0.7, h * 0.001);
-  ctx.stroke();
-
-  ctx.translate(4, -2);
-
-  traceLens();
-  ctx.strokeStyle = prismRGBA(
-    PRISM_SPECTRUM[2], 0.30
-  );
-  ctx.stroke();
-
-  ctx.restore();
-
-  // Reflejo blanco superior.
-  ctx.beginPath();
-  ctx.moveTo(-lensWidth * 0.54, -lensHeight * 0.20);
-
-  ctx.bezierCurveTo(
-    -lensWidth * 0.26, -lensHeight * 0.59,
-    lensWidth * 0.18, -lensHeight * 0.53,
-    lensWidth * 0.52, -lensHeight * 0.24
-  );
-
-  ctx.strokeStyle = "rgba(255,255,255,0.46)";
-  ctx.lineWidth = Math.max(1, h * 0.002);
-  ctx.stroke();
-
-  ctx.restore();
-
-  // 6. ÓRBITAS ÓPTICAS EXTERIORES.
-
-  ctx.save();
-  ctx.translate(lx, ly);
-  ctx.globalCompositeOperation = "screen";
-
-  prismOrbits.forEach((orbit, index) => {
-    const rotation =
-      orbit.rotation + time * orbit.speed;
+    const progress = crystal.age / crystal.lifetime;
+    const fade = Math.sin(Math.PI * progress);
+    const size = crystal.size * (0.55 + fade * 0.8);
+    const color = PRISM_SPECTRUM[crystal.colorIndex];
 
     ctx.save();
-    ctx.rotate(rotation);
-
+    ctx.translate(crystal.x, crystal.y);
+    ctx.rotate(crystal.rotation);
     ctx.beginPath();
-    ctx.ellipse(
-      0, 0,
-      lensRadius * orbit.radius * 1.45,
-      lensRadius * orbit.radius * 0.42,
-      0, 0, Math.PI * 2
-    );
-
-    ctx.strokeStyle = prismRGBA(
-      PRISM_SPECTRUM[index % PRISM_SPECTRUM.length],
-      orbit.opacity * intensity
-    );
-
-    ctx.lineWidth = index === 0 ? 1.2 : 0.7;
-    ctx.stroke();
-
-    // Pequeño destello móvil en cada órbita.
-    const angle =
-      time * orbit.speed * 2.8 + orbit.phase;
-
-    const px =
-      Math.cos(angle) *
-      lensRadius * orbit.radius * 1.45;
-
-    const py =
-      Math.sin(angle) *
-      lensRadius * orbit.radius * 0.42;
-
-    const dotRadius = index === 0 ? 2.2 : 1.4;
-
-    ctx.beginPath();
-    ctx.arc(px, py, dotRadius, 0, Math.PI * 2);
-
-    ctx.fillStyle = prismRGBA(
-      [255, 255, 255],
-      0.58 * intensity
-    );
-
+    ctx.moveTo(0, -size);
+    ctx.lineTo(size * 0.55, 0);
+    ctx.lineTo(0, size);
+    ctx.lineTo(-size * 0.55, 0);
+    ctx.closePath();
+    ctx.fillStyle = prismRGBA(color, fade * 0.82);
+    ctx.shadowColor = prismRGBA(color, fade);
+    ctx.shadowBlur = size * 2.5;
     ctx.fill();
+    ctx.strokeStyle = prismRGBA([255, 255, 255], fade * 0.9);
+    ctx.lineWidth = 0.8;
+    ctx.stroke();
     ctx.restore();
+    return true;
   });
 
-  ctx.restore();
+  for (const burst of prismBursts) {
+    const progress = burst.age / 0.62;
+    const eased = 1 - Math.pow(1 - progress, 3);
+    const radius = eased * Math.min(w, h) * 0.38;
+    const fade = Math.pow(1 - progress, 1.7) * burst.strength;
+    const color = PRISM_SPECTRUM[Math.floor((((burst.hue % 360) + 360) % 360) / 72)];
 
-  // 7. DESTELLO FINAL EN EL PUNTO DE LUZ.
+    for (let ring = 0; ring < 2; ring++) {
+      const ringRadius = radius * (0.76 + ring * 0.24);
+      ctx.beginPath();
+      ctx.ellipse(
+        burst.x,
+        burst.y,
+        ringRadius,
+        ringRadius * (0.58 + ring * 0.08),
+        burst.rotation + ring * 0.22,
+        0,
+        Math.PI * 2
+      );
+      ctx.strokeStyle = prismRGBA(ring === 0 ? color : [255, 255, 255], fade * (0.72 - ring * 0.22));
+      ctx.lineWidth = (2.8 - ring) * (1 - progress * 0.45);
+      ctx.shadowColor = prismRGBA(color, fade);
+      ctx.shadowBlur = 14 * (1 - progress);
+      ctx.stroke();
+    }
 
-  ctx.save();
-  ctx.globalCompositeOperation = "screen";
+    for (let ray = 0; ray < 8; ray++) {
+      const angle = burst.rotation + ray * Math.PI / 4;
+      const inner = radius * 0.18;
+      const outer = radius * (0.8 + 0.12 * Math.sin(ray * 2.1 + progress * 6));
+      ctx.beginPath();
+      ctx.moveTo(burst.x + Math.cos(angle) * inner, burst.y + Math.sin(angle) * inner);
+      ctx.lineTo(burst.x + Math.cos(angle) * outer, burst.y + Math.sin(angle) * outer);
+      ctx.strokeStyle = prismRGBA(PRISM_SPECTRUM[(ray + Math.floor(burst.hue / 72)) % PRISM_SPECTRUM.length], fade * 0.72);
+      ctx.lineWidth = 1 + fade;
+      ctx.stroke();
+    }
 
-  const pulse =
-    0.5 + Math.sin(time * 0.0018) * 0.5;
-
-  const starRadius = 2 + pulse * 2.5;
-
-  const star = ctx.createRadialGradient(
-    lx, ly, 0,
-    lx, ly, starRadius * 7
-  );
-
-  star.addColorStop(0, "rgba(255,255,255,0.65)");
-  star.addColorStop(
-    0.15, prismRGBA(primary, 0.24 * intensity)
-  );
-  star.addColorStop(1, "rgba(255,255,255,0)");
-
-  ctx.fillStyle = star;
-  ctx.fillRect(
-    lx - starRadius * 7,
-    ly - starRadius * 7,
-    starRadius * 14,
-    starRadius * 14
-  );
-
+    drawPrismGlow(burst.x, burst.y, Math.max(2, 22 * (1 - progress)), color, fade * 0.38);
+  }
   ctx.restore();
 }

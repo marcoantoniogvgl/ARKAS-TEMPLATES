@@ -12,6 +12,7 @@ let mountainWildlife = [];
 let mountainWildlifeSpawnIn = 0;
 
 function buildSky(){
+  dayClock=.73;
 
   stars = Array.from(
     {length:115},

@@ -1,13 +1,32 @@
 // Conecta los movimientos y clics del usuario con las respuestas de cada experiencia.
+let mergeDropRepeatTimer=null;
+let mergeDropPointerId=null;
+let mergeDropPointerX=0;
+const mergeDropRepeatDelay=150;
+
+function stopMergeDropRepeat(pointerId){
+  if(mergeDropPointerId!==pointerId)
+    return;
+  clearInterval(mergeDropRepeatTimer);
+  mergeDropRepeatTimer=null;
+  mergeDropPointerId=null;
+}
+
 stage.addEventListener(
   "pointermove",
   e=>{
+    if(current==="orbits"){
+      cursorRing.style.opacity="0";
+      return;
+    }
 
     const r=
       stage.getBoundingClientRect();
 
     const nextX=e.clientX-r.left;
     const nextY=e.clientY-r.top;
+    if(current==="merge"&&mergeDropPointerId===e.pointerId)
+      mergeDropPointerX=nextX;
     if(current==="grid"&&!gridMouseTracked){
       mouse.x=nextX;
       mouse.y=nextY;
@@ -41,12 +60,11 @@ stage.addEventListener(
       gridTrailCell=cell;
     }
 
-    cursorRing.style.left=
-      mouse.x+"px";
+    if(current==="ink"&&(e.buttons&1))
+      paintInkFlow(mouse.x,mouse.y,mouse.vx,mouse.vy);
 
-    cursorRing.style.top=
-      mouse.y+"px";
-
+    cursorRing.style.left=mouse.x+"px";
+    cursorRing.style.top=mouse.y+"px";
     cursorRing.style.opacity="1";
 
     stage.style.setProperty(
@@ -69,7 +87,6 @@ stage.addEventListener(
       gridMouseTracked=false;
     if(current==="grid")
       gridTrailCell=null;
-
     cursorRing.style.opacity="0";
     if(current==="sakura")
       canvas.style.cursor="none";
@@ -79,6 +96,10 @@ stage.addEventListener(
 stage.addEventListener(
   "pointerdown",
   e=>{
+    if(e.target.closest("#toggleStageFullscreen,#clearMergeGame,#resetBlockBreaker"))
+      return;
+    if(current==="orbits")
+      return;
 
     const r=
       stage.getBoundingClientRect();
@@ -97,6 +118,16 @@ stage.addEventListener(
     cursorRing.style.left=x+"px";
     cursorRing.style.top=y+"px";
     cursorRing.style.opacity="1";
+
+    if(current==="ink"&&e.button===0){
+      stage.setPointerCapture(e.pointerId);
+      stirInkFlow(x,y,mouse.vx,mouse.vy,true);
+    }
+
+    if(current==="catch"&&catchDodgeOver){
+      resetCatchDodgeGame();
+      return;
+    }
 
     if(current==="aurora")
       createAuroraFlash(x,y);
@@ -278,8 +309,44 @@ stage.addEventListener(
     if(current==="ocean")
       createOceanPulse(x,y);
 
+    if(current==="merge"&&e.button===0&&mergeDropPointerId===null){
+      mergeDropPointerId=e.pointerId;
+      mergeDropPointerX=x;
+      stage.setPointerCapture(e.pointerId);
+      spawnMergeBall(x);
+      mergeDropRepeatTimer=setInterval(()=>{
+        if(current!=="merge"){
+          stopMergeDropRepeat(mergeDropPointerId);
+          return;
+        }
+        spawnMergeBall(mergeDropPointerX);
+      },mergeDropRepeatDelay);
+    }
+
+    if(current==="prism")
+      createPrismBurst(x,y);
+
+    if(current==="breaker")
+      launchBlockBreaker();
+
   }
 );
+
+stage.addEventListener("pointerup",event=>{
+  if(current==="ink")
+    resetInkPointer();
+  stopMergeDropRepeat(event.pointerId);
+});
+
+stage.addEventListener("pointercancel",event=>{
+  if(current==="ink")
+    resetInkPointer();
+  stopMergeDropRepeat(event.pointerId);
+});
+
+stage.addEventListener("lostpointercapture",event=>{
+  stopMergeDropRepeat(event.pointerId);
+});
 
 canvas.addEventListener("click",event=>{
   const bounds=canvas.getBoundingClientRect();

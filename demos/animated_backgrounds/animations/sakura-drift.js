@@ -2,7 +2,6 @@ let sakuraFalling = [];
 let sakuraBlooms = [];
 let sakuraTreeLimbs = [];
 let sakuraTreeBounds = null;
-let sakuraBranchShake = null;
 let sakuraSpawnClock = 0;
 let sakuraPetalSprites = [];
 let sakuraTreeCache = null;
@@ -52,7 +51,6 @@ function buildSakura() {
   sakuraTreeLimbs = [];
   sakuraBlooms = [];
   sakuraFalling = [];
-  sakuraBranchShake = null;
   sakuraSpawnClock = 0;
   sakuraTreeCache = null;
   sakuraBloomCache = null;
@@ -82,13 +80,13 @@ function buildSakura() {
     { layer: 2, count: 7, minScale: .78, maxScale: 1.18, minY: .38, maxY: .92, speed: 1 }
   ];
   cloudLayers.forEach(({ layer, count, minScale, maxScale, minY, maxY, speed }) => {
-    const cloudSpacing = W() * 1.36 / count;
+    const cloudSpacing = W() * 2 / count;
     for (let index = 0; index < count; index++) {
       sakuraClouds.push({
         layer,
         scale: rand(minScale, maxScale),
         variant: Math.floor(rand(0, 3)),
-        x: -W() * .18 + (index + .5) * cloudSpacing + rand(-cloudSpacing * .2, cloudSpacing * .2),
+        x: -W() * .5 + (index + .5) * cloudSpacing + rand(-cloudSpacing * .12, cloudSpacing * .12),
         y: Math.max(H() * .04, rand(H() * minY, H() * maxY) - H() * .11),
         speed: rand(.7, 1.3) * speed,
         direction: layer % 2 ? -1 : 1,
@@ -235,9 +233,6 @@ function drawSakura(time, dt) {
   const secondary = hexToRgb(settings.secondaryColor);
   const zoomTarget = clamp(settings.zoom ?? .8, .65, sakuraCameraZoomMax);
   sakuraCameraZoom += (zoomTarget - sakuraCameraZoom) * (1 - Math.pow(.86, dt));
-  const shaking = sakuraBranchShake && time - sakuraBranchShake.startedAt < 1000;
-  if (!shaking)
-    sakuraBranchShake = null;
   if (sakuraTreeCacheDirty)
     refreshSakuraTreeCache(primary, secondary);
   else if (sakuraBloomCacheDirty)
@@ -263,16 +258,6 @@ function drawSakura(time, dt) {
       sakuraTreeCache.worldWidth,
       sakuraTreeCache.worldHeight
     );
-  if (shaking) {
-    drawSakuraTree(
-      time,
-      primary,
-      secondary,
-      ctx,
-      sakuraBranchShake.limbIds,
-      []
-    );
-  }
   if (sakuraBloomCache)
     ctx.drawImage(
       sakuraBloomCache,
@@ -638,7 +623,7 @@ function refreshSakuraTreeCache(primary, secondary) {
   treeContext.imageSmoothingEnabled=true;
   treeContext.imageSmoothingQuality="high";
   treeContext.setTransform(sakuraTreeCacheScale, 0, 0, sakuraTreeCacheScale, -left * sakuraTreeCacheScale, -top * sakuraTreeCacheScale);
-  drawSakuraTree(0, primary, secondary, treeContext, null, []);
+  drawSakuraTree(primary, secondary, treeContext);
   sakuraTreeCache.left = left;
   sakuraTreeCache.top = top;
   sakuraTreeCache.worldWidth = right - left;
@@ -667,30 +652,20 @@ function refreshSakuraBloomCache(primary, secondary) {
   sakuraBloomCacheDirty = false;
 }
 
-function drawSakuraTree(time, primary, secondary, treeCtx = ctx, limbIds = null, bloomIndices = null) {
-  const pose = getSakuraBranchPose(time);
-  const limbs = limbIds ? limbIds.map(id => sakuraTreeLimbs[id]) : sakuraTreeLimbs;
-  const blooms = bloomIndices ? bloomIndices.map(index => sakuraBlooms[index]) : sakuraBlooms;
+function drawSakuraTree(primary, secondary, treeCtx = ctx) {
   const trunk = sakuraTreeLimbs.find(limb => limb.parentId === null);
-  if (trunk && !limbIds)
+  if (trunk)
     drawSakuraRootFlare(trunk, treeCtx);
-  limbs.forEach(limb => {
-    treeCtx.save();
-    applySakuraBranchPose(limb, pose, treeCtx, Boolean(limbIds));
+  sakuraTreeLimbs.forEach(limb => {
     drawSakuraWoodLimb(limb, treeCtx);
     drawSakuraBranchKnot(limb, limb.id, treeCtx);
-    treeCtx.restore();
   });
 
-  blooms.forEach((bloom, index) => {
+  sakuraBlooms.forEach(bloom => {
     if (!bloom.attached)
       return;
     const color = bloom.shade ? secondary : primary;
-    const pulse = .9 + .1 * Math.sin(time * .0012 + bloom.phase);
-    treeCtx.save();
-    applySakuraBranchPose(sakuraTreeLimbs[bloom.limbId], pose, treeCtx, Boolean(limbIds));
-    drawSakuraBloom(bloom.x, bloom.y, bloom.radius * pulse, color, .97, treeCtx);
-    treeCtx.restore();
+    drawSakuraBloom(bloom.x, bloom.y, bloom.radius, color, .97, treeCtx);
   });
 }
 
@@ -739,34 +714,6 @@ function drawSakuraBlooms(time, primary, secondary, treeCtx = ctx) {
     const pulse = .9 + .1 * Math.sin(time * .0012 + bloom.phase);
     drawSakuraBloom(bloom.x, bloom.y, bloom.radius * pulse, color, .97, treeCtx);
   });
-}
-
-function getSakuraBranchPose(time) {
-  if (!sakuraBranchShake)
-    return null;
-  const limb = sakuraTreeLimbs[sakuraBranchShake.limbId];
-  const elapsed = time - sakuraBranchShake.startedAt;
-  const duration = 1000;
-  if (!limb || elapsed >= duration) {
-    sakuraBranchShake = null;
-    return null;
-  }
-  const sizeRatio = limb.width / (Math.min(W(), H()) * .022);
-  const twigAmount = 1 - clamp(sizeRatio, 0, 1);
-  const amplitude = (limb.isMainTrunk ? .018 : .025 + .075 * twigAmount) * sakuraBranchShake.strength;
-  const damping = Math.pow(1 - elapsed / duration, 2);
-  return {
-    root: limb,
-    angle: Math.sin(elapsed * .018 + sakuraBranchShake.phase) * amplitude * damping
-  };
-}
-
-function applySakuraBranchPose(limb, pose, treeCtx = ctx, isWithinPose = false) {
-  if (!limb || !pose || !isWithinPose && !isSakuraBranchWithin(pose.root.id, limb))
-    return;
-  treeCtx.translate(pose.root.x, pose.root.y);
-  treeCtx.rotate(pose.angle);
-  treeCtx.translate(-pose.root.x, -pose.root.y);
 }
 
 function isSakuraBranchWithin(rootId, limb) {
@@ -966,10 +913,10 @@ function drawSakuraCloudLayer(layer, dt) {
       const progress = cloud.dissolveProgress;
       cloud.opacity = 1 - progress * progress * (3 - 2 * progress);
     }
-    if (cloud.direction > 0 && cloud.x - width * 1.2 > W())
-      cloud.x = -width * 1.2;
-    else if (cloud.direction < 0 && cloud.x + width * 1.2 < 0)
-      cloud.x = W() + width * 1.2;
+    if (cloud.direction > 0 && cloud.x - width * 1.35 > W())
+      cloud.x = -width * 1.35;
+    else if (cloud.direction < 0 && cloud.x + width * 1.35 < 0)
+      cloud.x = W() + width * 1.35;
     if (sprite) {
       const drawWidth = width * 2.5;
       const drawHeight = height * 2.5;
@@ -1289,15 +1236,6 @@ function createSakuraGust(x, y, view = sakuraViewTransform(), limb = null) {
     if (affectedBlooms.length >= maxAffectedBlooms)
       break;
   }
-  sakuraBranchShake = {
-    limbId: limb.id,
-    limbIds,
-    startedAt: effectClock,
-    phase: 0,
-    strength: settings.gustStrength
-  };
-  // A click only detaches blossoms; the branch geometry is unchanged.
-  // Rebuilding the full tree cache here made every gust unnecessarily expensive.
   sakuraBloomCacheDirty = true;
 
   affectedBlooms.forEach(bloom => {
