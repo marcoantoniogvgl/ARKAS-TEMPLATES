@@ -1,0 +1,8 @@
+/* Estilos propios de esta experiencia. */
+[data-effect="merge"] .stage{background:radial-gradient(ellipse at 50% 100%,rgba(86,117,204,.2),transparent 55%),linear-gradient(180deg,#11192d,#080b17 72%)}
+[data-effect="merge"] .css-layer{background:radial-gradient(ellipse at 50% 10%,rgba(117,151,255,.07),transparent 42%)}
+.merge-game-clear{position:absolute;z-index:11;top:16px;right:16px;padding:9px 15px;border:1px solid rgba(255,255,255,.18);border-radius:10px;background:rgba(10,14,27,.78);color:#eef2ff;font-size:.75rem;font-weight:700;cursor:pointer;backdrop-filter:blur(10px)}
+.merge-game-clear:hover{border-color:rgba(255,255,255,.45);background:rgba(28,38,66,.92)}
+.merge-game-clear:focus-visible{outline:2px solid #a5b4fc;outline-offset:3px}
+body:not([data-effect="merge"]) .merge-game-clear{display:none}
+@media(max-width:560px){.merge-game-clear{top:10px;right:10px}}

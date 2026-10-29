@@ -10,13 +10,29 @@
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
   <link rel="stylesheet" href="style.css">
+  <link rel="stylesheet" href="animations/aurora-borealis/style.css">
+  <link rel="stylesheet" href="animations/bubbles/style.css">
+  <link rel="stylesheet" href="animations/fireflies/style.css">
+  <link rel="stylesheet" href="animations/nighttime-maritime-rain/style.css">
+  <link rel="stylesheet" href="animations/cubic-wall/style.css">
+  <link rel="stylesheet" href="animations/high-mountain-day/style.css">
+  <link rel="stylesheet" href="animations/neural-network/style.css">
+  <link rel="stylesheet" href="animations/cyber-warfare/style.css">
+  <link rel="stylesheet" href="animations/deep-ocean/style.css">
+  <link rel="stylesheet" href="animations/sakura-drift/style.css">
+  <link rel="stylesheet" href="animations/liquid-prism/style.css">
+  <link rel="stylesheet" href="animations/geometric-orbits/style.css">
+  <link rel="stylesheet" href="animations/merge-drop/style.css">
+  <link rel="stylesheet" href="animations/catch-dodge/style.css">
+  <link rel="stylesheet" href="animations/block-breaker/style.css">
+  <link rel="stylesheet" href="animations/falling-blocks/style.css">
 </head>
 <body>
 <main class="app">
   <header class="hero">
     <div>
       <div class="eyebrow"><i></i> INTERACTIVE BACKGROUND LAB</div>
-      <h1 class="hero-title"><span class="hero-title-count">13</span><span class="hero-title-word">fondos</span><span class="hero-title-word hero-title-accent">animados</span></h1>
+      <h1 class="hero-title"><span class="hero-title-count">16</span><span class="hero-title-word">fondos</span><span class="hero-title-word hero-title-accent">animados</span></h1>
       <p>Cada experiencia tiene una mecánica propia. No son simples fondos animados: están diseñados para responder al usuario.</p>
     </div>
     <div class="live"><b></b> INTERACTIVE</div>
@@ -39,8 +55,27 @@
       <button class="breaker-game-reset" id="resetBlockBreaker" type="button" aria-label="Reiniciar Rompebloques">
         Reiniciar
       </button>
+      <div class="tetris-game-controls" id="tetrisGameControls" aria-label="Controles del juego">
+        <button class="tetris-game-button" id="clearTetrisGame" type="button">Vaciar</button>
+        <button class="tetris-game-button" id="toggleTetrisGame" type="button" aria-pressed="false">Pausa</button>
+        <button class="tetris-game-button tetris-restart" id="restartTetrisGame" type="button" hidden>Reiniciar</button>
+      </div>
+      <section class="tetris-next-piece" id="tetrisNextPiece" aria-label="Siguiente pieza">
+        <span>SIGUIENTE</span>
+        <canvas id="tetrisNextCanvas" aria-hidden="true"></canvas>
+      </section>
+      <div class="tetris-game-over" id="tetrisGameOver" role="alert" aria-live="assertive" hidden>
+        <h2 id="tetrisGameOverTitle">Fin de la partida</h2>
+        <p>Las piezas han llegado al borde. ¿Quieres volver a intentarlo?</p>
+        <div>
+          <button class="tetris-game-button" id="dismissTetrisAlert" type="button">Vale</button>
+          <button class="tetris-game-button tetris-game-button-primary" id="restartTetrisFromAlert" type="button">Reiniciar</button>
+        </div>
+      </div>
       <p class="visually-hidden" id="fullscreenStatus" role="status" aria-live="polite"></p>
       <p class="visually-hidden" id="mergeGameStatus" role="status" aria-live="polite"></p>
+      <p class="visually-hidden" id="catchGameStatus" role="status" aria-live="polite"></p>
+      <p class="visually-hidden" id="tetrisGameStatus" role="status" aria-live="polite"></p>
       <div class="cursor-ring" id="cursorRing"></div>
     </div>
   </section>
@@ -90,16 +125,7 @@
           <button class="effect" data-effect="grid">Muro cúbico</button>
           <button class="effect" data-effect="bubbles">Burbujas</button>
           <button class="effect" data-effect="orbits">Cubo en 4D</button>
-          <button class="effect" data-effect="ink">Tinta líquida</button>
-        </div>
-      </section>
-      <section class="experience-group" aria-labelledby="games-group-title">
-        <h4 id="games-group-title">Juegos</h4>
-        <div class="buttons">
           <button class="effect" data-effect="cyber">Guerra cibernética</button>
-          <button class="effect" data-effect="merge">Fusión de bolas</button>
-          <button class="effect" data-effect="catch">Atrapa y esquiva</button>
-          <button class="effect" data-effect="breaker">Rompebloques</button>
         </div>
       </section>
     </div>
@@ -123,26 +149,43 @@
     </dialog>
   </section>
 
-  <footer><span>HTML · CSS · CANVAS · JAVASCRIPT</span><span>13 FONDOS ANIMADOS · 3 JUEGOS</span></footer>
+  <footer><span>HTML · CSS · CANVAS · JAVASCRIPT</span><span>16 EXPERIENCIAS ANIMADAS</span></footer>
 </main>
 <!-- El motor se carga antes de los efectos que registran sus funciones de dibujo. -->
 <script src="engine.js"></script>
-<script src="animations/aurora-borealis.js"></script>
-<script src="animations/bubbles.js"></script>
-<script src="animations/fireflies.js"></script>
-<script src="animations/nighttime-maritime-rain.js"></script>
-<script src="animations/cubic-wall.js"></script>
-<script src="animations/high-mountain-day.js"></script>
-<script src="animations/neural-network.js"></script>
-<script src="animations/cyber-warfare.js"></script>
-<script src="animations/deep-ocean.js"></script>
-<script src="animations/sakura-drift.js"></script>
-<script src="animations/liquid-prism.js"></script>
-<script src="animations/geometric-orbits.js"></script>
-<script src="animations/ink-flow.js"></script>
-<script src="animations/merge-drop.js"></script>
-<script src="animations/catch-dodge.js"></script>
-<script src="animations/block-breaker.js"></script>
+<script src="animations/aurora-borealis/animation.js"></script>
+<script src="animations/bubbles/animation.js"></script>
+<script src="animations/fireflies/animation.js"></script>
+<script src="animations/nighttime-maritime-rain/animation.js"></script>
+<script src="animations/cubic-wall/animation.js"></script>
+<script src="animations/high-mountain-day/animation.js"></script>
+<script src="animations/neural-network/animation.js"></script>
+<script src="animations/cyber-warfare/animation.js"></script>
+<script src="animations/deep-ocean/animation.js"></script>
+<script src="animations/sakura-drift/animation.js"></script>
+<script src="animations/liquid-prism/animation.js"></script>
+<script src="animations/geometric-orbits/animation.js"></script>
+<script src="animations/merge-drop/animation.js"></script>
+<script src="animations/catch-dodge/animation.js"></script>
+<script src="animations/block-breaker/animation.js"></script>
+<script src="animations/falling-blocks/animation.js"></script>
+<script src="animations/experience-settings.js"></script>
+<script src="animations/aurora-borealis/settings.js"></script>
+<script src="animations/bubbles/settings.js"></script>
+<script src="animations/fireflies/settings.js"></script>
+<script src="animations/nighttime-maritime-rain/settings.js"></script>
+<script src="animations/cubic-wall/settings.js"></script>
+<script src="animations/high-mountain-day/settings.js"></script>
+<script src="animations/neural-network/settings.js"></script>
+<script src="animations/cyber-warfare/settings.js"></script>
+<script src="animations/deep-ocean/settings.js"></script>
+<script src="animations/sakura-drift/settings.js"></script>
+<script src="animations/liquid-prism/settings.js"></script>
+<script src="animations/geometric-orbits/settings.js"></script>
+<script src="animations/merge-drop/settings.js"></script>
+<script src="animations/catch-dodge/settings.js"></script>
+<script src="animations/block-breaker/settings.js"></script>
+<script src="animations/falling-blocks/settings.js"></script>
 <script src="animations/background-interactions.js"></script>
 <script src="animations/experience-menu.js"></script>
 </body>

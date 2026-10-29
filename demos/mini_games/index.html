@@ -1,0 +1,110 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="theme-color" content="#080a14">
+  <meta name="description" content="Juega a la colección Arkas Arcade: cuatro minijuegos interactivos en tu navegador.">
+  <title>Arkas Arcade — Minijuegos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800;900&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="style.css">
+</head>
+<body>
+  <header class="arcade-nav">
+    <a class="arcade-back" href="../../index.html#plantillas"><span aria-hidden="true">←</span> Volver a plantillas</a>
+    <a class="arcade-brand" href="#inicio" aria-label="Arkas Arcade, inicio">ARKAS<span>PLAY</span></a>
+    <span class="arcade-count"><i></i> 4 JUEGOS</span>
+  </header>
+
+  <main class="arcade-shell" id="inicio">
+    <section class="arcade-hero">
+      <div class="arcade-hero-copy">
+        <p class="arcade-kicker"><span>01</span> ARKAS ARCADE <i></i> COLECCIÓN INTERACTIVA</p>
+        <h1>Una partida<br><em>más.</em></h1>
+        <p class="arcade-intro">Cuatro minijuegos para hacer una pausa, poner a prueba tus reflejos y volver a intentarlo.</p>
+        <a class="arcade-scroll" href="#juegos">ELIGE TU JUEGO <span aria-hidden="true">↓</span></a>
+      </div>
+      <div class="arcade-hero-art" aria-hidden="true">
+        <div class="arcade-sun"></div>
+        <div class="arcade-ring arcade-ring-one"></div>
+        <div class="arcade-ring arcade-ring-two"></div>
+        <span class="arcade-hero-block block-purple">✦</span>
+        <span class="arcade-hero-block block-cyan">04</span>
+        <span class="arcade-hero-block block-orange">↗</span>
+        <span class="arcade-hero-note">INSERT<br>COIN <b>↗</b></span>
+      </div>
+      <div class="arcade-hero-index"><span>ARKAS PLAY</span><b>001 — 004</b></div>
+    </section>
+
+    <section class="game-gallery" id="juegos" aria-labelledby="games-title">
+      <div class="game-gallery-heading">
+        <div>
+          <p class="arcade-kicker"><span>02</span> LA COLECCIÓN</p>
+          <h2 id="games-title">Elige tu <em>reto.</em></h2>
+        </div>
+        <p>Cuatro maneras distintas de jugar.<br>¿Cuál va primero?</p>
+      </div>
+
+      <div class="game-grid">
+        <article class="game-card">
+          <div class="game-card-top"><span>01 / COMBINA</span><span class="game-card-mark">✳</span></div>
+          <div class="game-art game-art-merge" aria-hidden="true">
+            <span class="game-orbit"></span><i class="merge-ball merge-ball-one">2</i><i class="merge-ball merge-ball-two">4</i><i class="merge-ball merge-ball-three">8</i>
+          </div>
+          <div class="game-card-copy"><h3>Fusión de bolas</h3><p>Deja caer, combina y persigue la siguiente puntuación.</p></div>
+          <button class="game-play" type="button" data-start-game="merge" aria-pressed="false">Jugar <span aria-hidden="true">↗</span></button>
+        </article>
+
+        <article class="game-card">
+          <div class="game-card-top"><span>02 / SUPERA</span><span class="game-card-mark">◌</span></div>
+          <div class="game-art game-art-catch" aria-hidden="true">
+            <span class="maze-ring maze-ring-one"></span><span class="maze-ring maze-ring-two"></span><span class="maze-ring maze-ring-three"></span><i class="maze-ball"></i><b class="maze-target">●</b>
+          </div>
+          <div class="game-card-copy"><h3>Laberinto circular</h3><p>Guía la esfera, esquiva los muros y encuentra la salida.</p></div>
+          <button class="game-play" type="button" data-start-game="catch" aria-pressed="false">Jugar <span aria-hidden="true">↗</span></button>
+        </article>
+
+        <article class="game-card">
+          <div class="game-card-top"><span>03 / ROMPE</span><span class="game-card-mark">▦</span></div>
+          <div class="game-art game-art-breaker" aria-hidden="true">
+            <span class="brick brick-one"></span><span class="brick brick-two"></span><span class="brick brick-three"></span><span class="brick brick-four"></span><span class="breaker-ball"></span><span class="breaker-paddle"></span>
+          </div>
+          <div class="game-card-copy"><h3>Rompebloques</h3><p>Controla la pala, devuelve la bola y limpia el tablero.</p></div>
+          <button class="game-play" type="button" data-start-game="breaker" aria-pressed="false">Jugar <span aria-hidden="true">↗</span></button>
+        </article>
+
+        <article class="game-card">
+          <div class="game-card-top"><span>04 / ENCAJA</span><span class="game-card-mark">▧</span></div>
+          <div class="game-art game-art-tetris" aria-hidden="true">
+            <span class="tetris-piece piece-one"></span><span class="tetris-piece piece-two"></span><span class="tetris-piece piece-three"></span><span class="tetris-piece piece-four"></span><span class="tetris-floor"></span>
+          </div>
+          <div class="game-card-copy"><h3>Caída de bloques</h3><p>Completa filas, ordena las piezas y bate tu récord.</p></div>
+          <button class="game-play" type="button" data-start-game="tetris" aria-pressed="false">Jugar <span aria-hidden="true">↗</span></button>
+        </article>
+      </div>
+    </section>
+
+    <section class="game-player" id="gamePlayer" aria-labelledby="playerTitle" hidden>
+      <div class="game-player-heading">
+        <div>
+          <p class="arcade-kicker"><span>03</span> EN JUEGO</p>
+          <h2 id="playerTitle">Tu partida</h2>
+        </div>
+        <div class="player-actions">
+          <button type="button" id="restartGame">Reiniciar <span aria-hidden="true">↻</span></button>
+          <a href="#juegos">Cambiar de juego <span aria-hidden="true">↑</span></a>
+        </div>
+      </div>
+      <div class="game-frame-wrap">
+        <iframe id="gameFrame" title="Arkas Arcade" allow="fullscreen" loading="lazy"></iframe>
+      </div>
+      <p class="game-player-status" id="gameStatus" role="status" aria-live="polite">Selecciona un juego para empezar.</p>
+    </section>
+
+    <footer class="arcade-footer"><a class="arcade-brand" href="../../index.html#inicio">ARKAS<span>PLAY</span></a><span>HECHO PARA JUGAR <b>✳</b> ARKAS TEMPLATES</span></footer>
+  </main>
+  <script src="games.js"></script>
+</body>
+</html>

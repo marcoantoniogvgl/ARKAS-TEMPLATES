@@ -23,13 +23,13 @@ const sakuraRedCloudImage = new Image();
 sakuraCloudImage.addEventListener("load", refreshSakuraCloudSprites);
 sakuraRedCloudImage.addEventListener("load", refreshSakuraCloudSprites);
 sakuraCloudImage.addEventListener("error", () => {
-  console.error("No se pudo cargar la nube blanca de Sakura: img/cloud-white.png");
+  console.error("No se pudo cargar la nube blanca de Sakura: animations/sakura-drift/assets/cloud-white.png");
 });
 sakuraRedCloudImage.addEventListener("error", () => {
-  console.error("No se pudo cargar la nube roja de Sakura: img/cloud-red.png");
+  console.error("No se pudo cargar la nube roja de Sakura: animations/sakura-drift/assets/cloud-red.png");
 });
-sakuraCloudImage.src = "img/cloud-white.png";
-sakuraRedCloudImage.src = "img/cloud-red.png";
+sakuraCloudImage.src = "animations/sakura-drift/assets/cloud-white.png";
+sakuraRedCloudImage.src = "animations/sakura-drift/assets/cloud-red.png";
 
 function refreshSakuraCloudSprites() {
   const images = [sakuraCloudImage, sakuraRedCloudImage];

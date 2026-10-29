@@ -206,17 +206,77 @@
           COLECCIÓN ARKAS
         </p>
         <h2 data-i18n="featuredTemplates">
-          Plantillas destacadas
+          Plantillas por categoría
         </h2>
       </div>
-      <p class="section-description" data-i18n="collectionDescription">
-        Diseños listos para convertirse
-        en tu próxima web.
-      </p>
     </div>
-    <div class="templates-grid">
+    <div class="template-browser">
+      <aside class="template-category-sidebar">
+        <nav class="template-category-selector" aria-label="Categorías de plantillas">
+          <div class="template-category-group active">
+            <button class="template-category-button active" id="category-business" type="button" aria-expanded="true" aria-controls="category-options-business templateGrid" data-template-filter="business">
+              <span class="template-category-number">01</span>
+              <span class="template-category-name">Negocios físicos y online</span>
+              <span class="template-category-arrow" aria-hidden="true">⌄</span>
+            </button>
+            <div class="template-category-options" id="category-options-business">
+              <button class="template-category-option" type="button" data-category-option-index="0" data-template-target="preview-merchandising">Merchandising</button>
+              <button class="template-category-option" type="button" data-category-option-index="1" data-template-target="preview-restaurante">Restaurante</button>
+              <button class="template-category-option" type="button" data-category-option-index="2" data-template-target="preview-gimnasio">Gimnasio</button>
+              <button class="template-category-option" type="button" data-category-option-index="3" data-template-target="preview-concesionario">Concesionario</button>
+            </div>
+          </div>
+          <div class="template-category-group">
+            <button class="template-category-button" id="category-education" type="button" aria-expanded="false" aria-controls="category-options-education templateGrid" data-template-filter="education">
+              <span class="template-category-number">02</span>
+              <span class="template-category-name">Enseñanza</span>
+              <span class="template-category-arrow" aria-hidden="true">⌄</span>
+            </button>
+            <div class="template-category-options" id="category-options-education">
+              <button class="template-category-option" type="button" data-category-option-index="0" data-template-target="preview-instituto">Instituto</button>
+              <button class="template-category-option" type="button" data-category-option-index="1" data-template-target="preview-cursos-online">Cursos online</button>
+            </div>
+          </div>
+          <div class="template-category-group">
+            <button class="template-category-button" id="category-portfolios" type="button" aria-expanded="false" aria-controls="category-options-portfolios templateGrid" data-template-filter="portfolios">
+              <span class="template-category-number">03</span>
+              <span class="template-category-name">Landing pages y portfolios</span>
+              <span class="template-category-arrow" aria-hidden="true">⌄</span>
+            </button>
+            <div class="template-category-options" id="category-options-portfolios">
+              <button class="template-category-option" type="button" data-category-option-index="0" data-template-target="preview-landing">Landing page</button>
+              <button class="template-category-option" type="button" data-category-option-index="1" data-template-target="preview-portfolio">Crear mi portfolio</button>
+            </div>
+          </div>
+          <div class="template-category-group">
+            <button class="template-category-button" id="category-animations" type="button" aria-expanded="false" aria-controls="category-options-animations templateGrid" data-template-filter="animations">
+              <span class="template-category-number">04</span>
+              <span class="template-category-name">Animaciones</span>
+              <span class="template-category-arrow" aria-hidden="true">⌄</span>
+            </button>
+            <div class="template-category-options" id="category-options-animations">
+              <button class="template-category-option" type="button" data-category-option-index="0" data-template-target="preview-fondos-animados">Fondos animados</button>
+            </div>
+          </div>
+          <div class="template-category-group">
+            <button class="template-category-button" id="category-games" type="button" aria-expanded="false" aria-controls="category-options-games templateGrid" data-template-filter="games">
+              <span class="template-category-number">05</span>
+              <span class="template-category-name">Mini juegos</span>
+              <span class="template-category-arrow" aria-hidden="true">⌄</span>
+            </button>
+            <div class="template-category-options" id="category-options-games">
+              <button class="template-category-option" type="button" data-category-option-index="0" data-template-target="preview-mini-juegos">Arkas Arcade</button>
+            </div>
+          </div>
+        </nav>
+      </aside>
+      <div class="template-catalog">
+        <p class="template-category-description" id="templateCategoryDescription" role="status" aria-live="polite">
+          Plantillas para comercios, restaurantes, gimnasios y concesionarios.
+        </p>
+        <div class="templates-grid" id="templateGrid" aria-live="polite">
       <!-- INSTITUTO -->
-       <div id="preview-instituto">
+       <div id="preview-instituto" data-template-category="education">
       <article class="template-card">
         <a href="plantilla.html?demo=instituto" class="template-preview preview-instituto" aria-label="Ver demo de la plantilla Instituto" data-i18n-aria="previewInstitute">
           <div class="preview-browser">
@@ -274,7 +334,7 @@
       </article>
       </div>
       <!-- RESTAURANTE -->
-       <div id="preview-restaurante">
+       <div id="preview-restaurante" data-template-category="business">
       <article class="template-card">
         <a href="plantilla.html?demo=restaurante" class="template-preview preview-restaurante" aria-label="Ver demo de la plantilla Restaurante" data-i18n-aria="previewRestaurant">
           <div class="preview-browser">
@@ -332,7 +392,7 @@
       </article>
       </div>
       <!-- MERCHANDISING -->
-       <div id="preview-merchandising">
+       <div id="preview-merchandising" data-template-category="business">
       <article class="template-card">
         <a href="plantilla.html?demo=merchandising" class="template-preview preview-merchandising" aria-label="Ver demo de la plantilla Merchandising" data-i18n-aria="previewMerchandising">
           <div class="preview-browser">
@@ -390,7 +450,7 @@
       </article>
       </div>
       <!-- LANDING -->
-       <div id="preview-landing">
+       <div id="preview-landing" data-template-category="portfolios">
       <article class="template-card">
         <a href="plantilla.html?demo=landing" class="template-preview preview-landing" aria-label="Ver demo de la plantilla Landing Page" data-i18n-aria="previewLanding">
           <div class="preview-browser">
@@ -448,13 +508,13 @@
       </article>
       </div>
       <!-- GIMNASIO -->
-       <div id="preview-gimnasio">
+       <div id="preview-gimnasio" data-template-category="business">
       <article class="template-card">
-        <a href="plantilla.html?demo=gimnasio" class="template-preview preview-gimnasio" aria-label="Ver demo de la plantilla Templo Coba" data-i18n-aria="previewGym">
+        <a href="plantilla.html?demo=gimnasio" class="template-preview preview-gimnasio" aria-label="Ver demo de la plantilla Gimnasio" data-i18n-aria="previewGym">
           <div class="preview-browser">
             <div class="preview-top">
               <strong>
-                TEMPLO COBA
+                ARKAS GYM
               </strong>
               <div>
                 ACTIVIDADES
@@ -485,7 +545,7 @@
               05
             </span>
             <h3>
-              <span data-i18n="templateGym">Templo Coba</span>
+              <span data-i18n="templateGym">Gimnasio</span>
             </h3>
             <p data-i18n="descriptionGym">
               Web completa para un centro deportivo.
@@ -500,14 +560,100 @@
           <a href="plantilla.html?demo=gimnasio" class="demo-link button-demo">
             <span data-i18n="viewDemo">Ver demo</span> →
           </a>
-          <a href="mailto:marcoagvgl@gmail.com?subject=Consulta%20sobre%20la%20plantilla%20Templo%20Coba" class="purchase-link">
+          <a href="mailto:marcoagvgl@gmail.com?subject=Consulta%20sobre%20la%20plantilla%20Gimnasio" class="purchase-link">
             <span data-i18n="requestTemplate">Solicitar esta plantilla</span> →
           </a>
         </div>
       </article>
       </div>
+      <div id="preview-concesionario" data-template-category="business">
+        <article class="template-card template-card-coming-soon">
+          <div class="template-preview preview-dealership" aria-hidden="true">
+            <div class="preview-browser">
+              <div class="preview-top">
+                <strong>ARKAS MOTORS</strong>
+                <div>STOCK&nbsp;&nbsp; SERVICIOS&nbsp;&nbsp; CONTACTO</div>
+              </div>
+              <div class="preview-main">
+                <small>CONCESIONARIO</small>
+                <h3>Encuentra tu <span>próximo coche.</span></h3>
+                <span class="preview-cta">VER VEHÍCULOS</span>
+              </div>
+            </div>
+            <span class="preview-category" data-i18n="categoryDealership">Automoción</span>
+          </div>
+          <div class="template-details">
+            <div>
+              <span class="template-number">07</span>
+              <h3 data-i18n="templateDealership">Concesionario</h3>
+              <p data-i18n="descriptionDealership">Una base en rojo y negro para mostrar vehículos y servicios.</p>
+            </div>
+            <div class="template-includes">
+              <strong data-i18n="comingSoon">En preparación</strong>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div id="preview-cursos-online" data-template-category="education">
+        <article class="template-card template-card-coming-soon">
+          <div class="template-preview preview-courses" aria-hidden="true">
+            <div class="preview-browser">
+              <div class="preview-top">
+                <strong>ARKAS ACADEMY</strong>
+                <div>CURSOS&nbsp;&nbsp; RECURSOS&nbsp;&nbsp; ACCESO</div>
+              </div>
+              <div class="preview-main">
+                <small>APRENDE A TU RITMO</small>
+                <h3>Tu siguiente paso <span>empieza aquí.</span></h3>
+                <span class="preview-cta">EXPLORAR CURSOS</span>
+              </div>
+            </div>
+            <span class="preview-category" data-i18n="categoryTeaching">Enseñanza</span>
+          </div>
+          <div class="template-details">
+            <div>
+              <span class="template-number">08</span>
+              <h3 data-i18n="templateOnlineCourses">Cursos online</h3>
+              <p data-i18n="descriptionOnlineCourses">Una plantilla en blanco para presentar cursos y formación online.</p>
+            </div>
+            <div class="template-includes">
+              <strong data-i18n="comingSoon">En preparación</strong>
+            </div>
+          </div>
+        </article>
+      </div>
+      <div id="preview-portfolio" data-template-category="portfolios">
+        <article class="template-card">
+          <a href="curriculum-editor.html" class="template-preview preview-portfolio" aria-label="Crear un portfolio profesional" data-i18n-aria="createPortfolio">
+            <div class="preview-browser">
+              <div class="preview-top">
+                <strong>PORTFOLIO</strong>
+                <div>PERFIL&nbsp;&nbsp; PROYECTOS&nbsp;&nbsp; CONTACTO</div>
+              </div>
+              <div class="preview-main">
+                <small data-i18n="portfolioBuilderLabel">CREADOR DE PORTFOLIOS</small>
+                <h3 data-i18n="portfolioBuilderTitle">Tu historia.<br><span>Tu próximo proyecto.</span></h3>
+                <span class="preview-cta" data-i18n="createNow">CREAR AHORA</span>
+              </div>
+            </div>
+            <span class="preview-category" data-i18n="categoryPortfolios">Landing pages y portfolios</span>
+          </a>
+          <div class="template-details">
+            <div>
+              <span class="template-number">09</span>
+              <h3 data-i18n="templatePortfolio">Crear mi portfolio</h3>
+              <p data-i18n="descriptionPortfolio">Prepara y descarga tu perfil profesional desde el navegador.</p>
+            </div>
+          </div>
+          <div class="template-actions">
+            <a href="curriculum-editor.html" class="demo-link button-demo">
+              <span data-i18n="createNow">Crear ahora</span> →
+            </a>
+          </div>
+        </article>
+      </div>
       <!-- FONDOS ANIMADOS -->
-       <div id="preview-fondos-animados">
+       <div id="preview-fondos-animados" data-template-category="animations">
       <article class="template-card">
         <a href="plantilla.html?demo=fondos-animados" class="template-preview preview-fondos-animados" aria-label="Ver demo de la plantilla Fondos Animados" data-i18n-aria="previewBackgrounds">
           <div class="preview-browser">
@@ -564,6 +710,40 @@
           </a>
         </div>
       </article>
+        </div>
+      <div id="preview-mini-juegos" data-template-category="games">
+        <article class="template-card">
+          <a href="demos/mini_games/index.html" class="template-preview preview-mini-games" aria-label="Explorar colección de minijuegos">
+            <div class="mini-games-art" aria-hidden="true">
+              <span class="mini-game-orbit mini-game-orbit-one"></span>
+              <span class="mini-game-orbit mini-game-orbit-two"></span>
+              <span class="mini-game-tile mini-game-tile-one">↗</span>
+              <span class="mini-game-tile mini-game-tile-two">✦</span>
+              <span class="mini-game-tile mini-game-tile-three">◈</span>
+              <span class="mini-game-score">SCORE <b>00480</b></span>
+            </div>
+            <span class="preview-category">Arcade</span>
+          </a>
+          <div class="template-details">
+            <div>
+              <span class="template-number">01</span>
+              <h3>Arkas Arcade</h3>
+              <p>Cuatro minijuegos interactivos para jugar desde el navegador.</p>
+            </div>
+            <div class="template-includes">
+              <span>COLECCIÓN</span>
+              <strong>4 juegos</strong>
+            </div>
+          </div>
+          <div class="template-actions">
+            <a href="demos/mini_games/index.html" class="demo-link button-demo">
+              <span>Explorar juegos</span> →
+            </a>
+          </div>
+        </article>
+      </div>
+        </div>
+      </div>
     </div>
   </section>
   <!-- =========================
@@ -770,6 +950,7 @@
 </footer>
 <script src="js/i18n.js"></script>
 <script src="js/script.js"></script>
+<script src="js/template-categories.js"></script>
 <script src="js/demo-transition.js"></script>
 </body>
 </html>

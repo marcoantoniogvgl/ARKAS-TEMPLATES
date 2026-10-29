@@ -1,0 +1,5 @@
+/* Estilos propios de esta experiencia. */
+[data-effect="orbits"] .stage{background:radial-gradient(ellipse at 50% 50%,rgba(52,113,184,.2),transparent 42%),linear-gradient(135deg,#050914,#0b1022 52%,#070815)}
+[data-effect="orbits"] .stage:after{background:linear-gradient(180deg,rgba(255,255,255,.025),transparent 24%,transparent 75%,rgba(0,0,0,.22))}
+[data-effect="orbits"] .cursor-ring{display:none}
+[data-effect="orbits"] .css-layer{background:radial-gradient(circle at 50% 50%,rgba(115,93,255,.08),transparent 38%)}

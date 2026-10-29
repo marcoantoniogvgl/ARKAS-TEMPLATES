@@ -110,8 +110,9 @@
             font-size: 14px;
         }
         .perfil-circulo {
-            min-width: 150px;
-            height: 150px;
+            width: 200px;
+            height: 200px;
+            flex: 0 0 200px;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -120,10 +121,12 @@
             color: var(--azul);
             font-size: 48px;
             font-weight: 800;
-            border: 8px solid rgba(255,255,255,.15);
+            line-height: 1;
+            text-align: center;
+            border: 8px solid rgba(0, 110, 255, 0.24);
             box-shadow:
                 0 0 0 5px rgba(243,192,72,.25),
-                0 15px 30px rgba(0,0,0,.2);
+                0 15px 30px rgb(30, 0, 255);
         }
         nav {
             background: #102f48;
@@ -457,6 +460,104 @@
             color: var(--amarillo);
             opacity: .5;
         }
+        .chips {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 7px;
+            margin-top: 12px;
+        }
+        .chips span {
+            padding: 5px 11px;
+            border-radius: 20px;
+            background: white;
+            border: 1px solid #cfe3f1;
+            color: var(--azul);
+            font-size: 13px;
+            font-weight: 600;
+        }
+        .extras {
+            margin-top: 25px;
+        }
+        .aporte p {
+            margin-top: 6px;
+        }
+        .aporte a {
+            color: var(--azul-claro);
+            text-decoration: none;
+            word-break: break-all;
+        }
+        .aporte a:hover {
+            color: var(--naranja);
+            text-decoration: underline;
+        }
+        .badges {
+            display: flex;
+            flex-wrap: wrap;
+            gap: 10px;
+        }
+
+        /* ===== ANIMACIONES ===== */
+        @keyframes fadeUp { from { opacity: 0; transform: translateY(32px); } to { opacity: 1; transform: translateY(0); } }
+        @keyframes fadeLeft { from { opacity: 0; transform: translateX(-40px); } to { opacity: 1; transform: translateX(0); } }
+        @keyframes pop { from { opacity: 0; transform: scale(0) rotate(-90deg); } to { opacity: 1; transform: scale(1) rotate(0); } }
+        @keyframes lineGrow { from { width: 0; } to { width: 60px; } }
+        @keyframes growX { from { transform: scaleX(0); } to { transform: scaleX(1); } }
+        @keyframes growY { from { transform: scaleY(0); } to { transform: scaleY(1); } }
+        @keyframes spin { to { transform: rotate(360deg); } }
+        @keyframes drift { 0%,100% { transform: translate(0,0) scale(1); } 50% { transform: translate(30px,-20px) scale(1.15); } }
+        @keyframes float { 0%,100% { transform: translateY(0); } 50% { transform: translateY(-12px); } }
+        @keyframes ring {
+            0%,100% { box-shadow: 0 0 0 5px rgba(243,192,72,.25), 0 15px 30px rgba(0,0,0,.2); }
+            50% { box-shadow: 0 0 0 16px rgba(243,192,72,.08), 0 15px 30px rgba(0,0,0,.2); }
+        }
+        @keyframes blink { 0%,100% { opacity: 1; } 50% { opacity: .35; } }
+        header::before { animation: spin 40s linear infinite; }
+        header::after { animation: drift 9s ease-in-out infinite; }
+        .perfil-circulo { animation: float 4.5s ease-in-out infinite, ring 3s ease-in-out infinite, pop 1s cubic-bezier(.34,1.56,.64,1) backwards .5s; }
+        .titulo h1 { animation: fadeLeft .9s ease backwards .1s; }
+        .titulo .profesion { animation: fadeUp .8s ease backwards .35s; }
+        .titulo .rol { animation: fadeUp .8s ease backwards .5s; }
+        .stack { animation: fadeUp .8s ease backwards .65s; }
+        .badges { animation: fadeUp .8s ease backwards .8s; }
+        .badge:first-child::before {
+            content: ""; display: inline-block; width: 8px; height: 8px; margin-right: 8px;
+            border-radius: 50%; background: #5be58a; animation: blink 1.6s ease-in-out infinite;
+        }
+        .rol { font-size: 18px; font-weight: 600; margin-bottom: 14px; }
+        .stack { display: flex; flex-wrap: wrap; gap: 8px; margin: 4px 0 20px; }
+        .stack span {
+            padding: 5px 13px; border-radius: 8px; font-size: 13px; font-weight: 700;
+            background: var(--amarillo); color: var(--azul); transition: transform .3s;
+        }
+        .stack span:hover { transform: translateY(-4px) rotate(-3deg); }
+        /* aparición al hacer scroll */
+        .js .reveal { opacity: 0; }
+        .reveal.in { opacity: 1; animation: fadeUp .8s ease var(--d, 0s) backwards; }
+        .reveal.in.desde-izq { animation-name: fadeLeft; }
+        .titulo-seccion.in .numero { animation: pop .6s cubic-bezier(.34,1.56,.64,1) backwards; }
+        .titulo-seccion.in .linea { animation: lineGrow .8s ease .35s backwards; }
+        .timeline.in::before { transform-origin: top; animation: growY 1.5s ease backwards; }
+        .evento.in::before { animation: pop .5s cubic-bezier(.34,1.56,.64,1) calc(var(--d, 0s) + .25s) backwards; }
+        .habilidad.in .progreso { transform-origin: left; animation: growX 1.3s cubic-bezier(.22,.8,.3,1) calc(var(--d, 0s) + .3s) backwards; }
+        /* movimiento en las figuras al pasar el ratón */
+        .competencia::before { transition: transform .5s ease; }
+        .competencia:hover::before { transform: scale(2.6); }
+        .competencia:hover .icono { transform: rotate(-8deg) scale(1.12); }
+        .icono { transition: transform .35s cubic-bezier(.34,1.56,.64,1); }
+        .proyecto { transition: transform .35s, box-shadow .35s; }
+        .proyecto:hover { transform: translateY(-8px); box-shadow: 0 18px 35px rgba(23,63,95,.25); }
+        .proyecto::after { transition: transform .6s ease, opacity .6s; }
+        .proyecto:hover::after { transform: translateX(-25px) rotate(-6deg) scale(1.2); opacity: .16; }
+        .evento { transition: transform .3s, box-shadow .3s; }
+        .evento:hover { transform: translateX(8px); box-shadow: 0 10px 25px rgba(23,63,95,.1); }
+        .aporte { transition: transform .3s, box-shadow .3s; }
+        .aporte:hover { transform: translateY(-6px); box-shadow: 0 12px 25px rgba(23,63,95,.12); }
+        .numero { transition: transform .3s; }
+        .titulo-seccion:hover .numero { transform: rotate(12deg) scale(1.1); }
+        @media (prefers-reduced-motion: reduce) {
+            *, *::before, *::after { animation: none !important; transition: none !important; }
+            .js .reveal { opacity: 1; }
+        }
         footer {
             padding: 30px;
             text-align: center;
@@ -509,6 +610,7 @@
             }
         }
     </style>
+<script>document.documentElement.classList.add('js');</script>
 </head>
 <body>
 <div class="cv">
@@ -517,23 +619,27 @@
             <div class="titulo">
                 <h1>CURRÍCULUM <span>PROFESIONAL</span></h1>
                 <p class="profesion">Marco Antonio González-Venegas Guerra-Librero</p>
-                <p>Estudiante de Desarrollo de Aplicaciones Web</p>
-                <br>
-                <span class="badge">
-                    Buscando prácticas FCT
-                </span>
+                <p class="rol">Desarrollador Frontend · Técnico Superior en DAW</p>
+                <div class="stack">
+                    <span>HTML5</span><span>CSS3</span><span>JavaScript</span><span>Responsive</span><span>UI / UX</span>
+                </div>
+                <div class="badges">
+                    <span class="badge">Disponibilidad inmediata</span>
+                    <span class="badge">Buscando empleo como Desarrollador Frontend</span>
+                </div>
             </div>
-            <div class="perfil-circulo">MG
+            <div class="perfil-circulo">MA GVGL
             </div>
         </div>
     </header>
     <nav>
         <a href="#objetivo">Objetivo</a>
         <a href="#competencias">Competencias</a>
-        <a href="#experiencias">Experiencias</a>
+        <a href="#experiencias">Formación y experiencia</a>
         <a href="#proyectos">Proyectos</a>
         <a href="#habilidades">Habilidades</a>
         <a href="#aportacion">Aportación</a>
+        <a href="#contacto">Contacto</a>
     </nav>
     <main>
         <section id="objetivo">
@@ -546,15 +652,15 @@
             </div>
             <div class="intro">
                 <div class="intro-texto">
-                    <p>Mi objetivo profesional es comenzar a desarrollar experiencia en el sector de las aplicaciones web, especialmente en el área de desarrollo frontend, aunque también tengo interés en el backend.</p>
-                    <p>Actualmente estoy estudiando Desarrollo de Aplicaciones Web y quiero transformar los conocimientos adquiridos durante el ciclo en experiencia profesional.</p>
-                    <p>Me interesa especialmente aprender cómo se trabaja en un proyecto real, colaborar con otros desarrolladores y continuar mejorando mis conocimientos.</p>
+                    <p>Soy desarrollador frontend y busco incorporarme a un equipo donde poner mi dominio de HTML, CSS y JavaScript al servicio de interfaces rápidas, cuidadas y fáciles de usar. Mi conocimiento de backend (PHP, MySQL, Java y Python) me permite entender el producto completo y colaborar con todo el equipo.</p>
+                    <p>Cierro mi grado superior de DAW con ganas de incorporarme ya al mercado laboral, participar en proyectos reales y seguir creciendo con cada reto.</p>
+                    <p>Soy una persona responsable, trabajadora y creativa, con iniciativa y motivación para seguir creciendo profesionalmente en el sector tecnológico.</p>
                 </div>
                 <div class="objetivo">
                     <h3>¿Qué busco?</h3>
-                    <p>Una oportunidad de prácticas donde pueda aprender, participar en proyectos reales y aportar mis conocimientos.</p>
+                    <p>Un puesto de desarrollador frontend en un equipo donde aportar valor desde el primer día, trabajar en proyectos reales y seguir mejorando.</p>
                     <br>
-                    <p>Mi principal objetivo no es solamente utilizar tecnologías, sino aprender a utilizarlas para resolver problemas reales.</p>
+                    <p>Mi objetivo no es solo usar tecnologías, sino convertirlas en interfaces que resuelvan problemas reales.</p>
                 </div>
             </div>
         </section>
@@ -569,29 +675,29 @@
             <div class="competencias">
                 <article class="competencia">
                     <div class="icono">01</div>
+                    <h3>Desarrollo frontend</h3>
+                    <p>Maqueto y programo interfaces limpias, responsive y accesibles, cuidando el detalle visual y la experiencia de usuario.</p>
+                    <div class="ejemplo"><strong>Ejemplo:</strong> construir un portfolio completo con HTML, CSS y JavaScript que se adapta a cualquier pantalla.</div></article>
+                <article class="competencia">
+                    <div class="icono">02</div>
                     <h3>Aprendizaje autónomo</h3>
                     <p>Soy capaz de buscar información y aprender nuevos lenguajes de programación o métodos.</p>
                     <div class="ejemplo"><strong>Ejemplo:</strong> investigar por mi cuenta cómo implementar una función de JavaScript que todavía no conozco.</div></article>
                 <article class="competencia">
-                    <div class="icono">02</div>
+                    <div class="icono">03</div>
                     <h3>Resolución de problemas</h3>
                     <p>Cuando aparece un error intento localizar su origen antes de buscar una solución o codificar previniendo posibles fallos.</p>
                     <div class="ejemplo"><strong>Ejemplo:</strong> detectar por qué un formulario no envía los datos correctamente y revisar HTML, JavaScript o PHP.</div></article>
                 <article class="competencia">
-                    <div class="icono">03</div>
+                    <div class="icono">04</div>
                     <h3>Trabajo en equipo</h3>
                     <p>Los proyectos académicos me han enseñado a repartir tareas y mantener una comunicación adecuada.</p>
                     <div class="ejemplo"><strong>Ejemplo:</strong> dividir un proyecto web entre diseño, frontend y backend para trabajar de forma coordinada.</div></article>
                 <article class="competencia">
-                    <div class="icono">04</div>
+                    <div class="icono">05</div>
                     <h3>Organización</h3>
                     <p>Considero importante mantener una estructura clara en los proyectos y en el código.</p>
                     <div class="ejemplo"><strong>Ejemplo:</strong> separar HTML, CSS, JavaScript, imágenes y archivos PHP en carpetas diferentes.</div></article>
-                <article class="competencia">
-                    <div class="icono">05</div>
-                    <h3>Creatividad</h3>
-                    <p>El desarrollo web también necesita pensar cómo presentar la información de una manera clara y atractiva.</p>
-                    <div class="ejemplo"><strong>Ejemplo:</strong> diseñar una interfaz diferente para presentar un portfolio personal.</div></article>
                 <article class="competencia">
                     <div class="icono">06</div>
                     <h3>Adaptación</h3>
@@ -603,26 +709,25 @@
             <div class="titulo-seccion">
                 <div class="numero">03</div>
                 <div>
-                    <h2>Experiencias que me han formado</h2>
+                    <h2>Formación y experiencia</h2>
                     <div class="linea"></div>
                 </div>
             </div>
-            <div class="timeline"><article class="evento"><div class="fecha">2026 - Actualidad</div>
-                    <h3>Formación en Desarrollo de Aplicaciones Web</h3>
-                    <p>Formación en programación, desarrollo frontend, backend, bases de datos, diseño de interfaces y herramientas de desarrollo.</p>
-                    <div class="ejemplo"><strong>Competencias:</strong>aprendizaje autónomo, organización, pensamiento lógico y adaptación tecnológica.</div></article>
-                <article class="evento"><div class="fecha">Proyectos académicos</div>
-                    <h3>Desarrollo de aplicaciones web</h3>
-                    <p>Creación de aplicaciones propias durante el aprendizaje para poner en práctica lo aprendido.</p>
-                    <div class="ejemplo"><strong>Competencias:</strong> resolución de problemas, programación, atención al detalle y creatividad.</div></article>
-                <article class="evento"><div class="fecha">Trabajo en equipo</div>
-                    <h3>Proyectos colaborativos</h3>
-                    <p>Participación en actividades en las que es necesario organizar tareas y colaborar con otros compañeros.</p>
-                    <div class="ejemplo"><strong>Competencias:</strong> comunicación, responsabilidad y colaboración.</div></article>
-                <article class="evento"><div class="fecha">Ejemplo orientativo</div>
-                    <h3>Proyecto personal de una página web</h3>
-                    <p>Diseño y desarrollo de una pequeña página web para practicar estructura, estilos y programación.</p>
-                    <div class="ejemplo"><strong>Competencias:</strong> planificación, creatividad, autonomía y resolución de problemas.</div></article>
+            <div class="timeline"><article class="evento"><div class="fecha">Actual</div>
+                    <h3>Proyectos personales</h3>
+                    <p>Diseño y desarrollo de aplicaciones y páginas web propias, con foco en interfaces cuidadas, responsive y con buena experiencia de usuario.</p>
+                    <div class="ejemplo"><strong>Competencias:</strong> frontend, maquetación, iniciativa, autonomía y resolución de problemas.</div></article>
+                <article class="evento"><div class="fecha">Actualidad · Último curso</div>
+                    <h3>Grado Superior en Desarrollo de Aplicaciones Web (DAW)</h3>
+                    <p>IT Poniente Formación. Especialización en desarrollo frontend (HTML, CSS, JavaScript), junto con backend, bases de datos y herramientas de desarrollo.</p>
+                    <div class="ejemplo"><strong>Competencias:</strong> aprendizaje autónomo, organización, pensamiento lógico y adaptación tecnológica.</div></article>
+                <article class="evento"><div class="fecha">2020 - 2025</div>
+                    <h3>Hostelería y espectáculos</h3>
+                    <p>He trabajado desde los 16 años en hostelería y espectáculos, compaginándolo con mis estudios.</p>
+                    <div class="ejemplo"><strong>Competencias:</strong> responsabilidad, trabajo en equipo, trato con el público y capacidad de trabajo.</div></article>
+                <article class="evento"><div class="fecha">2022</div>
+                    <h3>Bachillerato Tecnológico</h3>
+                    <p>IES Miguel de Cervantes.</p></article>
             </div>
         </section>
         <section id="proyectos">
@@ -682,23 +787,23 @@
                 <div>
                     <div class="habilidad">
                         <div class="habilidad-info">
-                            <span>HTML / CSS</span>
-                            <span>80%</span>
+                            <span>HTML / CSS · Frontend</span>
+                            <span>90%</span>
                         </div>
                         <div class="barra">
                             <div class="progreso"
-                                 style="width:80%">
+                                 style="width:90%">
                             </div>
                         </div>
                     </div>
                     <div class="habilidad">
                         <div class="habilidad-info">
-                            <span>JavaScript</span>
-                            <span>65%</span>
+                            <span>JavaScript · Frontend</span>
+                            <span>80%</span>
                         </div>
                         <div class="barra">
                             <div class="progreso"
-                                 style="width:65%">
+                                 style="width:80%">
                             </div>
                         </div>
                     </div>
@@ -717,7 +822,7 @@
                 <div>
                     <div class="habilidad">
                         <div class="habilidad-info">
-                            <span>SQL / Bases de datos</span>
+                            <span>MySQL / Bases de datos</span>
                             <span>65%</span>
                         </div>
                         <div class="barra">
@@ -737,17 +842,22 @@
                             </div>
                         </div>
                     </div>
-                    <div class="habilidad">
-                        <div class="habilidad-info">
-                            <span>Figma / Diseño</span>
-                            <span>65%</span>
-                        </div>
-                        <div class="barra">
-                            <div class="progreso"
-                                 style="width:65%">
-                            </div>
-                        </div>
+                </div>
+            </div>
+            <div class="aportaciones extras">
+                <div class="aporte">
+                    <strong>Lenguajes y herramientas</strong>
+                    <div class="chips">
+                        <span>HTML</span><span>CSS</span><span>JavaScript</span><span>Java</span><span>Python</span><span>PHP</span><span>MySQL</span><span>Docker</span><span>Git</span><span>GitHub</span>
                     </div>
+                </div>
+                <div class="aporte">
+                    <strong>Inglés</strong>
+                    <p>Nivel B2</p>
+                </div>
+                <div class="aporte">
+                    <strong>Carnet de conducir</strong>
+                    <p>B, A1</p>
                 </div>
             </div>
         </section>
@@ -780,14 +890,19 @@
                             <td>Resolución de problemas</td>
                         </tr>
                         <tr>
+                            <td>Trabajar en hostelería y espectáculos</td>
+                            <td>Atender al público y cumplir con las responsabilidades del puesto</td>
+                            <td>Responsabilidad y trabajo en equipo</td>
+                        </tr>
+                        <tr>
                             <td>Trabajos en grupo</td>
                             <td>Repartir tareas y colaborar</td>
                             <td>Trabajo en equipo</td>
                         </tr>
                         <tr>
-                            <td>Diseñar interfaces</td>
-                            <td>Pensar en el usuario y la presentación</td>
-                            <td>Creatividad</td>
+                            <td>Maquetar interfaces con HTML, CSS y JavaScript</td>
+                            <td>Cuidar el detalle visual, la usabilidad y el diseño responsive</td>
+                            <td>Desarrollo frontend</td>
                         </tr>
                         <tr>
                             <td>Usar Git y GitHub</td>
@@ -816,8 +931,8 @@
                     <p>Interés por buscar soluciones y no depender siempre de instrucciones.</p>
                 </div>
                 <div class="aporte">
-                    <strong>Creatividad</strong>
-                    <p>Interés por crear interfaces diferentes y fáciles de utilizar.</p>
+                    <strong>Frontend de calidad</strong>
+                    <p>Interfaces limpias, responsive y fáciles de utilizar, desde el diseño hasta el código.</p>
                 </div>
                 <div class="aporte">
                     <strong>Organización</strong>
@@ -833,10 +948,53 @@
                 </div>
             </div>
         </section>
+        <section id="contacto">
+            <div class="titulo-seccion">
+                <div class="numero">08</div>
+                <div>
+                    <h2>Contacto</h2>
+                    <div class="linea"></div>
+                </div>
+            </div>
+            <div class="aportaciones">
+                <div class="aporte">
+                    <strong>Teléfono</strong>
+                    <p><a href="tel:+34681957372">+34 681 95 73 72</a></p>
+                </div>
+                <div class="aporte">
+                    <strong>Email</strong>
+                    <p><a href="mailto:marcoagvgl@gmail.com">marcoagvgl@gmail.com</a></p>
+                </div>
+                <div class="aporte">
+                    <strong>GitHub</strong>
+                    <p><a href="https://github.com/marcoantoniogvgl" target="_blank" rel="noopener">github.com/marcoantoniogvgl</a></p>
+                </div>
+            </div>
+        </section>
     </main>
     <footer>
-        <p><strong>Marco Antonio</strong> · Desarrollo de Aplicaciones Web</p><p>Currículum profesional · 2026</p>
+        <p><strong>Marco Antonio</strong> · Desarrollador Frontend</p><p>Currículum profesional · 2026</p>
     </footer>
 </div>
+<script>
+(function () {
+    var grupos = ['.intro-texto', '.objetivo', '.competencia', '.evento', '.proyecto', '.habilidad', '.aporte', '.tabla-contenedor'];
+    var els = document.querySelectorAll(grupos.join(','));
+    els.forEach(function (el) {
+        el.classList.add('reveal');
+        var hermanos = Array.prototype.filter.call(el.parentNode.children, function (h) { return h.matches(grupos.join(',')); });
+        el.style.setProperty('--d', (Math.min(hermanos.indexOf(el), 5) * 0.12) + 's');
+    });
+    document.querySelectorAll('.intro-texto').forEach(function (e) { e.classList.add('desde-izq'); });
+    var todos = document.querySelectorAll('.reveal, .titulo-seccion, .timeline');
+    if (!('IntersectionObserver' in window)) { todos.forEach(function (e) { e.classList.add('in'); }); return; }
+    var io = new IntersectionObserver(function (entradas) {
+        entradas.forEach(function (en) {
+            if (en.isIntersecting) { en.target.classList.add('in'); io.unobserve(en.target); }
+        });
+    }, { threshold: 0.15, rootMargin: '0px 0px -40px 0px' });
+    todos.forEach(function (e) { io.observe(e); });
+})();
+</script>
 </body>
 </html>

@@ -172,6 +172,13 @@
         }
     };
 
+    translations.en.templateGym = "Gym";
+    translations.en.previewGym = "View the Gym template demo";
+    translations.de.templateGym = "Fitnessstudio";
+    translations.it.templateGym = "Palestra";
+    translations.fr.templateGym = "Salle de sport";
+    translations.hi.templateGym = "जिम";
+
     const textElements = [...document.querySelectorAll("[data-i18n]")];
     const ariaElements = [...document.querySelectorAll("[data-i18n-aria]")];
     const originalTexts = new WeakMap();

@@ -1,0 +1,5 @@
+/* Estilos propios de esta experiencia. */
+[data-effect="aurora"] .stage{background:radial-gradient(circle at 50% 50%,rgba(68,255,151,.1),transparent 26%),radial-gradient(circle at 15% 25%,rgba(236,72,153,.4),transparent 30%),radial-gradient(circle at 85% 20%,rgba(34,211,238,.36),transparent 30%),radial-gradient(circle at 50% 100%,rgba(124,58,237,.48),transparent 40%),#07091a}
+[data-effect="aurora"] .css-layer{background:conic-gradient(from 210deg at 50% 85%,transparent,rgba(34,211,238,.12),rgba(52,211,153,.16),rgba(89,255,159,.13),rgba(139,92,246,.17),transparent 70%);filter:blur(50px);animation:aurora 10s ease-in-out infinite alternate}
+@keyframes aurora{to{transform:rotate(25deg) translate(4%,-5%) scale(1.12)}}
+[data-effect="aurora"] .cursor-ring{border-color:var(--aurora-cursor-color,#49ffa7);box-shadow:0 0 16px var(--aurora-cursor-color,#49ffa7),0 0 34px color-mix(in srgb,var(--aurora-cursor-color,#49ffa7) 50%,transparent);mix-blend-mode:screen}

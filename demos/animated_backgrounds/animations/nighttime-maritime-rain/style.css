@@ -1,0 +1,4 @@
+/* Estilos propios de esta experiencia. */
+[data-effect="waves"] .stage{background:radial-gradient(ellipse at 50% 74%,rgba(45,133,181,.28),transparent 42%),linear-gradient(180deg,#030817 0%,#071a2a 50%,#061522 100%)}
+[data-effect="waves"] .css-layer:before{content:"";position:absolute;left:-10%;right:-10%;bottom:-12%;height:52%;background:repeating-linear-gradient(176deg,transparent 0 18px,rgba(91,211,255,.022) 19px 20px);transform:skewY(-3deg);animation:water 7s ease-in-out infinite alternate}
+@keyframes water{to{transform:translateY(-12px) skewY(2deg)}}

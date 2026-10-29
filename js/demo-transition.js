@@ -12,6 +12,14 @@
         "fondos-animados": { title: { es: "Fondos Animados", en: "Animated Backgrounds", de: "Animierte Hintergründe", it: "Sfondi animati", fr: "Arrière-plans animés", hi: "एनिमेटेड बैकग्राउंड" }, colors: ["#21d6c2", "#8b5cf6"] },
         cv: { title: { es: "Currículum de Marco Antonio", en: "Marco Antonio's Resume", de: "Lebenslauf von Marco Antonio", it: "CV di Marco Antonio", fr: "CV de Marco Antonio", hi: "Marco Antonio का रिज़्यूमे" }, colors: ["#36c98b", "#91e7bb"] }
     };
+    demoInfo.gimnasio.title = {
+        es: "Plantilla Gimnasio",
+        en: "Gym Template",
+        de: "Fitnessstudio-Vorlage",
+        it: "Template Palestra",
+        fr: "Modèle Salle de sport",
+        hi: "जिम टेम्पलेट"
+    };
     const demoKeys = Object.keys(demoInfo);
 
     function getDemoInfo(demo) {

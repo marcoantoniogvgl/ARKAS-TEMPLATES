@@ -1,0 +1,8 @@
+/* Estilos propios de esta experiencia. */
+[data-effect="breaker"] .stage{background:radial-gradient(ellipse at 50% 65%,rgba(94,73,172,.2),transparent 56%),linear-gradient(180deg,#111427,#080b17 75%)}
+[data-effect="breaker"] .css-layer{background:radial-gradient(ellipse at 50% 0%,rgba(104,215,255,.08),transparent 46%)}
+.breaker-game-reset{position:absolute;z-index:11;top:16px;right:16px;padding:9px 15px;border:1px solid rgba(255,255,255,.18);border-radius:10px;background:rgba(10,14,27,.78);color:#eef2ff;font-size:.75rem;font-weight:700;cursor:pointer;backdrop-filter:blur(10px)}
+.breaker-game-reset:hover{border-color:rgba(255,255,255,.45);background:rgba(28,38,66,.92)}
+.breaker-game-reset:focus-visible{outline:2px solid #a5b4fc;outline-offset:3px}
+body:not([data-effect="breaker"]) .breaker-game-reset{display:none}
+@media(max-width:560px){.breaker-game-reset{top:10px;right:10px}}

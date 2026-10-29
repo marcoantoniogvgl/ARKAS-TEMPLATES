@@ -42,6 +42,8 @@ const W = () => stage.clientWidth;
 const H = () => stage.clientHeight;
 
 function resize(){
+  if(typeof getEffectSettings!=="function"||typeof buildAurora!=="function")
+    return;
 
   const rect = stage.getBoundingClientRect();
 
@@ -84,9 +86,6 @@ function resize(){
   if(current === "orbits")
     buildGeometricOrbits();
 
-  if(current === "ink")
-    buildInkFlow();
-
   if(current === "sunset")
     buildSky();
 
@@ -110,6 +109,9 @@ function resize(){
 
   if(current === "breaker")
     resizeBlockBreaker();
+
+  if(current === "tetris")
+    resizeTetrisGame();
 }
 
 
@@ -503,9 +505,6 @@ function animate(
   if(current==="orbits")
     drawGeometricOrbits(animationTime,dt);
 
-  if(current==="ink")
-    drawInkFlow(animationTime,dt);
-
   if(current==="sunset")
     drawSunset(animationTime,dt);
 
@@ -532,6 +531,9 @@ function animate(
 
   if(current==="breaker")
     drawBlockBreaker(dt);
+
+  if(current==="tetris")
+    drawTetrisGame(dt);
 
   animation=0;
   scheduleAnimation();

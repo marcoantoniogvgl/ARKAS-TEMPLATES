@@ -1,0 +1,3 @@
+/* Estilos propios de esta experiencia. */
+[data-effect="catch"] .stage{background:radial-gradient(ellipse at 50% 100%,color-mix(in srgb,var(--custom-secondary,#5bcfff) 22%,transparent),transparent 55%),linear-gradient(180deg,color-mix(in srgb,var(--custom-secondary,#5bcfff) 12%,#10182e),color-mix(in srgb,var(--custom-secondary,#5bcfff) 7%,#07111d) 72%)}
+[data-effect="catch"] .css-layer{background:radial-gradient(ellipse at 50% 10%,color-mix(in srgb,var(--custom-secondary,#5bcfff) 14%,transparent),transparent 44%)}

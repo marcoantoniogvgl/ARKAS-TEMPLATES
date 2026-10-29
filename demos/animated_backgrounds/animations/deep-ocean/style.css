@@ -1,0 +1,3 @@
+/* Estilos propios de esta experiencia. */
+[data-effect="ocean"] .stage{background:linear-gradient(180deg,#082a48,#061b37 48%,#020711)}
+[data-effect="ocean"] .css-layer{background:radial-gradient(ellipse at 50% 0,rgba(87,230,255,.15),transparent 50%)}

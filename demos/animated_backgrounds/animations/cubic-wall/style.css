@@ -1,0 +1,9 @@
+/* Estilos propios de esta experiencia. */
+[data-effect="grid"] .stage{background:radial-gradient(circle at 50% 50%,rgba(255,204,58,.11),transparent 34%),linear-gradient(135deg,#070807,#15120a 48%,#020302)}
+[data-effect="grid"] .css-layer:before{content:"";position:absolute;inset:8%;background:linear-gradient(90deg,transparent 49.8%,rgba(255,215,80,.035) 50%,transparent 50.2%),linear-gradient(0deg,transparent 49.8%,rgba(255,215,80,.035) 50%,transparent 50.2%);background-size:64px 64px;opacity:.65;animation:wallDrift 7s linear infinite}
+[data-effect="grid"] .css-layer:after{content:"";position:absolute;inset:0;background:radial-gradient(circle at var(--mx,50%) var(--my,50%),rgba(255,225,100,.08),transparent 18%);mix-blend-mode:screen}
+@keyframes wallDrift{to{background-position:64px 0,0 64px}}
+[data-effect="grid"] .stage{background:#ffd600}
+[data-effect="grid"] .css-layer{background:none;filter:none}
+[data-effect="grid"] .stage:before,[data-effect="grid"] .stage:after{content:none;box-shadow:none;background:none}
+[data-effect="grid"] .hero-center{display:none}

@@ -27,6 +27,8 @@ stage.addEventListener(
     const nextY=e.clientY-r.top;
     if(current==="merge"&&mergeDropPointerId===e.pointerId)
       mergeDropPointerX=nextX;
+    if(current==="catch")
+      moveCatchDodgeMazeDrag(nextX,nextY,e.pointerId);
     if(current==="grid"&&!gridMouseTracked){
       mouse.x=nextX;
       mouse.y=nextY;
@@ -59,9 +61,6 @@ stage.addEventListener(
       traceGridCells(gridTrailCell,cell);
       gridTrailCell=cell;
     }
-
-    if(current==="ink"&&(e.buttons&1))
-      paintInkFlow(mouse.x,mouse.y,mouse.vx,mouse.vy);
 
     cursorRing.style.left=mouse.x+"px";
     cursorRing.style.top=mouse.y+"px";
@@ -119,13 +118,12 @@ stage.addEventListener(
     cursorRing.style.top=y+"px";
     cursorRing.style.opacity="1";
 
-    if(current==="ink"&&e.button===0){
-      stage.setPointerCapture(e.pointerId);
-      stirInkFlow(x,y,mouse.vx,mouse.vy,true);
-    }
 
-    if(current==="catch"&&catchDodgeOver){
-      resetCatchDodgeGame();
+    if(current==="catch"){
+      if(catchDodgeOver)
+        resetCatchDodgeGame();
+      else
+        startCatchDodgeMazeDrag(x,y,e.pointerId);
       return;
     }
 
@@ -333,19 +331,18 @@ stage.addEventListener(
 );
 
 stage.addEventListener("pointerup",event=>{
-  if(current==="ink")
-    resetInkPointer();
   stopMergeDropRepeat(event.pointerId);
+  stopCatchDodgeMazeDrag(event.pointerId);
 });
 
 stage.addEventListener("pointercancel",event=>{
-  if(current==="ink")
-    resetInkPointer();
   stopMergeDropRepeat(event.pointerId);
+  stopCatchDodgeMazeDrag(event.pointerId);
 });
 
 stage.addEventListener("lostpointercapture",event=>{
   stopMergeDropRepeat(event.pointerId);
+  stopCatchDodgeMazeDrag(event.pointerId);
 });
 
 canvas.addEventListener("click",event=>{

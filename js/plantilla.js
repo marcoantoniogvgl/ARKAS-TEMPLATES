@@ -38,6 +38,15 @@ const previews = {
     }
 };
 
+previews.gimnasio.title = {
+    es: "Plantilla Gimnasio",
+    en: "Gym Template",
+    de: "Fitnessstudio-Vorlage",
+    it: "Template Palestra",
+    fr: "Modèle Salle de sport",
+    hi: "जिम टेम्पलेट"
+};
+
 document.addEventListener("DOMContentLoaded", () => {
     const params = new URLSearchParams(window.location.search);
     const keys = Object.keys(previews);

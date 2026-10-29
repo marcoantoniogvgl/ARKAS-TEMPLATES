@@ -1,7 +1,7 @@
 // Mini juego de gravedad: las bolas del mismo nivel se fusionan al tocarse.
 let mergeGameBalls=[];
 let mergeGameOver=false;
-const mergeGameMaximumLevel=15;
+const mergeGameMaximumLevel=20;
 const mergeGameRecordKey="background-lab.merge-drop.best-level.v1";
 let mergeGameBestLevel=loadMergeGameRecord();
 
@@ -76,7 +76,11 @@ function saveMergeGameRecord(level){
 
 function mergeGameRadius(level){
   const sizeStep=level-1;
-  return 20+sizeStep*2.5+sizeStep*sizeStep*.3;
+  return 20+sizeStep*1.6+sizeStep*sizeStep*.09;
+}
+
+function mergeGamePaletteColor(palette,level){
+  return palette[(level-1)%palette.length];
 }
 
 function mergeGameLossLine(){
@@ -228,12 +232,12 @@ function drawMergeGlowBall(ball){
     ball.radius
   );
   gradient.addColorStop(0,"#ffffff");
-  gradient.addColorStop(.16,mergeGameColors[ball.level-1]);
+  gradient.addColorStop(.16,mergeGamePaletteColor(mergeGameColors,ball.level));
   gradient.addColorStop(1,"#171a32");
   ctx.beginPath();
   ctx.arc(ball.x,ball.y,ball.radius,0,Math.PI*2);
   ctx.fillStyle=gradient;
-  ctx.shadowColor=mergeGameColors[ball.level-1];
+  ctx.shadowColor=mergeGamePaletteColor(mergeGameColors,ball.level);
   ctx.shadowBlur=14;
   ctx.fill();
   ctx.shadowBlur=0;
@@ -244,7 +248,7 @@ function drawMergeGlowBall(ball){
 }
 
 function drawMergeBilliardBall(ball){
-  const color=mergeGameBilliardColors[ball.level-1];
+  const color=mergeGamePaletteColor(mergeGameBilliardColors,ball.level);
   ctx.save();
   ctx.translate(ball.x,ball.y);
   ctx.rotate(ball.rotation);
@@ -373,8 +377,15 @@ function drawMergePlanetSurface(ball){
       12:["#3c175d","#e477ff","#ffc7ff"],
       13:["#102344","#54d8ff","#d1ffff"],
       14:["#29204b","#a38bff","#fff1b8"],
-      15:["#681b24","#ffb347","#fff7c2"]
-    }[level];
+      15:["#681b24","#ffb347","#fff7c2"],
+      16:["#183d32","#6ef0b4","#e3fff1"],
+      17:["#482133","#ff70a6","#ffe1ef"],
+      18:["#322552","#bc8cff","#f2e7ff"],
+      19:["#49351c","#ffd166","#fff5d6"],
+      20:["#16354a","#58d8ff","#e1fbff"]
+    }[level]||[
+      "#183d32","#6ef0b4","#e3fff1"
+    ];
     const cosmic=ctx.createRadialGradient(-radius*.24,-radius*.3,radius*.04,0,0,radius*1.15);
     cosmic.addColorStop(0,cosmicColors[2]);
     cosmic.addColorStop(.28,cosmicColors[1]);
@@ -448,8 +459,8 @@ function drawMergeBall(ball){
     const ringColor=ball.level===11
       ? "#ff9d52"
       : ball.level<=8
-        ? mergeGamePlanetColors[ball.level-1]
-        : mergeGameColors[ball.level-1];
+        ? mergeGamePaletteColor(mergeGamePlanetColors,ball.level)
+        : mergeGamePaletteColor(mergeGameColors,ball.level);
     const orbit=ambientClock*.012+ball.rotation*.35+ball.level*.43;
     ctx.save();
     ctx.translate(ball.x,ball.y);
